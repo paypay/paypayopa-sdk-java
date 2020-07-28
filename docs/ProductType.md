@@ -1,0 +1,12 @@
+
+# ProductType
+
+## Enum
+
+
+* `VIRTUAL_BONUS_INVESTMENT` (value: `"VIRTUAL_BONUS_INVESTMENT"`)
+
+* `PAY_LATER_REPAYMENT` (value: `"PAY_LATER_REPAYMENT"`)
+
+
+
