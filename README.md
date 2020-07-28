@@ -69,7 +69,7 @@ Then manually install the following JARs:
 Please follow the [installation](#installation) instruction and execute the following Java code:
 
 ```
-Please refer com.paypay.example.PaymentApiExample.java for usage of APIs
+Please refer PaymentApiExample.java for usage of APIs
 
 ```
 

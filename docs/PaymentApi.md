@@ -33,8 +33,8 @@ For 00:15 AM or later, please call the refund API to refund the payment.
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -66,8 +66,8 @@ This api is used to capture the payment authorization for a payment  **Timeout: 
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -105,8 +105,8 @@ Create a direct debit payment and start the money transfer.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -158,8 +158,8 @@ Create a Code to receive payments.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -207,8 +207,8 @@ Delete a created Code.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -242,8 +242,8 @@ Get payment details.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -276,8 +276,8 @@ Get refund details.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -310,8 +310,8 @@ Refund a payment.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 
@@ -350,8 +350,8 @@ This api is used in case, the merchant wants to cancel the payment authorization
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.PaymentApi;
+//import ApiException;
+//import PaymentApi;
 
 
 

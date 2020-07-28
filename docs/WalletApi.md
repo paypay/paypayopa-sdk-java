@@ -19,8 +19,8 @@ Check if user has enough balance to make a payment  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.WalletApi;
+//import ApiException;
+//import WalletApi;
 
 
 

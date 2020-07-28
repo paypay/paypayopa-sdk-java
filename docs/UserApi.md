@@ -18,8 +18,8 @@ Get the masked phone number of the user
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.UserApi;
+//import ApiException;
+//import UserApi;
 
 
 
@@ -51,8 +51,8 @@ Get the authorization status of a user  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.UserApi;
+//import ApiException;
+//import UserApi;
 
 
 
@@ -85,8 +85,8 @@ Unlink a user from the client  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import com.paypay.ApiException;
-//import com.paypay.api.UserApi;
+//import ApiException;
+//import UserApi;
 
 
 
