@@ -17,9 +17,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:swagger-api/swagger-codegen.git</connection>
-    <developerConnection>scm:git:git@github.com:swagger-api/swagger-codegen.git</developerConnection>
-    <url>https://github.com/swagger-api/swagger-codegen</url>
+    <connection>scm:git:git@github.com:paypay/paypayopa-sdk-java.git</connection>
+    <developerConnection>scm:git:git@github.com:paypay/paypayopa-sdk-java.git</developerConnection>
+    <url>https://github.com/paypay/paypayopa-sdk-java</url>
   </scm>
   <distributionManagement>
     <snapshotRepository>
