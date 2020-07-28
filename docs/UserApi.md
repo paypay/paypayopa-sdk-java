@@ -18,8 +18,8 @@ Get the masked phone number of the user
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import UserApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.UserApi;
 
 
 
@@ -32,7 +32,7 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling UserApi#getMaskedUserProfile");
-    e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 ```
@@ -51,8 +51,8 @@ Get the authorization status of a user  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import UserApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.UserApi;
 
 
 
@@ -66,6 +66,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling UserApi#getUserAuthorizationStatus");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -85,8 +86,8 @@ Unlink a user from the client  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import UserApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.UserApi;
 
 
 
@@ -100,6 +101,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling UserApi#unlinkUser");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 

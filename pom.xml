@@ -5,7 +5,7 @@
   <artifactId>paypayopa</artifactId>
   <packaging>jar</packaging>
   <name>paypayopa</name>
-  <version>1.0.1</version>
+  <version>1.0.0</version>
   <url>https://github.com/paypay/paypayopa-sdk-java</url>
   <description>PayPay OPA SDK</description>
 

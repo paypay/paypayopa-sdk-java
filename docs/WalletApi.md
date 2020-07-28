@@ -19,8 +19,8 @@ Check if user has enough balance to make a payment  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import WalletApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.WalletApi;
 
 
 
@@ -42,6 +42,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling WalletApi#checkWalletBalance");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 ```

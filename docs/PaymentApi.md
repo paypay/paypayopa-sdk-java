@@ -14,8 +14,6 @@ Method | HTTP request | Description
 [**revertAuth**](PaymentApi.md#revertAuth) | **POST** /v1/payments/preauthorize/revert | Revert a payment authorization
 
 
-
-
 <a name="cancelPayment"></a>
 # **cancelPayment**
 > NotDataResponse cancelPayment(merchantPaymentId)
@@ -33,10 +31,8 @@ For 00:15 AM or later, please call the refund API to refund the payment.
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
-
-
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi();
 
@@ -48,6 +44,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#cancelPayment");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 ```
@@ -66,10 +63,8 @@ This api is used to capture the payment authorization for a payment  **Timeout: 
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
-
-
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi();
 
@@ -86,6 +81,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#capturePaymentAuth");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -105,9 +101,8 @@ Create a direct debit payment and start the money transfer.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
-
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 
 PaymentApi apiInstance = new PaymentApi();
@@ -138,6 +133,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createPayment");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -145,7 +141,6 @@ try {
 Please refer to the below document for more information :
 https://www.paypay.ne.jp/opa/doc/v1.0/direct_debit#operation/createPayment
 ```
-
 
 <a name="createQRCode"></a>
 # **createQRCode**
@@ -158,10 +153,8 @@ Create a Code to receive payments.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
-
-
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi();
 
@@ -188,6 +181,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createQRCode");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -207,8 +201,8 @@ Delete a created Code.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -222,6 +216,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#deleteQRCode");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -242,8 +237,8 @@ Get payment details.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -257,6 +252,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#getPaymentDetails");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -276,8 +272,8 @@ Get refund details.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -291,6 +287,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#getRefundDetails");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -310,8 +307,8 @@ Refund a payment.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -330,6 +327,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#refundPayment");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
@@ -350,8 +348,8 @@ This api is used in case, the merchant wants to cancel the payment authorization
 ### Example
 ```java
 // Import classes:
-//import ApiException;
-//import PaymentApi;
+//import jp.ne.paypay.ApiException;
+//import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -368,6 +366,7 @@ try {
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#revertAuth");
     e.printStackTrace();
+    System.out.println(e.getResponseBody());
 }
 ```
 
