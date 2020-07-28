@@ -61,7 +61,7 @@ import okio.Okio;
 public class ApiClient {
 
     private String basePath = "https://stg-api.sandbox.paypay.ne.jp";
-    private String basePathProd = "https://api-global.paypay.ne.jp";
+    private String basePathProd = "https://api.paypay.ne.jp";
     private String basePathSandbox = "https://stg-api.sandbox.paypay.ne.jp";
     private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
