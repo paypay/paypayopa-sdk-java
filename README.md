@@ -76,7 +76,7 @@ Please refer jp.ne.paypay.example.PaymentApiExample.java for usage of APIs
 You need to setup your key and secret using the following:
 
 ```java
-ApiClient defaultClient = Configuration.getDefaultApiClient();
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
     defaultClient.setApiKey("YOUR_API_KEY");
     defaultClient.setApiSecretKey("YOUR_API_SECRET");

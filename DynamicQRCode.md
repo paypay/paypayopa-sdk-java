@@ -1,7 +1,3 @@
-# Paypay Java Client
-[![License](https://img.shields.io/:license-apache2.0-red.svg)](https://opensource.org/licenses/Apache-2.0)
-
-So you are a developer and want to start accepting payments using PayPay. PayPay's Payment SDK is the simplest way to achieve the integration. With PayPay's Payment SDK, you can build a custom Payment checkout process to suit your unique business needs and branding guidelines.
 
 # When to use QR Code Payments
 QR Code flow is recommended normally in the following scenarios
@@ -31,10 +27,7 @@ To install the API client library to your local Maven repository, simply execute
 ```sh
 $ mvn install
 ```
-To deploy it to a remote Maven repository instead, configure the settings of the repository and execute:
-```shell
-$ mvn deploy
-```
+
 ### Maven users
 
 Add this dependency to your project's POM:
@@ -42,7 +35,7 @@ Add this dependency to your project's POM:
 ```xml
 <dependency>
     <groupId>com.paypay</groupId>
-    <artifactId>PayPay</artifactId>
+    <artifactId>paypayopa</artifactId>
     <version>1.0.0</version>
     <scope>compile</scope>
 </dependency>
@@ -53,13 +46,13 @@ Add this dependency to your project's POM:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "com.paypay:PayPay:1.0.0"
+compile "com.paypay:paypayopa:1.0.0"
 ```
 ### Build your Client
 Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#tag/Api-Authentication) if you want to know more about the authentication. 
 ```java
-ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("YOUR_BASE_URL"); // Example: https://api.paypay.ne.jp
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
     defaultClient.setApiKey("YOUR_API_KEY");
     defaultClient.setApiSecretKey("YOUR_API_SECRET");
 ```
@@ -89,7 +82,7 @@ QRCode request = new QRCode();
 PaymentApi apiInstance = new PaymentApi();
 QRCodeDetails response = apiInstance.createQRCode(request);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code);
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
@@ -102,9 +95,9 @@ Now that you have created a Code, the next  step is to implement polling to get 
 # Calling the method to get payment details
 PaymentDetails response = apiInstance.getPaymentDetails(merchantPaymentId);
 # Printing if the method call was SUCCESS, this does not mean the payment was a success
-System.out.println(response.resultInfo.code);
+System.out.println(response.getResultInfo().getCode());
 # Printing if the transaction status for the code has COMPLETED/ AUTHORIZED
-System.out.println(response.data.status)
+System.out.println(response.getData().getStatus());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 On successful payment, the status in response.data.status will change from **CREATED**  to **COMPLETED**
@@ -126,7 +119,7 @@ Following are the important parameters that you can provide for this method:
 PaymentApi apiInstance = new PaymentApi();
 NotDataResponse response = apiInstance.deleteQRCode(codeId);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code)
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
@@ -147,7 +140,7 @@ Following are the important parameters that you can provide for this method:
 PaymentApi apiInstance = new PaymentApi();
 NotDataResponse response = apiInstance.cancelPayment(merchantPaymentId);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code)
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
@@ -173,7 +166,7 @@ Refund request = new Refund();
 PaymentApi apiInstance = new PaymentApi();
 RefundDetails response = apiInstance.refundPayment(request);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code);
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
@@ -190,7 +183,7 @@ So you want to confirm the status of the refund, maybe because the request for t
 PaymentApi apiInstance = new PaymentApi();
 RefundDetails response = apiInstance.getRefundDetails(merchantRefundId);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code);
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
@@ -218,7 +211,7 @@ CaptureObject request = new CaptureObject();
 PaymentApi apiInstance = new PaymentApi();
 PaymentDetails response = apiInstance.capturePaymentAuth(request);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code);
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
@@ -243,7 +236,7 @@ PaymentStateRevert request = new PaymentStateRevert();
 PaymentApi apiInstance = new PaymentApi();
 RevertAuthResponse response = apiInstance.revertAuth(request);
 # Printing if the method call was SUCCESS
-System.out.println(response.resultInfo.code);
+System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
