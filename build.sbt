@@ -1,6 +1,6 @@
 lazy val root = (project in file(".")).
   settings(
-    organization := "com.paypay",
+    organization := "jp.ne.paypay",
     name := "paypayopa",
     version := "1.0.0",
     scalaVersion := "2.11.4",
