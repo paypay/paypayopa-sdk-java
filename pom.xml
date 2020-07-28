@@ -6,7 +6,7 @@
   <packaging>jar</packaging>
   <name>paypayopa</name>
   <version>1.0.0</version>
-  <url>https://github.com/Pay-Baymax/opa-api-java-sdk</url>
+  <url>https://github.com/paypay/paypayopa-sdk-java</url>
   <description>PayPay OPA SDK</description>
 
   <licenses>
