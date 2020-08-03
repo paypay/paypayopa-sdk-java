@@ -30,6 +30,11 @@ install {
     }
 }
 
+task execute(type:JavaExec) {
+    main = System.getProperty('mainClass')
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 java {
     withJavadocJar()
     withSourcesJar()
