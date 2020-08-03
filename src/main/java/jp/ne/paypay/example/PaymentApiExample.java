@@ -34,22 +34,20 @@ public class PaymentApiExample {
 
   public static void main(String[] args) {
     ApiClient defaultClient = new Configuration().getDefaultApiClient();
-    defaultClient.setBasePath("https://stg-api.paypay.ne.jp");
-    defaultClient.setApiKey("a_1obUPwUWdx_2uR6");
-    defaultClient.setApiSecretKey("L24NeSrLDnpxEKq6z4y1QTuhl1/j4RdYZsLeN6cZ");
-//defaultClient.setProductionMode(false);
-    defaultClient.setAssumeMerchant("126235119159427072");
+//    defaultClient.setBasePath("https://stg-api.paypay.ne.jp");
+    defaultClient.setProductionMode(false);
+    defaultClient.setApiKey("API_KEY");
+    defaultClient.setApiSecretKey("API_SECRET_KEY");
+    defaultClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
 
     PaymentApi paymentApi = new PaymentApi(defaultClient);
     UserApi userApi = new UserApi(defaultClient);
     WalletApi walletApiInstance = new WalletApi(defaultClient);
 
-    String userAuthorizationId = "0ef0948e-314c-42e1-9312-03ce446fa5ef";
+    String userAuthorizationId = "USER_AUTHORIZATION_ID";
 
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId);
-//appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
-//userApis(userApi, userAuthorizationId);
-
+    appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
 
   }
 
