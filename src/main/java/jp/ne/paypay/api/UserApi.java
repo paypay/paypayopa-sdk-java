@@ -28,7 +28,7 @@ public class UserApi {
     private static final  String USER_AUTHORIZATION_ID = "userAuthorizationId";
 
     public UserApi() {
-        this(Configuration.getDefaultApiClient());
+        this(new Configuration().getDefaultApiClient());
     }
 
     public UserApi(ApiClient apiClient) {
@@ -112,7 +112,7 @@ public class UserApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
         
      */
-    private ApiResponse<MaskedUserProfileResponse> getMaskedUserProfileWithHttpInfo(String userAuthorizationId) throws ApiException {
+    protected ApiResponse<MaskedUserProfileResponse> getMaskedUserProfileWithHttpInfo(String userAuthorizationId) throws ApiException {
         com.squareup.okhttp.Call call = getMaskedUserProfileValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<MaskedUserProfileResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
@@ -201,7 +201,7 @@ public class UserApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
         
      */
-    private ApiResponse<UserAuthorizationStatus> getUserAuthorizationStatusWithHttpInfo(String userAuthorizationId) throws ApiException {
+    protected ApiResponse<UserAuthorizationStatus> getUserAuthorizationStatusWithHttpInfo(String userAuthorizationId) throws ApiException {
         com.squareup.okhttp.Call call = getUserAuthorizationStatusValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<UserAuthorizationStatus>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
@@ -290,7 +290,7 @@ public class UserApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
         
      */
-    private ApiResponse<NotDataResponse> unlinkUserWithHttpInfo(String userAuthorizationId) throws ApiException {
+    protected ApiResponse<NotDataResponse> unlinkUserWithHttpInfo(String userAuthorizationId) throws ApiException {
         com.squareup.okhttp.Call call = unlinkUserValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<NotDataResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);

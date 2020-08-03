@@ -8,6 +8,10 @@ import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * Payment
  */
@@ -15,27 +19,37 @@ import io.swagger.annotations.ApiModelProperty;
 public class Payment extends PaymentState {
 
   @SerializedName("merchantPaymentId")
+  @NotEmpty(message = "merchantPaymentId is required")
+  @Size(max = 64, message = "maximum 64 characters are allowed for merchantPaymentId")
   private String merchantPaymentId = null;
   
   @SerializedName("userAuthorizationId")
+  @NotEmpty(message = "userAuthorizationId is required")
+  @Size(max = 64, message = "maximum 64 characters are allowed for userAuthorizationId")
   private String userAuthorizationId = null;
   
   @SerializedName("amount")
+  @NotNull(message = "amount is  required")
   private MoneyAmount amount = null;
   
   @SerializedName("requestedAt")
+  @NotNull(message =  "requestedAt is required")
   private Long requestedAt = null;
   
   @SerializedName("storeId")
+  @Size(max =255 ,message = "maximum 255 characters allowed for storeId")
   private String storeId = null;
   
   @SerializedName("terminalId")
+  @Size(max =255 ,message = "maximum 255 characters allowed for terminalId")
   private String terminalId = null;
   
   @SerializedName("orderReceiptNumber")
+  @Size(max =255 ,message = "maximum 255 characters allowed for orderReceiptNumber")
   private String orderReceiptNumber = null;
   
   @SerializedName("orderDescription")
+  @Size(max =255 ,message = "maximum 255 characters allowed for orderDescription")
   private String orderDescription = null;
   
   @SerializedName("orderItems")
@@ -48,7 +62,7 @@ public class Payment extends PaymentState {
   private Integer expiresAt = null;
   
   @SerializedName("amountescription")
-  private String amountescription = null;
+  private String amountDescription = null;
   
   public Payment merchantPaymentId(String merchantPaymentId) {
     this.merchantPaymentId = merchantPaymentId;
@@ -257,8 +271,8 @@ public class Payment extends PaymentState {
     this.expiresAt = expiresAt;
   }
   
-  public Payment amountescription(String amountescription) {
-    this.amountescription = amountescription;
+  public Payment amountDescription(String amountDescription) {
+    this.amountDescription = amountDescription;
     return this;
   }
 
@@ -268,11 +282,11 @@ public class Payment extends PaymentState {
   * @return amountescription
   **/
   @ApiModelProperty(value = "Description of the order")
-  public String getAmountescription() {
-    return amountescription;
+  public String getAmountDescription() {
+    return amountDescription;
   }
-  public void setAmountescription(String amountescription) {
-    this.amountescription = amountescription;
+  public void setAmountDescription(String amountDescription) {
+    this.amountDescription = amountDescription;
   }
   
   @Override
@@ -295,13 +309,13 @@ public class Payment extends PaymentState {
         Objects.equals(this.orderItems, payment.orderItems) &&
         Objects.equals(this.metadata, payment.metadata) &&
         Objects.equals(this.expiresAt, payment.expiresAt) &&
-        Objects.equals(this.amountescription, payment.amountescription) &&
+        Objects.equals(this.amountDescription, payment.amountDescription) &&
         super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantPaymentId, userAuthorizationId, amount, requestedAt, storeId, terminalId, orderReceiptNumber, orderDescription, orderItems, metadata, expiresAt, amountescription, super.hashCode());
+    return Objects.hash(merchantPaymentId, userAuthorizationId, amount, requestedAt, storeId, terminalId, orderReceiptNumber, orderDescription, orderItems, metadata, expiresAt, amountDescription, super.hashCode());
   }
   
   @Override
@@ -320,7 +334,7 @@ public class Payment extends PaymentState {
     sb.append("    orderItems: ").append(toIndentedString(orderItems)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
-    sb.append("    amountescription: ").append(toIndentedString(amountescription)).append("\n");
+    sb.append("    amountDescription: ").append(toIndentedString(amountDescription)).append("\n");
     sb.append("}");
     return sb.toString();
   }

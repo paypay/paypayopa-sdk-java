@@ -1,22 +1,19 @@
 package jp.ne.paypay;
 
-import java.util.List;
-import java.util.Map;
-
-public class JWTException extends Exception {
+public class JwtException extends Exception {
 
     private int code = 0;
-    public JWTException() {}
+    public JwtException() {}
 
-    public JWTException(Throwable throwable) {
+    public JwtException(Throwable throwable) {
         super(throwable);
     }
 
-    public JWTException(String message) {
+    public JwtException(String message) {
         super(message);
     }
 
-    public JWTException(int code, String message) {
+    public JwtException(int code, String message) {
         super(message);
         this.code = code;
     }

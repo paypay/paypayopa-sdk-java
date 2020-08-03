@@ -11,18 +11,24 @@ import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * Capture
  */
 public class Capture {
 
   @SerializedName("merchantCaptureId")
+  @NotEmpty(message = "merchantCaptureId is required")
   private String merchantCaptureId = null;
   
   @SerializedName("amount")
+  @NotNull(message = "amount is required")
   private MoneyAmount amount = null;
   
   @SerializedName("orderDescription")
+  @NotEmpty(message =  "orderDescription is required")
   private String orderDescription = null;
   
   @SerializedName("requestedAt")
@@ -85,7 +91,7 @@ public class Capture {
   private Integer acceptedAt = null;
   
   @SerializedName("amountescription")
-  private String amountescription = null;
+  private String amountDescription = null;
   
   public Capture merchantCaptureId(String merchantCaptureId) {
     this.merchantCaptureId = merchantCaptureId;
@@ -213,8 +219,8 @@ public class Capture {
     this.acceptedAt = acceptedAt;
   }
   
-  public Capture amountescription(String amountescription) {
-    this.amountescription = amountescription;
+  public Capture amountDescription(String amountDescription) {
+    this.amountDescription = amountDescription;
     return this;
   }
 
@@ -224,11 +230,11 @@ public class Capture {
   * @return amountescription
   **/
   @ApiModelProperty(value = "Description for Capture")
-  public String getAmountescription() {
-    return amountescription;
+  public String getAmountDescription() {
+    return amountDescription;
   }
-  public void setAmountescription(String amountescription) {
-    this.amountescription = amountescription;
+  public void setAmountDescription(String amountDescription) {
+    this.amountDescription = amountDescription;
   }
   
   @Override
@@ -247,12 +253,12 @@ public class Capture {
         Objects.equals(this.expiresAt, capture.expiresAt) &&
         Objects.equals(this.status, capture.status) &&
         Objects.equals(this.acceptedAt, capture.acceptedAt) &&
-        Objects.equals(this.amountescription, capture.amountescription);
+        Objects.equals(this.amountDescription, capture.amountDescription);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantCaptureId, amount, orderDescription, requestedAt, expiresAt, status, acceptedAt, amountescription);
+    return Objects.hash(merchantCaptureId, amount, orderDescription, requestedAt, expiresAt, status, acceptedAt, amountDescription);
   }
   
   @Override
@@ -267,7 +273,7 @@ public class Capture {
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    acceptedAt: ").append(toIndentedString(acceptedAt)).append("\n");
-    sb.append("    amountescription: ").append(toIndentedString(amountescription)).append("\n");
+    sb.append("    amountDescription: ").append(toIndentedString(amountDescription)).append("\n");
     sb.append("}");
     return sb.toString();
   }

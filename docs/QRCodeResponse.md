@@ -22,7 +22,7 @@ Name | Type | Description | Notes
 **redirectType** | [**RedirectTypeEnum**](#RedirectTypeEnum) | The type of redirect after complete the payment |  [optional]
 **isAuthorization** | **Boolean** | If the payment is an authorization. |  [optional]
 **authorizationExpiry** | **Integer** | In case the payment is just an authorization, this defines the expiry of the authorization |  [optional]
-**amountescription** | **String** | Description of the order |  [optional]
+**amountDescription** | **String** | Description of the order |  [optional]
 **userAgent** | **String** | The User agent of the web browser. |  [optional]
 
 

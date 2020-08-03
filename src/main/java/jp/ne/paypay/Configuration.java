@@ -1,7 +1,7 @@
 package jp.ne.paypay;
 
 public class Configuration {
-    private static ApiClient defaultApiClient = new ApiClient();
+    private ApiClient defaultApiClient = new ApiClient();
 
     /**
      * Get the default API client, which would be used when creating API
@@ -9,7 +9,7 @@ public class Configuration {
      *
      * @return Default API client
      */
-    public static ApiClient getDefaultApiClient() {
+    public ApiClient getDefaultApiClient() {
         return defaultApiClient;
     }
 
@@ -19,7 +19,7 @@ public class Configuration {
      *
      * @param apiClient API client
      */
-    public static void setDefaultApiClient(ApiClient apiClient) {
+    public void setDefaultApiClient(ApiClient apiClient) {
         defaultApiClient = apiClient;
     }
 }
