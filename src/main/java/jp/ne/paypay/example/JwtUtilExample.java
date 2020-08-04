@@ -1,6 +1,6 @@
 package jp.ne.paypay.example;
 
-import jp.ne.paypay.JWTException;
+import jp.ne.paypay.JwtException;
 import jp.ne.paypay.JwtUtil;
 import jp.ne.paypay.model.JwtRequestDto;
 import jp.ne.paypay.model.JwtResponseDto;
@@ -31,7 +31,7 @@ public class JwtUtilExample {
       String jwtToken = "JWT_TOKEN";
       String apiSecretKey = "YOUR_API_SECRET_KEY";
       jwtResponseDto = JwtUtil.validateJWT(jwtToken, jwtAudience, apiSecretKey);
-    } catch (JWTException e) {
+    } catch (JwtException e) {
       e.printStackTrace();
       System.err.println("Exception:"+e);
     }

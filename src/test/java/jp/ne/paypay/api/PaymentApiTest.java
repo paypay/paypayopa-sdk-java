@@ -1,23 +1,48 @@
 package jp.ne.paypay.api;
 
+import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
+import jp.ne.paypay.ApiResponse;
+import jp.ne.paypay.model.CaptureObject;
+import jp.ne.paypay.model.MerchantOrderItem;
+import jp.ne.paypay.model.MoneyAmount;
 import jp.ne.paypay.model.NotDataResponse;
+import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
+import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
+import jp.ne.paypay.model.Refund;
 import jp.ne.paypay.model.RefundDetails;
+import jp.ne.paypay.model.ResultInfo;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * API tests for PaymentApi
  */
-@Ignore
 public class PaymentApiTest {
 
-    private final PaymentApi api = new PaymentApi();
+    @Mock
+    private final PaymentApi api = Mockito.spy(new PaymentApi());
+    private ResultInfo resultInfo;
+    private ApiClient apiClient;
 
-    
+    @BeforeEach
+    public void setUp(){
+         apiClient = Mockito.mock(ApiClient.class);
+         api.setApiClient(apiClient);
+         resultInfo = new ResultInfo();
+         resultInfo.setMessage("SUCCESS");
+    }
     /**
      * Cancel a payment
      *
@@ -28,12 +53,15 @@ public class PaymentApiTest {
      */
     @Test
     public void cancelPaymentTest() throws ApiException {
-        
-        String merchantPaymentId = null;
-        
-        NotDataResponse response = api.cancelPayment(merchantPaymentId);
 
-        // TODO: test validations
+        String merchantPaymentId = "merchantpaymentid";
+        NotDataResponse notDataResponse = new NotDataResponse();
+        notDataResponse.setResultInfo(resultInfo);
+        ApiResponse<NotDataResponse> notDataResponseApiResponse = new ApiResponse<>(00001, null, notDataResponse);
+        Mockito.when(apiClient.escapeString(merchantPaymentId)).thenReturn(merchantPaymentId);
+        Mockito.when(api.cancelPaymentWithHttpInfo(merchantPaymentId)).thenReturn(notDataResponseApiResponse);
+        NotDataResponse response = api.cancelPayment(merchantPaymentId);
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -47,11 +75,19 @@ public class PaymentApiTest {
     @Test
     public void capturePaymentAuthTest() throws ApiException {
         
-        Object body = null;
-        
-        PaymentDetails response = api.capturePaymentAuth(body);
+        CaptureObject captureObject = new CaptureObject();
+        captureObject.setMerchantCaptureId(UUID.randomUUID().toString());
+        captureObject.setMerchantPaymentId("merchantPaymentId");
+        captureObject.setAmount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        captureObject.setOrderDescription("new Order");
+        captureObject.setRequestedAt(Instant.now().getEpochSecond());
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setResultInfo(resultInfo);
 
-        // TODO: test validations
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
+        Mockito.when(api.capturePaymentAuthWithHttpInfo(captureObject)).thenReturn(paymentDetailsApiResponse);
+        PaymentDetails response = api.capturePaymentAuth(captureObject);
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -64,14 +100,32 @@ public class PaymentApiTest {
      */
     @Test
     public void createPaymentTest() throws ApiException {
-        
-        Object body = null;
-        
-        String agreeSimilarTransaction = null;
-        
-        PaymentDetails response = api.createPayment(body, agreeSimilarTransaction);
 
-        // TODO: test validations
+        Payment payment = new Payment();
+        payment.setAmount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        payment.setMerchantPaymentId("merchantPaymentId");
+        payment.setUserAuthorizationId("userAuthorizationId");
+        payment.setRequestedAt(Instant.now().getEpochSecond());
+        payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
+        payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
+        payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
+        payment.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
+        MerchantOrderItem merchantOrderItem =
+                new MerchantOrderItem()
+                        .category("Dessert").name("Red Velvet Cake")
+                        .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+                        .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+        merchantOrderItems.add(merchantOrderItem);
+        payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setResultInfo(resultInfo);
+        String agreeSimilarTransaction = "True";
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
+        Mockito.when(api.createPaymentWithHttpInfo(payment, agreeSimilarTransaction)).thenReturn(paymentDetailsApiResponse);
+        PaymentDetails response = api.createPayment(payment, agreeSimilarTransaction);
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -84,12 +138,33 @@ public class PaymentApiTest {
      */
     @Test
     public void createQRCodeTest() throws ApiException {
-        
-        Object body = null;
-        
-        QRCodeDetails response = api.createQRCode(body);
 
-        // TODO: test validations
+        QRCode qrCode = new QRCode();
+        qrCode.setAmount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        qrCode.setMerchantPaymentId(UUID.randomUUID().toString());
+        qrCode.setCodeType("ORDER_QR");
+        qrCode.setStoreId(RandomStringUtils.randomAlphabetic(8));
+        qrCode.setStoreInfo("Just Bake");
+        qrCode.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
+        qrCode.requestedAt(Instant.now().getEpochSecond());
+        qrCode.redirectUrl("https://www.justbake.in/payment");
+        qrCode.redirectType(QRCode.RedirectTypeEnum.WEB_LINK);//For Deep Link, RedirectTypeEnum.APP_DEEP_LINK
+        qrCode.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
+        MerchantOrderItem merchantOrderItem =
+                new MerchantOrderItem()
+                        .category("Dessert").name("Red Velvet Cake")
+                        .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+                        .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+        merchantOrderItems.add(merchantOrderItem);
+        qrCode.setOrderItems(merchantOrderItems);
+
+        QRCodeDetails qrCodeDetails = new QRCodeDetails();
+        qrCodeDetails.setResultInfo(resultInfo);
+        ApiResponse<QRCodeDetails> qrCodeDetailsApiResponse = new ApiResponse<>(00001, null, qrCodeDetails);
+        Mockito.when(api.createQRCodeWithHttpInfo(qrCode)).thenReturn(qrCodeDetailsApiResponse);
+        QRCodeDetails response = api.createQRCode(qrCode);
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -102,14 +177,16 @@ public class PaymentApiTest {
      */
     @Test
     public void deleteQRCodeTest() throws ApiException {
-        
-        String codeId = null;
-        
-        NotDataResponse response = api.deleteQRCode(codeId);
 
-        // TODO: test validations
+        String codeId = "codeId";
+        NotDataResponse notDataResponse = new NotDataResponse();
+        notDataResponse.setResultInfo(resultInfo);
+        ApiResponse<NotDataResponse> notDataResponseApiResponse = new ApiResponse<>(00001, null, notDataResponse);
+        Mockito.when(apiClient.escapeString(codeId)).thenReturn(codeId);
+        Mockito.when(api.deleteQRCodeWithHttpInfo(codeId)).thenReturn(notDataResponseApiResponse);
+        NotDataResponse response = api.deleteQRCode(codeId);
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
-    
     /**
      * Get payment details
      *
@@ -121,11 +198,15 @@ public class PaymentApiTest {
     @Test
     public void getPaymentDetailsTest() throws ApiException {
         
-        String merchantPaymentId = null;
-        
+        String merchantPaymentId = "merchantPaymentId";
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setResultInfo(resultInfo);
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
+        Mockito.when(apiClient.escapeString(merchantPaymentId)).thenReturn(merchantPaymentId);
+        Mockito.when(api.getPaymentDetailsWithHttpInfo(merchantPaymentId)).thenReturn(paymentDetailsApiResponse);
         PaymentDetails response = api.getPaymentDetails(merchantPaymentId);
 
-        // TODO: test validations
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -139,11 +220,15 @@ public class PaymentApiTest {
     @Test
     public void getRefundDetailsTest() throws ApiException {
         
-        String merchantRefundId = null;
-        
+        String merchantRefundId = "refundId";
+        RefundDetails refundDetails = new RefundDetails();
+        refundDetails.setResultInfo(resultInfo);
+        ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
+        Mockito.when(apiClient.escapeString(merchantRefundId)).thenReturn(merchantRefundId);
+        Mockito.when(api.getRefundDetailsWithHttpInfo(merchantRefundId)).thenReturn(paymentDetailsApiResponse);
         RefundDetails response = api.getRefundDetails(merchantRefundId);
 
-        // TODO: test validations
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -156,12 +241,20 @@ public class PaymentApiTest {
      */
     @Test
     public void refundPaymentTest() throws ApiException {
-        
-        Object body = null;
-        
-        RefundDetails response = api.refundPayment(body);
 
-        // TODO: test validations
+        Refund refund = new Refund();
+        refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+        refund.setMerchantRefundId("refundId");
+        refund.setPaymentId("paymentId");
+        refund.setReason("Testing");
+        refund.setRequestedAt(Instant.now().getEpochSecond());
+        RefundDetails refundDetails = new RefundDetails();
+        refundDetails.setResultInfo(resultInfo);
+        ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
+        Mockito.when(api.refundPaymentWithHttpInfo(refund)).thenReturn(paymentDetailsApiResponse);
+        RefundDetails response = api.refundPayment(refund);
+
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
 }

@@ -19,8 +19,8 @@ Check if user has enough balance to make a payment  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.WalletApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.WalletApi;
 
 
 
@@ -28,7 +28,7 @@ WalletApi apiInstance = new WalletApi();
 
 String userAuthorizationId = "USER_AUTHORIZATION_ID";
 
-Integer amount = 10;
+int amount = 10;
 
 String currency = "JPY";
 

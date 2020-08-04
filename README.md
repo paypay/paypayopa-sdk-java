@@ -23,47 +23,18 @@ Note: Hmac authorization will be done internally by the SDK, the client need not
 
 ## Requirements
 
-Building the API client library requires Maven or Gradle to be installed.
+Building the API client library requires Gradle to be installed.
 
 ## Installation
 
 To install the API client library to your local Maven repository, simply execute:
 
-```shell
-mvn install
-```
-
-### Maven users
-
-Add this dependency to your project's POM:
-
-```xml
-<dependency>
-    <groupId>com.paypay</groupId>
-    <artifactId>paypayopa</artifactId>
-    <version>1.0.0</version>
-    <scope>compile</scope>
-</dependency>
-```
-
-### Gradle users
 
 Add this dependency to your project's build file:
 
 ```groovy
-compile "com.paypay:paypayopa:1.0.0"
+compile "io.github.paypay:paypayopa:1.0.0"
 ```
-
-### Others
-
-At first generate the JAR by executing:
-
-    mvnpackage
-
-Then manually install the following JARs:
-
-* target/paypayopa-1.0.0.jar
-* target/lib/*.jar
 
 ## Getting Started
 
@@ -77,7 +48,7 @@ Please refer jp.ne.paypay.example.PaymentApiExample.java for usage of APIs
 You need to setup your key and secret using the following:
 
 ```java
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    ApiClient defaultClient = new Configuration().getDefaultApiClient();
     defaultClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
     defaultClient.setApiKey("YOUR_API_KEY");
     defaultClient.setApiSecretKey("YOUR_API_SECRET");

@@ -20,9 +20,9 @@ Method | HTTP request | Description
 
 Cancel a payment
 
-This api is used in case, while creating a payment, the client can not determine the status of the payment. For example, client get timeout or the response cannot contain the information to indicate the exact payment status.
+This API is used in case, while creating a payment, the client can not determine the status of the payment. For example, client get timeout or the response cannot contain the information to indicate the exact payment status.
 
-By calling this api, if accepted, the OPA will guarantee the money eventually goes back to user's account.
+By calling this API, if accepted, the OPA will guarantee the money eventually goes back to user's account.
 
 
 Note: The Cancel API can be used until 00:14:59 AM the day after the Payment has happened.
@@ -30,9 +30,9 @@ For 00:15 AM or later, please call the refund API to refund the payment.
 
 ### Example
 ```java
-// Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+//Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi();
 
@@ -58,13 +58,13 @@ https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#operation/cancelPayment
 
 Capture a payment authorization
 
-This api is used to capture the payment authorization for a payment  **Timeout: 30s** 
+This API is used to capture the payment authorization for a payment  **Timeout: 30s** 
 
 ### Example
 ```java
-// Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+//Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi();
 
@@ -100,9 +100,9 @@ Create a direct debit payment and start the money transfer.  **Timeout: 30s**
 
 ### Example
 ```java
-// Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+//Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 
 PaymentApi apiInstance = new PaymentApi();
@@ -153,8 +153,8 @@ Create a Code to receive payments.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi();
 
@@ -201,14 +201,14 @@ Delete a created Code.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 
 
 PaymentApi apiInstance = new PaymentApi();
 
-String codeId = "QR_CODE_ID"; // String 
+String codeId = "QR_CODE_ID"; 
 
 try {
     NotDataResponse result = apiInstance.deleteQRCode(codeId);
@@ -237,8 +237,8 @@ Get payment details.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -272,8 +272,8 @@ Get refund details.  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -307,8 +307,8 @@ Refund a payment.  **Timeout: 30s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 
 
@@ -343,13 +343,13 @@ https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#operation/refundPayment
 
 Revert a payment authorization
 
-This api is used in case, the merchant wants to cancel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s** 
+This API is used in case, the merchant wants to cancel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s** 
 
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
 
 
 

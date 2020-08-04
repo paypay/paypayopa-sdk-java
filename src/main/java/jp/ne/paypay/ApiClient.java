@@ -30,6 +30,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,9 +53,6 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.OffsetDateTime;
-
 import okio.BufferedSink;
 import okio.Okio;
 
@@ -95,6 +94,56 @@ public class ApiClient {
 
     public boolean isProductionMode() {
         return productionMode;
+    }
+
+    public String getBasePathProd() {
+        return basePathProd;
+    }
+
+    public ApiClient setBasePathProd(String basePathProd) {
+        this.basePathProd = basePathProd;
+        return this;
+    }
+
+    public String getBasePathSandbox() {
+        return basePathSandbox;
+    }
+
+    public ApiClient setBasePathSandbox(String basePathSandbox) {
+        this.basePathSandbox = basePathSandbox;
+        return this;
+    }
+
+    public Map<String, String> getDefaultHeaderMap() {
+        return defaultHeaderMap;
+    }
+
+    public ApiClient setDefaultHeaderMap(Map<String, String> defaultHeaderMap) {
+        this.defaultHeaderMap = defaultHeaderMap;
+        return this;
+    }
+
+    public ApiClient setAuthentications(Map<String, Authentication> authentications) {
+        this.authentications = authentications;
+        return this;
+    }
+
+    public JSON getJson() {
+        return json;
+    }
+
+    public ApiClient setJson(JSON json) {
+        this.json = json;
+        return this;
+    }
+
+    public HttpLoggingInterceptor getLoggingInterceptor() {
+        return loggingInterceptor;
+    }
+
+    public ApiClient setLoggingInterceptor(HttpLoggingInterceptor loggingInterceptor) {
+        this.loggingInterceptor = loggingInterceptor;
+        return this;
     }
 
     public ApiClient setProductionMode(boolean productionMode) {
@@ -642,14 +691,23 @@ public class ApiClient {
      * @return Downloaded file
      */
     public File downloadFileFromResponse(Response response) throws ApiException {
+        BufferedSink sink =  null;
         try {
             File file = prepareDownloadFile(response);
-            BufferedSink sink = Okio.buffer(Okio.sink(file));
+            sink = Okio.buffer(Okio.sink(file));
             sink.writeAll(response.body().source());
             sink.close();
             return file;
         } catch (IOException e) {
             throw new ApiException(e);
+        }finally{
+            if(sink != null){
+                try {
+                    sink.close();
+                } catch (IOException e) {
+                    throw new ApiException(e);
+                }
+            }
         }
     }
 

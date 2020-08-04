@@ -18,8 +18,8 @@ Get the masked phone number of the user
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.UserApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.UserApi;
 
 
 
@@ -51,8 +51,8 @@ Get the authorization status of a user  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.UserApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.UserApi;
 
 
 
@@ -86,8 +86,8 @@ Unlink a user from the client  **Timeout: 15s**
 ### Example
 ```java
 // Import classes:
-//import jp.ne.paypay.ApiException;
-//import jp.ne.paypay.api.UserApi;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.UserApi;
 
 
 

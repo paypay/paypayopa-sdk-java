@@ -48,7 +48,7 @@ public class PaymentOrder {
   private Integer expiresAt = null;
   
   @SerializedName("amountescription")
-  private String amountescription = null;
+  private String amountDescription = null;
   
   public PaymentOrder merchantPaymentId(String merchantPaymentId) {
     this.merchantPaymentId = merchantPaymentId;
@@ -257,22 +257,22 @@ public class PaymentOrder {
     this.expiresAt = expiresAt;
   }
   
-  public PaymentOrder amountescription(String amountescription) {
-    this.amountescription = amountescription;
+  public PaymentOrder amountDescription(String amountDescription) {
+    this.amountDescription = amountDescription;
     return this;
   }
 
   
   /**
   * Description of the order
-  * @return amountescription
+  * @return amountDescription
   **/
   @ApiModelProperty(value = "Description of the order")
-  public String getAmountescription() {
-    return amountescription;
+  public String getAmountDescription() {
+    return amountDescription;
   }
-  public void setAmountescription(String amountescription) {
-    this.amountescription = amountescription;
+  public void setAmountDescription(String amountDescription) {
+    this.amountDescription = amountDescription;
   }
   
   @Override
@@ -295,12 +295,12 @@ public class PaymentOrder {
         Objects.equals(this.orderItems, paymentOrder.orderItems) &&
         Objects.equals(this.metadata, paymentOrder.metadata) &&
         Objects.equals(this.expiresAt, paymentOrder.expiresAt) &&
-        Objects.equals(this.amountescription, paymentOrder.amountescription);
+        Objects.equals(this.amountDescription, paymentOrder.amountDescription);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantPaymentId, userAuthorizationId, amount, requestedAt, storeId, terminalId, orderReceiptNumber, orderDescription, orderItems, metadata, expiresAt, amountescription);
+    return Objects.hash(merchantPaymentId, userAuthorizationId, amount, requestedAt, storeId, terminalId, orderReceiptNumber, orderDescription, orderItems, metadata, expiresAt, amountDescription);
   }
   
   @Override
@@ -319,7 +319,7 @@ public class PaymentOrder {
     sb.append("    orderItems: ").append(toIndentedString(orderItems)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
-    sb.append("    amountescription: ").append(toIndentedString(amountescription)).append("\n");
+    sb.append("    amountDescription: ").append(toIndentedString(amountDescription)).append("\n");
     sb.append("}");
     return sb.toString();
   }

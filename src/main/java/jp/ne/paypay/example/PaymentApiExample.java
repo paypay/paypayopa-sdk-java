@@ -33,49 +33,50 @@ public class PaymentApiExample {
 
 
   public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    //defaultClient.setBasePath("BASE_URL");
-    defaultClient.setProductionMode(false); // Default is false
-    defaultClient.setApiKey("YOUR_API_KEY");
-    defaultClient.setApiSecretKey("YOUR_API_KEY_SECRET");
-    defaultClient.setAssumeMerchant("YOUR_MERCHANT_KEY");
+    ApiClient defaultClient = new Configuration().getDefaultApiClient();
+//    defaultClient.setBasePath("https://stg-api.paypay.ne.jp");
+    defaultClient.setProductionMode(false);
+    defaultClient.setApiKey("API_KEY");
+    defaultClient.setApiSecretKey("API_SECRET_KEY");
+    defaultClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
 
     PaymentApi paymentApi = new PaymentApi(defaultClient);
     UserApi userApi = new UserApi(defaultClient);
     WalletApi walletApiInstance = new WalletApi(defaultClient);
 
-    String userAuthorizationId = "YOUR_USER_AUTHORIZATION_ID";
+    String userAuthorizationId = "USER_AUTHORIZATION_ID";
+
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
-    userApis(userApi, userAuthorizationId);
 
   }
 
   private static void appInvokeFlow(final PaymentApi paymentApi, final WalletApi walletApiInstance,
           final String userAuthorizationId) {
-    int amount =1; String currency = "JPY";
+    int amount =1;
+    String currency = "JPY";
     QRCodeDetails qrCodeDetails = createQRCode(paymentApi, amount);
 
-    String marchantPaymentId  = qrCodeDetails!=null ?qrCodeDetails.getData().getMerchantPaymentId(): null;
+    String merchantPaymentId  = qrCodeDetails!=null ?qrCodeDetails.getData().getMerchantPaymentId(): null;
     WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
-    if(marchantPaymentId != null && walletBalance != null && walletBalance.getData().isHasEnoughBalance()) {
+    if(merchantPaymentId != null && walletBalance != null && walletBalance.getData().isHasEnoughBalance()) {
         System.out.println("The QR Code can be used as a deeplink to invoke PayPay app and receive Payments. The user "
                 + "can makes the payment using PayPay App");
         System.out.println("For this example, we will create payment using the API...");
-        PaymentDetails paymentDetails = createPayment(paymentApi, marchantPaymentId, userAuthorizationId, amount);
+        PaymentDetails paymentDetails = createPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
         if (paymentDetails != null) {
-          //capturePayment(paymentApi, marchantPaymentId, amount);
+          //capturePayment(paymentApi, merchantPaymentId, amount);
           System.out.println("Payment created successfully, Now calling the API to get payment details for payment " + "ID:"
-                  + marchantPaymentId);
+                  + merchantPaymentId);
           String refundId = UUID.randomUUID().toString();
-          paymentDetails = getPaymentDetails(paymentApi, marchantPaymentId);
+          paymentDetails = getPaymentDetails(paymentApi, merchantPaymentId);
           if (paymentDetails != null) {
             System.out.println("Creating Refund for the payment:" + paymentDetails.getData().getPaymentId());
             createRefund(paymentApi, paymentDetails.getData().getPaymentId(), refundId);
             System.out.println("Get refund details:" + refundId);
             getRefundDetails(paymentApi, refundId);
             System.out.println("Finally cancel the payment");
-            cancelPayment(paymentApi, marchantPaymentId);
+            cancelPayment(paymentApi, merchantPaymentId);
           }
         }
     }
@@ -87,25 +88,25 @@ public class PaymentApiExample {
 
   private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId){
 
-    String marchantPaymentId  = UUID.randomUUID().toString();
+    String merchantPaymentId  = UUID.randomUUID().toString();
     System.out.println("Checking wallet balance...");
     int amount =1; String currency = "JPY";
     WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
       System.out.println("There is enough balance, now creating payment...");
-      PaymentDetails paymentDetails = createPayment(paymentApi, marchantPaymentId, userAuthorizationId, amount);
+      PaymentDetails paymentDetails = createPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
       if (paymentDetails != null) {
         System.out.println("Payment created successfully, Now calling the API to get payment details for payment "
-                + "ID:"+marchantPaymentId);
+                + "ID:"+merchantPaymentId);
         String refundId = UUID.randomUUID().toString();
-        paymentDetails = getPaymentDetails(paymentApi, marchantPaymentId);
+        paymentDetails = getPaymentDetails(paymentApi, merchantPaymentId);
         if(paymentDetails != null) {
           System.out.println("Creating Refund for the payment:" + paymentDetails.getData().getPaymentId());
           createRefund(paymentApi, paymentDetails.getData().getPaymentId(), refundId);
           System.out.println("Get refund details:"+refundId);
           getRefundDetails(paymentApi, refundId);
           System.out.println("Finally cancel the payment");
-          cancelPayment(paymentApi, marchantPaymentId);
+          cancelPayment(paymentApi, merchantPaymentId);
         }
       }
     }
@@ -225,10 +226,10 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static void getRefundDetails(final PaymentApi apiInstance, final String marchantRefundId) {
+  private static void getRefundDetails(final PaymentApi apiInstance, final String merchantRefundId) {
 
     try {
-      RefundDetails result = apiInstance.getRefundDetails(marchantRefundId);
+      RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
     } catch (ApiException e) {

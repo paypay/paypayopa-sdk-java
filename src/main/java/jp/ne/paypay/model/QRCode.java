@@ -13,6 +13,10 @@ import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * QRCode
  */
@@ -20,12 +24,16 @@ import io.swagger.annotations.ApiModelProperty;
 public class QRCode {
 
   @SerializedName("merchantPaymentId")
+  @NotEmpty(message = "merchantPaymentId is required")
+  @Size(max = 64, message = "maximum 64 characters are allowed for merchantPaymentId")
   private String merchantPaymentId = null;
   
   @SerializedName("amount")
+  @NotNull(message = "amount is required")
   private MoneyAmount amount = null;
   
   @SerializedName("orderDescription")
+  @Size(max =255 ,message = "maximum 255 characters allowed for orderDescription")
   private String orderDescription = null;
   
   @SerializedName("orderItems")
@@ -35,15 +43,19 @@ public class QRCode {
   private Object metadata = null;
   
   @SerializedName("codeType")
+  @NotEmpty(message = "codeType is required")
   private String codeType = null;
   
   @SerializedName("storeInfo")
+  @Size(max =255 ,message = "maximum 255 characters allowed for storeInfo")
   private String storeInfo = null;
   
   @SerializedName("storeId")
+  @Size(max =255 ,message = "maximum 255 characters allowed for storeId")
   private String storeId = null;
   
   @SerializedName("terminalId")
+  @Size(max =255 ,message = "maximum 255 characters allowed for terminalId")
   private String terminalId = null;
   
   @SerializedName("requestedAt")
@@ -217,10 +229,10 @@ public class QRCode {
 
   
   /**
-  * Please pass the fixed string “ORDER_QR”
+  * Please pass the fixed string ORDER_QR
   * @return codeType
   **/
-  @ApiModelProperty(value = "Please pass the fixed string “ORDER_QR”")
+  @ApiModelProperty(value = "Please pass the fixed string ORDER_QR")
   public String getCodeType() {
     return codeType;
   }

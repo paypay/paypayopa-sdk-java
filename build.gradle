@@ -1,16 +1,12 @@
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
-group = 'jp.ne.paypay'
-version = '1.0.0'
+group = 'io.github.paypay'
+version = '0.1'
 
 buildscript {
     repositories {
         jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.+'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
@@ -18,36 +14,102 @@ repositories {
     jcenter()
 }
 
-    apply plugin: 'java'
-    apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'pmd'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+javadoc.options.encoding = 'UTF-8'
 
-    install {
-        repositories.mavenInstaller {
-            pom.artifactId = 'paypayopa'
-        }
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'paypayopa'
     }
+}
 
-    task execute(type:JavaExec) {
-       main = System.getProperty('mainClass')
-       classpath = sourceSets.main.runtimeClasspath
-    }
+task execute(type:JavaExec) {
+    main = System.getProperty('mainClass')
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 
 dependencies {
     compile 'io.swagger:swagger-annotations:1.5.15'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'com.auth0:java-jwt:3.7.0'
-    
-    compile 'org.threeten:threetenbp:1.3.5'
+    compile 'com.google.code.gson:gson:2.8.6'
+    compile 'com.auth0:java-jwt:3.10.3'
 
     compile 'org.apache.commons:commons-lang3:3.10'
-    
-    testCompile 'junit:junit:4.12'
+    // validation
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.2.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator-annotation-processor', version: '6.0.2.Final'
+    compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
 
+    testCompile 'org.mockito:mockito-core:3.4.4'
 
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+    testCompile("org.junit.platform:junit-platform-runner:1.5.2")
+}
+pmd{
+    consoleOutput = true
+    toolVersion = "6.21.0"
+    rulePriority = 5
+    ignoreFailures = true
+    ruleSets = ["category/java/errorprone.xml"]
+}
+artifacts {
+    archives javadocJar, sourcesJar
+}
+//This is for maven central publishing gpg signing. Commenting here since it needs key and passphrase and won't work locally
+//signing {
+//    sign configurations.archives
+//}
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'paypayopa'
+                packaging 'jar'
+                description 'PayPay OPA SDK'
+                url 'https://github.com/paypay/paypayopa-sdk-java'
+
+                scm {
+                    connection 'scm:git:git@github.com:paypay/paypayopa-sdk-java.git'
+                    developerConnection 'scm:git:git@github.com:paypay/paypayopa-sdk-java.git'
+                    url 'https://github.com/paypay/paypayopa-sdk-java'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'https://opensource.org/licenses/Apache-2.0'
+                    }
+                }
+            }
+        }
+    }
+}
+test {
+    useJUnitPlatform()
 }

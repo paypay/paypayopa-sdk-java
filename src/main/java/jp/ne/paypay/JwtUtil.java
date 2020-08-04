@@ -20,12 +20,11 @@ public class JwtUtil {
      * @param jwtRequestDto  request object to create jwt token
      * @param apiKeySecret KeySecret to decode JWT token
      * @return String JWT token
-     * @throws JWTException if fails to create JWT token
+     * @throws JwtException if fails to create JWT token
      */
-    public static String createJwtToken(JwtRequestDto jwtRequestDto, String apiKeySecret) throws JWTException {
+    public static String createJwtToken(JwtRequestDto jwtRequestDto, String apiKeySecret) throws JwtException {
         Date expiryDate = jwtRequestDto.getExp() == null ? Date.from(LocalDateTime.now().plusMinutes(5L).toInstant(ZoneOffset.UTC))
                 :jwtRequestDto.getExp();
-        System.out.println(jwtRequestDto.getNonce());
         try{
             return JWT.create()
                     .withAudience(jwtRequestDto.getAud())
@@ -39,7 +38,7 @@ public class JwtUtil {
                     .withClaim("phoneNumber", jwtRequestDto.getPhoneNumber())
                     .sign(Algorithm.HMAC256(Base64.getDecoder().decode(apiKeySecret)));
         }catch (Exception e){
-            throw new JWTException("Error in creating JWT Token: "+e.getMessage());
+            throw new JwtException("Error in creating JWT Token: "+e.getMessage());
         }
     }
 
@@ -50,16 +49,16 @@ public class JwtUtil {
      * @param jwtAudience JWT audience
      * @param apiKeySecret KeySecret to decode JWT token
      * @return JwtResponseDto object with token params
-     * @throws JWTException if fails to parse JWT token
+     * @throws JwtException if fails to parse JWT token
      */
-    public static JwtResponseDto validateJWT(String jwtToken, String jwtAudience, String apiKeySecret) throws JWTException{
+    public static JwtResponseDto validateJWT(String jwtToken, String jwtAudience, String apiKeySecret) throws JwtException {
         try{
             Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(apiKeySecret));
             JWTVerifier verifier = JWT.require(algorithm).withAudience(jwtAudience).build();
             DecodedJWT jwt = verifier.verify(jwtToken);
             return new JwtResponseDto(jwt.getClaim("referenceId").asString(), jwt.getClaim("userAuthorizationId").asString());
         }catch(Exception e){
-            throw new JWTException("Error while verfying signature: "+e.getMessage());
+            throw new JwtException("Error while verfying signature: "+e.getMessage());
         }
 
     }

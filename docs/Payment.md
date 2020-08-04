@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 **orderItems** | [**List&lt;MerchantOrderItem&gt;**](MerchantOrderItem.md) |  |  [optional]
 **metadata** | **Object** | Extra information the merchant want to add |  [optional]
 **expiresAt** | **Integer** | Epoch timestamp in seconds, expiry duration must be less then the expiry granted to the merchant |  [optional]
-**amountescription** | **String** | Description of the order |  [optional]
+**amountDescription** | **String** | Description of the order |  [optional]
 
 
 

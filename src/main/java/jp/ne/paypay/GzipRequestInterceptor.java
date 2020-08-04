@@ -49,6 +49,7 @@ class GzipRequestInterceptor implements Interceptor {
             @Override
             public void writeTo(BufferedSink sink) throws IOException {
                 sink.write(buffer.snapshot());
+                sink.close();
             }
         };
     }
@@ -67,6 +68,7 @@ class GzipRequestInterceptor implements Interceptor {
                 BufferedSink gzipSink = Okio.buffer(new GzipSink(sink));
                 body.writeTo(gzipSink);
                 gzipSink.close();
+                sink.close();
             }
         };
     }
