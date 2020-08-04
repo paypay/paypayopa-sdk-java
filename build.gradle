@@ -1,7 +1,7 @@
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
-group = 'io.github.paypay'
+group = 'jp.ne.paypay'
 version = '0.1'
 
 buildscript {
