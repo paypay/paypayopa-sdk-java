@@ -33,7 +33,7 @@ To install the API client library to your local Maven repository, simply execute
 Add this dependency to your project's build file:
 
 ```groovy
-compile "io.github.paypay:paypayopa:1.0.0"
+compile "jp.ne.paypay:paypayopa:1.0.0"
 ```
 
 ## Getting Started
