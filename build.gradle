@@ -1,7 +1,7 @@
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
-group = 'io.github.paypay'
+group = 'jp.ne.paypay'
 version = '0.1'
 
 buildscript {
@@ -48,17 +48,17 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.6'
     compile 'com.auth0:java-jwt:3.10.3'
 
-    compile 'org.apache.commons:commons-lang3:3.10'
+    compile 'org.apache.commons:commons-lang3:3.11'
     // validation
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.0.2.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.5.Final'
     compile group: 'org.hibernate', name: 'hibernate-validator-annotation-processor', version: '6.1.5.Final'
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
 
-    testCompile 'org.mockito:mockito-core:3.4.4'
+    testCompile 'org.mockito:mockito-core:3.4.6'
 
-    testCompile("org.junit.jupiter:junit-jupiter-engine:5.5.2")
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.6.2")
     testCompile("org.junit.platform:junit-platform-runner:1.5.2")
 }
 pmd{
