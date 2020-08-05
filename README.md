@@ -1,6 +1,8 @@
 PayPay SDK JAVA
+
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
-[![codecov](https://codecov.io/gh/paypay/paypayopa-sdk-java/branch/master/graph/badge.svg)](https://codecov.io/gh/paypay/paypayopa-sdk-java)
+[![Coverage Status](https://coveralls.io/repos/github/paypay/paypayopa-sdk-java/badge.svg?branch=master)](https://coveralls.io/github/paypay/paypayopa-sdk-java?branch=master)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/paypay/paypayopa-sdk-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/paypay/paypayopa-sdk-java/context:java)
 
 Java SDK for interacting with the Paypay APIs
 This is the quickest way to integrate PayPay payment services. This is primarily meant for merchants who wish to perform interactions with the Paypay API programatically.
