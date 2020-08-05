@@ -24,12 +24,23 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 javadoc.options.encoding = 'UTF-8'
 
+def isDevBuild
+def isReleaseBuild
+
+if(hasProperty("release")) {
+    isReleaseBuild = true
+} else {
+    isDevBuild = true
+}
+
 install {
     repositories.mavenInstaller {
         pom.artifactId = 'paypayopa'
     }
 }
-
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 task execute(type:JavaExec) {
     main = System.getProperty('mainClass')
     classpath = sourceSets.main.runtimeClasspath
@@ -71,43 +82,58 @@ pmd{
 artifacts {
     archives javadocJar, sourcesJar
 }
-//This is for maven central publishing gpg signing. Commenting here since it needs key and passphrase and won't work locally
-//signing {
-//    sign configurations.archives
-//}
+//********* artifact signing *********
+if(isReleaseBuild) {
+    signing {
+        sign configurations.archives
+    }
+}
+
 uploadArchives {
     repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        if (isDevBuild) {
+            mavenLocal()
+        }else{
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: ossrhUsername, password: ossrhPassword)
-            }
-
-            pom.project {
-                name 'paypayopa'
-                packaging 'jar'
-                description 'PayPay OPA SDK'
-                url 'https://github.com/paypay/paypayopa-sdk-java'
-
-                scm {
-                    connection 'scm:git:git@github.com:paypay/paypayopa-sdk-java.git'
-                    developerConnection 'scm:git:git@github.com:paypay/paypayopa-sdk-java.git'
-                    url 'https://github.com/paypay/paypayopa-sdk-java'
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
                 }
 
-                licenses {
-                    license {
-                        name 'The Apache License, Version 2.0'
-                        url 'https://opensource.org/licenses/Apache-2.0'
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                    authentication(userName: ossrhUsername, password: ossrhPassword)
+                }
+
+                pom.project {
+                    name 'paypayopa'
+                    packaging 'jar'
+                    description 'PayPay OPA SDK'
+                    url 'https://github.com/paypay/paypayopa-sdk-java'
+
+                    scm {
+                        connection 'scm:git:git@github.com:paypay/paypayopa-sdk-java.git'
+                        developerConnection 'scm:git:git@github.com:paypay/paypayopa-sdk-java.git'
+                        url 'https://github.com/paypay/paypayopa-sdk-java'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'https://opensource.org/licenses/Apache-2.0'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id 'javidlulu'
+                            name 'Jaavid Ahmed'
+                            email 't-jaavidahmed.looloo@paypay-corp.co.jp'
+                        }
                     }
                 }
             }
         }
+
     }
 }
 test {
