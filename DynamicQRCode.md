@@ -32,10 +32,11 @@ compile "jp.ne.paypay:paypayopa:1.0.0"
 ### Build your Client
 Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#tag/Api-Authentication) if you want to know more about the authentication. 
 ```java
-    ApiClient defaultClient = new Configuration().getDefaultApiClient();
-    defaultClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
-    defaultClient.setApiKey("YOUR_API_KEY");
-    defaultClient.setApiSecretKey("YOUR_API_SECRET");
+    ApiClient apiClient = new Configuration().getDefaultApiClient();
+    apiClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
+    apiClient.setApiKey("YOUR_API_KEY");
+    apiClient.setApiSecretKey("YOUR_API_SECRET");
+    apiClient.setAssumeMerchant("YOUR_MERCHANT_KEY");
 ```
 ### Create a QR Code
 In order to receive payments using this flow, first of all you will need to create a QR Code. Following are the important parameters that you can provide for this method:
@@ -51,17 +52,16 @@ For details of all the request and response parameters , check our [API Document
 
 ```java
 // Creating the payload to create a QR Code, additional parameters can be added basis the API Documentation
-QRCode request = new QRCode();
+QRCode qrCode = new QRCode();
       qrCode.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
       qrCode.setMerchantPaymentId(my_payment_id);
       qrCode.setCodeType("ORDER_QR");
       qrCode.setOrderDescription("Mune's Favourite Cake");
       qrCode.isAuthorization(false);
-      
 
 // Calling the method to create a qr code
-PaymentApi apiInstance = new PaymentApi();
-QRCodeDetails response = apiInstance.createQRCode(request);
+PaymentApi apiInstance = new PaymentApi(apiClient);
+QRCodeDetails response = apiInstance.createQRCode(qrCode);
 // Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
 ```
@@ -74,6 +74,7 @@ Now that you have created a Code, the next  step is to implement polling to get 
 |merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
 ```java
 //Calling the method to get payment details
+PaymentApi apiInstance = new PaymentApi(apiClient);
 PaymentDetails response = apiInstance.getPaymentDetails(merchantPaymentId);
 //Printing if the method call was SUCCESS, this does not mean the payment was a success
 System.out.println(response.getResultInfo().getCode());
@@ -97,7 +98,7 @@ Following are the important parameters that you can provide for this method:
 |codeId   |  Yes |string  |This is given as a response in the Create a QR Code method |
 ```java
 //Calling the method to delete a QR Code
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 NotDataResponse response = apiInstance.deleteQRCode(codeId);
 //Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
@@ -118,7 +119,7 @@ Following are the important parameters that you can provide for this method:
 |merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
 ```java
 //Calling the method to cancel a Payment
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 NotDataResponse response = apiInstance.cancelPayment(merchantPaymentId);
 //Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
@@ -137,15 +138,16 @@ So the user has decided to return the goods they have purchased and needs to be 
 |reason   |  No |integer <= 11 characters  |The reason for refund |
 ```java
 //Creating the payload to refund a Payment, additional parameters can be added basis the API Documentation
-Refund request = new Refund();
+Refund refund = new Refund();
       refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
       refund.setMerchantRefundId("merchant_refund_id");
       refund.setPaymentId("paypay_payment_id");
       refund.setReason("reason for refund");
+      refund.setRequestedAt(Instant.now().getEpochSecond());
 
 //Calling the method to refund a Payment
-PaymentApi apiInstance = new PaymentApi();
-RefundDetails response = apiInstance.refundPayment(request);
+PaymentApi apiInstance = new PaymentApi(apiClient);
+RefundDetails response = apiInstance.refundPayment(refund);
 //Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
 ```
@@ -161,7 +163,7 @@ So you want to confirm the status of the refund, maybe because the request for t
 
 ```java
 //Calling the method to get Refund Details
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 RefundDetails response = apiInstance.getRefundDetails(merchantRefundId);
 //Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
@@ -181,7 +183,7 @@ So you are implementing a PreAuth and Capture, and hence want to capture the pay
 
 ```java
 //Creating the payload to capture a Payment Authorization, additional parameters can be added basis the API Documentation
-CaptureObject request = new CaptureObject();
+CaptureObject captureObject = new CaptureObject();
       captureObject.setMerchantCaptureId("merchant_capture_id");
       captureObject.setMerchantPaymentId("merchant_payment_id");
       captureObject.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
@@ -189,8 +191,8 @@ CaptureObject request = new CaptureObject();
       captureObject.setRequestedAt(Instant.now().getEpochSecond());
 
 //Calling the method to Capture a Payment Authorization
-PaymentApi apiInstance = new PaymentApi();
-PaymentDetails response = apiInstance.capturePaymentAuth(request);
+PaymentApi apiInstance = new PaymentApi(apiClient);
+PaymentDetails response = apiInstance.capturePaymentAuth(captureObject);
 //Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
 ```
@@ -208,14 +210,14 @@ So the order has cancelled the order while the payment was still Authorized, ple
 
 ```java
 //Creating the payload to revert a Payment Authorization, additional parameters can be added basis the API Documentation
-PaymentStateRevert request = new PaymentStateRevert();
+PaymentStateRevert payment = new PaymentStateRevert();
       payment.setPaymentId("paypay_payment_id");
       payment.merchantRevertId("merchant_revert_id");
       payment.setReason("reason for refund");
 
 //Calling the method to Revert a Payment Authorization
-PaymentApi apiInstance = new PaymentApi();
-RevertAuthResponse response = apiInstance.revertAuth(request);
+PaymentApi apiInstance = new PaymentApi(apiClient);
+RevertAuthResponse response = apiInstance.revertAuth(payment);
 //Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
 ```

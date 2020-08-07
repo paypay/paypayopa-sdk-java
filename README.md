@@ -50,15 +50,17 @@ Please refer jp.ne.paypay.example.PaymentApiExample.java for usage of APIs
 You need to setup your key and secret using the following:
 
 ```java
-    ApiClient defaultClient = new Configuration().getDefaultApiClient();
-    defaultClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
-    defaultClient.setApiKey("YOUR_API_KEY");
-    defaultClient.setApiSecretKey("YOUR_API_SECRET");
+    ApiClient apiClient = new Configuration().getDefaultApiClient();
+    apiClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
+    apiClient.setApiKey("YOUR_API_KEY");
+    apiClient.setApiSecretKey("YOUR_API_SECRET");
+    apiClient.setAssumeMerchant("YOUR_MERCHANT_KEY");
 ```
 ## Documentation for API Endpoints
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PaymentApi* | [**createAccountLinkQRCode**](docs/PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
 *PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v1/payments/{merchantPaymentId} | Cancel a payment
 *PaymentApi* | [**capturePaymentAuth**](docs/PaymentApi.md#capturePaymentAuth) | **POST** /v1/payments/capture | Capture a payment authorization
 *PaymentApi* | [**createPayment**](docs/PaymentApi.md#createPayment) | **POST** /v1/payments | Create a payment
@@ -102,3 +104,4 @@ Class | Method | HTTP request | Description
  - [RefundOrder](docs/RefundOrder.md)
  - [RefundState](docs/RefundState.md)
  - [ResultInfo](docs/ResultInfo.md)
+ - [AccountLinkQRCode](docs/AccountLinkQRCode.md)

@@ -23,7 +23,7 @@ import jp.ne.paypay.api.UserApi;
 
 
 
-UserApi apiInstance = new UserApi();
+UserApi apiInstance = new UserApi(apiClient);
 
 String userAuthorizationId = "USER_AUTHORIZATION_ID"  
 
@@ -56,7 +56,7 @@ import jp.ne.paypay.api.UserApi;
 
 
 
-UserApi apiInstance = new UserApi();
+UserApi apiInstance = new UserApi(apiClient);
 
 String userAuthorizationId = "USER_AUTHORIZATION_ID"; // String | 
 
@@ -91,7 +91,7 @@ import jp.ne.paypay.api.UserApi;
 
 
 
-UserApi apiInstance = new UserApi();
+UserApi apiInstance = new UserApi(apiClient);
 
 String userAuthorizationId = "USER_AUTHORIZATION_ID"; // String | 
 
