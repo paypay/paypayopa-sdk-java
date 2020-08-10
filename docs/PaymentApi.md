@@ -403,7 +403,7 @@ AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
       accountLinkQRCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
 
 try {
-    LinkQRCodeResponse response = apiInstance.createAccountLinkQRCode(accountLinkQRCode);
+    LinkQRCodeResponse result = apiInstance.createAccountLinkQRCode(accountLinkQRCode);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createAccountLinkQRCode");
