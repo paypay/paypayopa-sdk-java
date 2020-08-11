@@ -3,7 +3,9 @@ package jp.ne.paypay.api;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
+import jp.ne.paypay.model.AccountLinkQRCode;
 import jp.ne.paypay.model.CaptureObject;
+import jp.ne.paypay.model.LinkQRCodeResponse;
 import jp.ne.paypay.model.MerchantOrderItem;
 import jp.ne.paypay.model.MoneyAmount;
 import jp.ne.paypay.model.NotDataResponse;
@@ -14,6 +16,7 @@ import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.Refund;
 import jp.ne.paypay.model.RefundDetails;
 import jp.ne.paypay.model.ResultInfo;
+import jp.ne.paypay.model.AuthorizationScope;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -256,5 +259,34 @@ public class PaymentApiTest {
 
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
-    
+
+    /**
+     * Create an Account Link QRCode
+     * Create an ACCOUNT LINK QR and display it to the user.  **Timeout: 10s**
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void createAccountLinkQRCodeTest() throws ApiException {
+
+        AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
+        List<AuthorizationScope> scopes = new ArrayList<>();
+        scopes.add(AuthorizationScope.DIRECT_DEBIT);
+        accountLinkQRCode.setScopes(scopes);
+        accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
+        accountLinkQRCode.setDeviceId("device_id");
+        accountLinkQRCode.setRedirectUrl("merchant.domain/test");
+        accountLinkQRCode.setPhoneNumber("phone_number");
+        accountLinkQRCode.setReferenceId("reference_id");
+        accountLinkQRCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
+
+        LinkQRCodeResponse linkQRCodeResponse = new LinkQRCodeResponse();
+        linkQRCodeResponse.setResultInfo(resultInfo);
+        ApiResponse<LinkQRCodeResponse> paymentDetailsApiResponse = new ApiResponse<>(8100001, null, linkQRCodeResponse);
+        Mockito.when(api.createAccountLinkQRCodeWithHttpInfo(accountLinkQRCode)).thenReturn(paymentDetailsApiResponse);
+        LinkQRCodeResponse response = api.createAccountLinkQRCode(accountLinkQRCode);
+
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
 }

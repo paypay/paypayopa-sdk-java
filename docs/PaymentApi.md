@@ -34,7 +34,7 @@ For 00:15 AM or later, please call the refund API to refund the payment.
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.api.PaymentApi;
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 String merchantPaymentId = "MERCHANT_PAYMENT_ID"; 
 
@@ -66,7 +66,7 @@ This API is used to capture the payment authorization for a payment  **Timeout: 
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.api.PaymentApi;
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 CaptureObject captureObject = new CaptureObject();
       captureObject.setMerchantCaptureId("MERCHANT_CAPTURE_ID");//UNIQUE ID
@@ -105,7 +105,7 @@ import jp.ne.paypay.ApiException;
 import jp.ne.paypay.api.PaymentApi;
 
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 Payment payment = new Payment();
       payment.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
@@ -156,7 +156,7 @@ Create a Code to receive payments.  **Timeout: 30s**
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.api.PaymentApi;
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 QRCode qrCode = new QRCode();
       qrCode.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
@@ -206,7 +206,7 @@ import jp.ne.paypay.api.PaymentApi;
 
 
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 String codeId = "QR_CODE_ID"; 
 
@@ -242,7 +242,7 @@ import jp.ne.paypay.api.PaymentApi;
 
 
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 String merchantPaymentId = "MERCHANT_PAYMENT_ID"; // String
 
@@ -277,7 +277,7 @@ import jp.ne.paypay.api.PaymentApi;
 
 
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 String merchantRefundId = "MERCHANT_REFUND_ID"; // String 
 
@@ -312,7 +312,7 @@ import jp.ne.paypay.api.PaymentApi;
 
 
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 Refund refund = new Refund();
       refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
@@ -353,7 +353,7 @@ import jp.ne.paypay.api.PaymentApi;
 
 
 
-PaymentApi apiInstance = new PaymentApi();
+PaymentApi apiInstance = new PaymentApi(apiClient);
 
 PaymentStateRevert body = new PaymentStateRevert();
       payment.setPaymentId("PAYMENT_ID");
@@ -373,4 +373,46 @@ try {
 ```
 Please refer to the below document for more information :
 https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#operation/revertAuth
+```
+
+<a name="createAccountLinkQRCode"></a>
+# **createAccountLinkQRCode**
+> LinkQRCodeResponse createAccountLinkQRCode(body)
+
+Create an ACCOUNT LINK QR and display it to the user.
+
+### Example
+```java
+// Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
+
+
+
+PaymentApi apiInstance = new PaymentApi(apiClient);
+
+AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
+      List<AuthorizationScope> scopes = new ArrayList<>();
+      scopes.add(AuthorizationScope.DIRECT_DEBIT);
+      accountLinkQRCode.setScopes(scopes);
+      accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
+      accountLinkQRCode.setDeviceId("device_id");
+      accountLinkQRCode.setRedirectUrl("merchant.domain/test");
+      accountLinkQRCode.setPhoneNumber("phone_number");
+      accountLinkQRCode.setReferenceId("reference_id");
+      accountLinkQRCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
+
+try {
+    LinkQRCodeResponse result = apiInstance.createAccountLinkQRCode(accountLinkQRCode);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PaymentApi#createAccountLinkQRCode");
+    e.printStackTrace();
+    System.out.println(e.getResponseBody());
+}
+```
+
+```
+Please refer to the below document for more information :
+https://www.paypay.ne.jp/opa/doc/v1.0/account_link#operation/createQRSession
 ```

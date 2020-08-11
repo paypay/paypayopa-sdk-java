@@ -943,4 +943,73 @@ public class PaymentApi {
         return call;
     }
 
+
+    /**
+     * Create a Account Link QRCode
+     * Create a ACCOUNT LINK QR and display it to the user.  **Timeout: 10s**
+     *
+     * @param body Account Link Code Creation
+     * @return LinkQRCodeResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public LinkQRCodeResponse createAccountLinkQRCode(AccountLinkQRCode body) throws ApiException {
+        String message = validator.validate(body);
+        if (message!=null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<LinkQRCodeResponse> resp = createAccountLinkQRCodeWithHttpInfo(body);
+        return resp.getData();
+    }
+
+    /**
+     * Create an Account Link QRCode
+     * Create an ACCOUNT LINK QR and display it to the user.  **Timeout: 10s**
+     *
+     * @param body Account Link Code Creation
+     * @return ApiResponse&lt;LinkQRCodeResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<LinkQRCodeResponse> createAccountLinkQRCodeWithHttpInfo(Object body) throws ApiException {
+        com.squareup.okhttp.Call call = CreateAccountLinkQRCodeCall(body);
+        Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Build call for CreateAccountLinkQRCode
+     *
+     * @param body Account Link Code Creation
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    private com.squareup.okhttp.Call CreateAccountLinkQRCodeCall(Object body) throws ApiException {
+
+        // create path and map variables
+        String localVarPath = "/v1/qr/sessions";
+
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
+
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+
+        Map<String, Object> localVarFormParams = new HashMap<>();
+
+        final String[] localVarAccepts = {
+                APPLICATION_JSON
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+
+        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        apiClient.setReadTimeout(10);
+        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
+                localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    }
+
 }

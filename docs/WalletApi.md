@@ -24,7 +24,7 @@ import jp.ne.paypay.api.WalletApi;
 
 
 
-WalletApi apiInstance = new WalletApi();
+WalletApi apiInstance = new WalletApi(apiClient);
 
 String userAuthorizationId = "USER_AUTHORIZATION_ID";
 

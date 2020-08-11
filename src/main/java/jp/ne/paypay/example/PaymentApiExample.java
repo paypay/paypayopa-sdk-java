@@ -6,7 +6,10 @@ import jp.ne.paypay.Configuration;
 import jp.ne.paypay.api.PaymentApi;
 import jp.ne.paypay.api.UserApi;
 import jp.ne.paypay.api.WalletApi;
+import jp.ne.paypay.model.AccountLinkQRCode;
+import jp.ne.paypay.model.AuthorizationScope;
 import jp.ne.paypay.model.CaptureObject;
+import jp.ne.paypay.model.LinkQRCodeResponse;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.MerchantOrderItem;
 import jp.ne.paypay.model.MoneyAmount;
@@ -21,36 +24,58 @@ import jp.ne.paypay.model.RefundDetails;
 import jp.ne.paypay.model.RevertAuthResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
 import jp.ne.paypay.model.WalletBalance;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 public class PaymentApiExample {
 
 
   public static void main(String[] args) {
-    ApiClient defaultClient = new Configuration().getDefaultApiClient();
-//    defaultClient.setBasePath("https://stg-api.paypay.ne.jp");
-    defaultClient.setProductionMode(false);
-    defaultClient.setApiKey("API_KEY");
-    defaultClient.setApiSecretKey("API_SECRET_KEY");
-    defaultClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
+    ApiClient apiClient = new Configuration().getDefaultApiClient();
+    apiClient.setProductionMode(false);
+    apiClient.setApiKey("API_KEY");
+    apiClient.setApiSecretKey("API_SECRET_KEY");
+    apiClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
 
-    PaymentApi paymentApi = new PaymentApi(defaultClient);
-    UserApi userApi = new UserApi(defaultClient);
-    WalletApi walletApiInstance = new WalletApi(defaultClient);
+    PaymentApi paymentApi = new PaymentApi(apiClient);
+    WalletApi walletApiInstance = new WalletApi(apiClient);
+
+    createAccountLinkQrCode(paymentApi);
 
     String userAuthorizationId = "USER_AUTHORIZATION_ID";
 
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
 
+
   }
 
+  private static void createAccountLinkQrCode(final PaymentApi apiInstance){
+    try{
+      AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
+      List<AuthorizationScope> scopes = new ArrayList<>();
+      scopes.add(AuthorizationScope.DIRECT_DEBIT);
+      accountLinkQRCode.setScopes(scopes);
+      accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
+      accountLinkQRCode.setDeviceId("device_id");
+      accountLinkQRCode.setRedirectUrl("merchant.domain/test");
+      accountLinkQRCode.setPhoneNumber("phone_number");
+      accountLinkQRCode.setReferenceId("reference_id");
+      accountLinkQRCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
+      LinkQRCodeResponse response = apiInstance.createAccountLinkQRCode(accountLinkQRCode);
+      System.out.println(response.getResultInfo().getCode());
+      System.out.println(response.getData());
+
+    }catch (ApiException e){
+      e.printStackTrace();
+      System.out.println(e.getResponseBody());
+    }
+
+  }
   private static void appInvokeFlow(final PaymentApi paymentApi, final WalletApi walletApiInstance,
           final String userAuthorizationId) {
     int amount =1;
@@ -201,7 +226,7 @@ public class PaymentApiExample {
       qrCode.setStoreId(RandomStringUtils.randomAlphabetic(8));
       qrCode.setStoreInfo("Just Bake");
       qrCode.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
-      qrCode.requestedAt(Instant.now().getEpochSecond());
+      qrCode.setRequestedAt(Instant.now().getEpochSecond());
       qrCode.redirectUrl("https://www.justbake.in/payment");
       qrCode.redirectType(QRCode.RedirectTypeEnum.WEB_LINK);//For Deep Link, RedirectTypeEnum.APP_DEEP_LINK
       qrCode.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
