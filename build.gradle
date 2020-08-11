@@ -5,7 +5,7 @@ buildscript {
 }
 plugins {
     id 'jacoco'
-    id 'com.github.kt3k.coveralls' version '2.10.1'
+    id 'com.github.kt3k.coveralls' version '2.10.2'
 }
 
 apply plugin: 'idea'
