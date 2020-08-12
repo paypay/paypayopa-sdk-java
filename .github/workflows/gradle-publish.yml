@@ -12,7 +12,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Decrypt large secret
-          run: ./.github/workflows/scripts/decrypt_secret.sh
+        run: ./.github/workflows/scripts/decrypt_secret.sh
       - name: Publish package
         run: gradle -Prelease uploadArchives
         env:
