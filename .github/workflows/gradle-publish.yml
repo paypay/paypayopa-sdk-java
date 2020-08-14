@@ -13,6 +13,8 @@ jobs:
           java-version: 1.8
       - name: Publish package
         run: |
+          echo $GPG_PRIV_KEY > secring.text
+          gpg --import --batch secring.text
           echo "ossrhUsername=${ossrhUsername}" >> gradle.properties
           echo "ossrhPassword=${ossrhPassword}" >> gradle.properties
           echo "signing.keyId=${signingKeyId}" >> gradle.properties
@@ -24,4 +26,4 @@ jobs:
           ossrhPassword: ${{ secrets.OSSRH_TOKEN }}
           signingKeyId: ${{ secrets.SIGNING_KEY_ID }}
           signingPassword: ${{ secrets.SIGNING_PASSWORD }}
-          signingSecretKeyRingFile: ${{ secrets.SIGNING_SECRET_KEY_PATH }}
+          GPG_PRIV_KEY: ${{ secrets.GPG_PRIV_KEY }}
