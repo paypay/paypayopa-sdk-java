@@ -19,7 +19,7 @@ jobs:
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
           SIGNING_SECRET_KEY_PATH: ${{ secrets.SIGNING_SECRET_KEY_PATH }}
         run: |
-          sed -i -e "s,signing.keyId=,signing.keyId=$SIGNING_KEY_ID,g" gradle.properties
-          sed -i -e "s,signing.password=,signing.password=$SIGNING_PASSWORD,g" gradle.properties
-          sed -i -e "s,signing.secretKeyRingFile=,signing.secretKeyRingFile=$SIGNING_SECRET_KEY_PATH,g" gradle.properties
+          sed -i -e "s,signing.keyId=,signing.keyId=$SIGNING_KEY_ID,g" ./gradle.properties
+          sed -i -e "s,signing.password=,signing.password=$SIGNING_PASSWORD,g" ./gradle.properties
+          sed -i -e "s,signing.secretKeyRingFile=,signing.secretKeyRingFile=$SIGNING_SECRET_KEY_PATH,g" ./gradle.properties
           ./gradlew -Prelease uploadArchives
