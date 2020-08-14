@@ -18,10 +18,11 @@ jobs:
           signing.keyId: ${{ secrets.SIGNING_KEY_ID }}
           signing.password: ${{ secrets.SIGNING_PASSWORD }}
           signing.secretKeyRingFile: ${{ secrets.SIGNING_SECRET_KEY_PATH }}
-          cat ${{ secrets.SIGNING_SECRET_KEY_PATH }}
         run: |
           echo "signing.keyId=${signing.keyId}" >> gradle.properties
           echo "signing.password=${signing.password}" >> gradle.properties
           echo "signing.secretKeyRingFile=${signing.secretKeyRingFile}" >> gradle.properties
           cat gradle.properties
+          cat ${{ secrets.SIGNING_SECRET_KEY_PATH }}
+          cat $signing.secretKeyRingFile
           ./gradlew -Prelease uploadArchives
