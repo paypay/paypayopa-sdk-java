@@ -11,10 +11,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Decrypt large secret
-        run: ./.github/workflows/scripts/decrypt_secret.sh
-        env:
-          LARGE_SECRET_PASSPHRASE: ${{ secrets.SIGNING_PASSWORD }}
       - name: Publish package
         run: gradle -Prelease uploadArchives
         env:
