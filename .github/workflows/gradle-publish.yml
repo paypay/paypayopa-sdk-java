@@ -12,7 +12,13 @@ jobs:
         with:
           java-version: 1.8
       - name: Publish package
-        run: gradle -Prelease uploadArchives
+        run: |
+          echo "ossrhUsername=${ossrhUsername}" >> gradle.properties
+          echo "ossrhPassword=${ossrhPassword}" >> gradle.properties
+          echo "signing.keyId=${signing.keyId}" >> gradle.properties
+          echo "signing.password=${signing.password}" >> gradle.properties
+          echo "signing.secretKeyRingFile=${secrets.SIGNING_SECRET_KEY_PATH}" >> gradle.properties
+          gradle -Prelease uploadArchives
         env:
           ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
           ossrhPassword: ${{ secrets.OSSRH_TOKEN }}
