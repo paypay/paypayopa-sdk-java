@@ -12,6 +12,12 @@ jobs:
         with:
           java-version: 1.8
       - name: Publish package
+        env:
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          SIGNING_SECRET_KEY_PATH: ${{ secrets.SIGNING_SECRET_KEY_PATH }}
         run: |
           echo "ossrhUsername=${OSSRH_USERNAME}" >> gradle.properties
           echo "ossrhPassword=${OSSRH_TOKEN}" >> gradle.properties
@@ -20,9 +26,3 @@ jobs:
           echo "signing.secretKeyRingFile=${SIGNING_SECRET_KEY_PATH}" >> gradle.properties
           cat gradle.properties
           ./gradlew -Prelease uploadArchives
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
-          SIGNING_SECRET_KEY_PATH: ${{ secrets.SIGNING_SECRET_KEY_PATH }}
