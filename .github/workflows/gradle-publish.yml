@@ -19,7 +19,6 @@ jobs:
           echo "ossrhPassword=${ossrhPassword}" >> gradle.properties
           echo "signing.keyId=${signingKeyId}" >> gradle.properties
           echo "signing.password=${signingPassword}" >> gradle.properties
-          echo "signing.secretKeyRingFile=${signingSecretKeyRingFile}" >> gradle.properties
           gradle -Prelease uploadArchives
         env:
           ossrhUsername: ${{ secrets.OSSRH_USERNAME }}
