@@ -22,7 +22,5 @@ jobs:
           echo "signing.keyId=${SIGNING_KEY_ID}" >> gradle.properties
           echo "signing.password=${SIGNING_PASSWORD}" >> gradle.properties
           echo "signing.secretKeyRingFile=${SIGNING_SECRET_KEY_PATH}" >> gradle.properties
-          cat gradle.properties
           cat ${{ secrets.SIGNING_SECRET_KEY_PATH }}
-          cat $signing.secretKeyRingFile
           ./gradlew -Prelease uploadArchives
