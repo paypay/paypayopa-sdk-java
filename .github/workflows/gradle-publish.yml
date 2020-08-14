@@ -13,8 +13,7 @@ jobs:
           java-version: 1.8
       - name: Publish package
         run: |
-          echo $GPG_PRIV_KEY > secring.text
-          gpg --import --batch secring.text
+          gpg --quiet --batch --yes --decrypt --passphrase="$signingPassword" --output secret.json .github/workflows/scripts/encrypted_secret.gpg
           echo "ossrhUsername=${ossrhUsername}" >> gradle.properties
           echo "ossrhPassword=${ossrhPassword}" >> gradle.properties
           echo "signing.keyId=${signingKeyId}" >> gradle.properties
