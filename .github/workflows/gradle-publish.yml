@@ -23,4 +23,5 @@ jobs:
           echo "signing.password=${SIGNING_PASSWORD}" >> gradle.properties
           echo "signing.secretKeyRingFile=${SIGNING_SECRET_KEY_PATH}" >> gradle.properties
           cat ${{ secrets.SIGNING_SECRET_KEY_PATH }}
+          cat ${{ secrets.OSSRH_USERNAME }}
           ./gradlew -Prelease uploadArchives
