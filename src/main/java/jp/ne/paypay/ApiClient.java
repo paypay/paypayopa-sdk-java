@@ -160,7 +160,7 @@ public class ApiClient {
     /**
      * Get base path
      *
-     * @return Baes path
+     * @return Base path
      */
     public String getBasePath() {
         return basePath;
@@ -202,7 +202,7 @@ public class ApiClient {
      * Set HTTP client
      *
      * @param httpClient An instance of OkHttpClient
-     * @return Api Client
+     * @return ApiClient
      */
     public ApiClient setHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
@@ -222,7 +222,7 @@ public class ApiClient {
      * Set JSON
      *
      * @param json JSON object
-     * @return Api client
+     * @return ApiClient
      */
     public ApiClient setJSON(JSON json) {
         this.json = json;
@@ -230,7 +230,7 @@ public class ApiClient {
     }
 
     /**
-     * True if isVerifyingSsl flag is on
+     * Get whether SSL is verified or not
      *
      * @return True if isVerifySsl flag is on
      */
@@ -282,7 +282,7 @@ public class ApiClient {
      * Configure client keys to use for authorization in an SSL session.
      * Use null to reset to default.
      *
-     * @param managers The KeyManagers to use
+     * @param managers Array of KeyManager to use
      * @return ApiClient
      */
     public ApiClient setKeyManagers(KeyManager[] managers) {
@@ -311,9 +311,10 @@ public class ApiClient {
     }
 
     /**
-     * Helper method to set API Key for the first HTTP Hmac authentication.
+     * Helper method to set API key for the first HTTP Hmac authentication.
      *
      * @param apiKey apiKey
+     * @throws RuntimeException if HMAC authentication not configured
      */
     public void setApiKey(String apiKey) {
         for (Authentication auth : authentications.values()) {
@@ -332,6 +333,7 @@ public class ApiClient {
      * @param method method
      * @param requestBody requestBody
      * @param contentType contentType
+     * @throws RuntimeException if HMAC authentication not configured
      */
     private void setRequestParameters(String requestUrl, String method, Object requestBody, String contentType) {
         String body = requestBody != null ?  json.serialize(requestBody):null;
@@ -344,6 +346,12 @@ public class ApiClient {
         throw new RuntimeException("HMAC authentication not configured: API key");
     }
 
+    /**
+     * Helper method to set API secret key for the first HTTP Hmac authentication.
+     *
+     * @param apiKey apiKey
+     * @throws RuntimeException if HMAC authentication not configured
+     */
     public void setApiSecretKey(String apiSecret) {
         for (Authentication auth : authentications.values()) {
             if (auth instanceof HmacAuth) {
@@ -444,7 +452,7 @@ public class ApiClient {
      * A value of 0 means no timeout, otherwise values must be between 1 and
      *
      * @param connectionTimeout connection timeout in milliseconds
-     * @return Api client
+     * @return ApiClient
      */
     public ApiClient setConnectTimeout(int connectionTimeout) {
         httpClient.setConnectTimeout(connectionTimeout, TimeUnit.MILLISECONDS);
@@ -456,7 +464,7 @@ public class ApiClient {
      * A value of 0 means no timeout, otherwise values must be between 1 and
      *
      * @param readTimeoutInSeconds connection timeout in seconds
-     * @return Api client
+     * @return ApiClient
      */
     public ApiClient setReadTimeout(int readTimeoutInSeconds) {
         httpClient.setReadTimeout(readTimeoutInSeconds, TimeUnit.SECONDS);
@@ -700,8 +708,8 @@ public class ApiClient {
             return file;
         } catch (IOException e) {
             throw new ApiException(e);
-        }finally{
-            if(sink != null){
+        } finally {
+            if (sink != null) {
                 try {
                     sink.close();
                 } catch (IOException e) {
@@ -760,7 +768,7 @@ public class ApiClient {
      * @param <T> Type
      * @param call An instance of the Call object
      * @throws ApiException If fail to execute the call
-     * @return ApiResponse&lt;T&gt;
+     * @return ApiResponse object
      */
     public <T> ApiResponse<T> execute(Call call) throws ApiException {
         return execute(call, null);
@@ -792,7 +800,7 @@ public class ApiClient {
      *
      * @param <T> Type
      * @param call An instance of the Call object
-     * @param callback ApiCallback&lt;T&gt;
+     * @param callback ApiCallback object
      */
     public <T> void executeAsync(Call call, ApiCallback<T> callback) {
         executeAsync(call, null, callback);
@@ -989,7 +997,7 @@ public class ApiClient {
     /**
      * Set header parameters to the request builder, including default headers.
      *
-     * @param headerParams Header parameters in the ofrm of Map
+     * @param headerParams Header parameters in the form of Map
      * @param reqBuilder Reqeust.Builder
      */
     public void processHeaderParams(Map<String, String> headerParams, Request.Builder reqBuilder) {
