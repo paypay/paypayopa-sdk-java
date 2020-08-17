@@ -314,7 +314,7 @@ public class ApiClient {
      * Helper method to set API key for the first HTTP Hmac authentication.
      *
      * @param apiKey apiKey
-     * @throws RuntimeException if HMAC authentication not configured
+     * @throws RuntimeException If HMAC authentication not configured
      */
     public void setApiKey(String apiKey) {
         for (Authentication auth : authentications.values()) {
@@ -329,11 +329,11 @@ public class ApiClient {
     /**
      * Helper method to set request parameters for HTTP Hmac authentication.
      *
-     * @param requestUrl apiKey
+     * @param requestUrl requestUrl
      * @param method method
      * @param requestBody requestBody
      * @param contentType contentType
-     * @throws RuntimeException if HMAC authentication not configured
+     * @throws RuntimeException If HMAC authentication not configured
      */
     private void setRequestParameters(String requestUrl, String method, Object requestBody, String contentType) {
         String body = requestBody != null ?  json.serialize(requestBody):null;
@@ -349,8 +349,8 @@ public class ApiClient {
     /**
      * Helper method to set API secret key for the first HTTP Hmac authentication.
      *
-     * @param apiKey apiKey
-     * @throws RuntimeException if HMAC authentication not configured
+     * @param apiSecret apiSecret
+     * @throws RuntimeException If HMAC authentication not configured
      */
     public void setApiSecretKey(String apiSecret) {
         for (Authentication auth : authentications.values()) {
