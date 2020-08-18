@@ -30,10 +30,7 @@ Building the API client library requires Gradle to be installed.
 
 ## Installation
 
-To install the API client library to your local Maven repository, simply execute:
-
-
-Add this dependency to your project's build file:
+Add this dependency to your project's build.gradle file:
 
 ```groovy
 compile "jp.ne.paypay:paypayopa:0.3.0"
