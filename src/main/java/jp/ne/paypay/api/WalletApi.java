@@ -144,24 +144,4 @@ public class WalletApi {
         Type localVarReturnType = new TypeToken<WalletBalance>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
-
-    /**
-     * Check user wallet balance (asynchronously)
-     * Check if user has enough balance to make a payment  **Timeout: 15s** 
-     * @param userAuthorizationId  (required)
-     * @param amount  (required)
-     * @param currency  (required)
-     * @param productType  (optional)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-        
-     */
-    public com.squareup.okhttp.Call checkWalletBalanceAsync(String userAuthorizationId, Integer amount, String currency, ProductType productType, final ApiCallback<WalletBalance> callback) throws ApiException {
-        com.squareup.okhttp.Call call = checkWalletBalanceValidateBeforeCall(userAuthorizationId, amount, currency, productType);
-        Type localVarReturnType = new TypeToken<WalletBalance>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
-        return call;
-    }
-    
 }
