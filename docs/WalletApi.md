@@ -3,7 +3,7 @@
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**checkWalletBalance**](WalletApi.md#checkWalletBalance) | **GET** /v1/wallet/check_balance | Check user wallet balance
+[**checkWalletBalance**](WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance
 
 
 
