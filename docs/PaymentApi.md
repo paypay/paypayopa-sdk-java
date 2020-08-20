@@ -2,16 +2,17 @@
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**cancelPayment**](PaymentApi.md#cancelPayment) | **DELETE** /v1/payments/{merchantPaymentId} | Cancel a payment
-[**capturePaymentAuth**](PaymentApi.md#capturePaymentAuth) | **POST** /v1/payments/capture | Capture a payment authorization
-[**createPayment**](PaymentApi.md#createPayment) | **POST** /v1/payments | Create a payment
-[**createQRCode**](PaymentApi.md#createQRCode) | **POST** /v1/codes | Create a Code
-[**deleteQRCode**](PaymentApi.md#deleteQRCode) | **DELETE** /v1/codes/{codeId} | Delete a Code
-[**getPaymentDetails**](PaymentApi.md#getPaymentDetails) | **GET** /v1/payments/{merchantPaymentId} | Get payment details
-[**getCodesPaymentDetails**](PaymentApi.md#getCodesPaymentDetails) | **GET** /v1/codes/payments/{merchantPaymentId} | Get payment details for QR code
-[**getRefundDetails**](PaymentApi.md#getRefundDetails) | **GET** /v1/refunds/{merchantRefundId} | Get refund details
-[**refundPayment**](PaymentApi.md#refundPayment) | **POST** /v1/refunds | Refund a payment
-[**revertAuth**](PaymentApi.md#revertAuth) | **POST** /v1/payments/preauthorize/revert | Revert a payment authorization
+[**createAccountLinkQRCode**](PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
+[**cancelPayment**](PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
+[**capturePaymentAuth**](PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization
+[**createPayment**](PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
+[**createQRCode**](PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code
+[**deleteQRCode**](PaymentApi.md#deleteQRCode) | **DELETE** /v2/codes/{codeId} | Delete a Code
+[**getPaymentDetails**](PaymentApi.md#getPaymentDetails) | **GET** /v2/payments/{merchantPaymentId} | Get payment details
+[**getCodesPaymentDetails**](PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
+[**getRefundDetails**](PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
+[**refundPayment**](PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
+[**revertAuth**](PaymentApi.md#revertAuth) | **POST** /v2/payments/preauthorize/revert | Revert a payment authorization
 
 
 <a name="cancelPayment"></a>
