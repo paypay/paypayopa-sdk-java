@@ -118,21 +118,6 @@ public class UserApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Get masked user profile (asynchronously)
-     * Get the masked phone number of the user 
-     * @param userAuthorizationId  (required)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-        
-     */
-    public com.squareup.okhttp.Call getMaskedUserProfileAsync(String userAuthorizationId, final ApiCallback<MaskedUserProfileResponse> callback) throws ApiException {
-        com.squareup.okhttp.Call call = getMaskedUserProfileValidateBeforeCall(userAuthorizationId);
-        Type localVarReturnType = new TypeToken<MaskedUserProfileResponse>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
-        return call;
-    }
     
     /**
      * Build call for getUserAuthorizationStatus
@@ -207,21 +192,6 @@ public class UserApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Get user authorization status (asynchronously)
-     * Get the authorization status of a user  **Timeout: 15s** 
-     * @param userAuthorizationId  (required)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-        
-     */
-    public com.squareup.okhttp.Call getUserAuthorizationStatusAsync(String userAuthorizationId, final ApiCallback<UserAuthorizationStatus> callback) throws ApiException {
-        com.squareup.okhttp.Call call = getUserAuthorizationStatusValidateBeforeCall(userAuthorizationId);
-        Type localVarReturnType = new TypeToken<UserAuthorizationStatus>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
-        return call;
-    }
     
     /**
      * Build call for unlinkUser
@@ -295,21 +265,4 @@ public class UserApi {
         Type localVarReturnType = new TypeToken<NotDataResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
-
-    /**
-     * Unlink user (asynchronously)
-     * Unlink a user from the client  **Timeout: 15s** 
-     * @param userAuthorizationId  (required)
-     * @param callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-        
-     */
-    public com.squareup.okhttp.Call unlinkUserAsync(String userAuthorizationId, final ApiCallback<NotDataResponse> callback) throws ApiException {
-        com.squareup.okhttp.Call call = unlinkUserValidateBeforeCall(userAuthorizationId);
-        Type localVarReturnType = new TypeToken<NotDataResponse>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
-        return call;
-    }
-    
 }

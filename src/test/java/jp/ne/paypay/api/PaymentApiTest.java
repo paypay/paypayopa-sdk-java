@@ -17,6 +17,7 @@ import jp.ne.paypay.model.Refund;
 import jp.ne.paypay.model.RefundDetails;
 import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.AuthorizationScope;
+import jp.ne.paypay.model.RevertAuthResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -211,7 +212,27 @@ public class PaymentApiTest {
 
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
-    
+    /**
+     * Get payment details
+     *
+     * Get payment details.  **Timeout: 15s**
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getCodePaymentDetailsTest() throws ApiException {
+
+        String merchantPaymentId = "merchantPaymentId";
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setResultInfo(resultInfo);
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
+        Mockito.when(apiClient.escapeString(merchantPaymentId)).thenReturn(merchantPaymentId);
+        Mockito.when(api.getCodesPaymentDetailsWithHttpInfo(merchantPaymentId)).thenReturn(paymentDetailsApiResponse);
+        PaymentDetails response = api.getCodesPaymentDetails(merchantPaymentId);
+
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
     /**
      * Get refund details
      *
@@ -259,6 +280,33 @@ public class PaymentApiTest {
 
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
+
+    /**
+     * Revert a payment authorization
+     *
+     * Revert a payment authorization.  **Timeout: 30s**
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void revertAuthTest() throws ApiException {
+
+        Refund refund = new Refund();
+        refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+        refund.setMerchantRefundId("revertAuthId");
+        refund.setPaymentId("paymentId");
+        refund.setReason("Testing");
+        refund.setRequestedAt(Instant.now().getEpochSecond());
+        RevertAuthResponse revertAuthResponse = new RevertAuthResponse();
+        revertAuthResponse.setResultInfo(resultInfo);
+        ApiResponse<RevertAuthResponse> revertAuthResponseApiResponse = new ApiResponse<>(00001, null, revertAuthResponse);
+        Mockito.when(api.revertAuthWithHttpInfo(refund)).thenReturn(revertAuthResponseApiResponse);
+        RevertAuthResponse response = api.revertAuth(refund);
+
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
 
     /**
      * Create an Account Link QRCode
