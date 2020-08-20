@@ -2,16 +2,17 @@
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**cancelPayment**](PaymentApi.md#cancelPayment) | **DELETE** /v1/payments/{merchantPaymentId} | Cancel a payment
-[**capturePaymentAuth**](PaymentApi.md#capturePaymentAuth) | **POST** /v1/payments/capture | Capture a payment authorization
-[**createPayment**](PaymentApi.md#createPayment) | **POST** /v1/payments | Create a payment
-[**createQRCode**](PaymentApi.md#createQRCode) | **POST** /v1/codes | Create a Code
-[**deleteQRCode**](PaymentApi.md#deleteQRCode) | **DELETE** /v1/codes/{codeId} | Delete a Code
-[**getPaymentDetails**](PaymentApi.md#getPaymentDetails) | **GET** /v1/payments/{merchantPaymentId} | Get payment details
-[**getPaymentDetails_0**](PaymentApi.md#getPaymentDetails_0) | **GET** /v1/codes/payments/{merchantPaymentId} | Get payment details
-[**getRefundDetails**](PaymentApi.md#getRefundDetails) | **GET** /v1/refunds/{merchantRefundId} | Get refund details
-[**refundPayment**](PaymentApi.md#refundPayment) | **POST** /v1/refunds | Refund a payment
-[**revertAuth**](PaymentApi.md#revertAuth) | **POST** /v1/payments/preauthorize/revert | Revert a payment authorization
+[**createAccountLinkQRCode**](PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
+[**cancelPayment**](PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
+[**capturePaymentAuth**](PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization
+[**createPayment**](PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
+[**createQRCode**](PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code
+[**deleteQRCode**](PaymentApi.md#deleteQRCode) | **DELETE** /v2/codes/{codeId} | Delete a Code
+[**getPaymentDetails**](PaymentApi.md#getPaymentDetails) | **GET** /v2/payments/{merchantPaymentId} | Get payment details
+[**getCodesPaymentDetails**](PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
+[**getRefundDetails**](PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
+[**refundPayment**](PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
+[**revertAuth**](PaymentApi.md#revertAuth) | **POST** /v2/payments/preauthorize/revert | Revert a payment authorization
 
 
 <a name="cancelPayment"></a>
@@ -259,6 +260,40 @@ try {
 ```
  Please refer to the below document for more information :
 https://www.paypay.ne.jp/opa/doc/v1.0/direct_debit#operation/getPaymentDetails
+```
+<a name="getCodesPaymentDetails"></a>
+# **getCodesPaymentDetails**
+> PaymentDetails getCodesPaymentDetails(merchantPaymentId)
+
+Get payment details
+
+Get payment details.  **Timeout: 15s** 
+
+### Example
+```java
+// Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
+
+
+
+PaymentApi apiInstance = new PaymentApi(apiClient);
+
+String merchantPaymentId = "MERCHANT_PAYMENT_ID"; // String
+
+try {
+    PaymentDetails result = apiInstance.getCodesPaymentDetails(merchantPaymentId);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PaymentApi#getCodesPaymentDetails");
+    e.printStackTrace();
+    System.out.println(e.getResponseBody());
+}
+```
+
+```
+ Please refer to the below document for more information :
+https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#operation/getPaymentDetails
 ```
 
 <a name="getRefundDetails"></a>

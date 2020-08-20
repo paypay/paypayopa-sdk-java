@@ -2,9 +2,9 @@
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getMaskedUserProfile**](UserApi.md#getMaskedUserProfile) | **GET** /v1/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
-[**getUserAuthorizationStatus**](UserApi.md#getUserAuthorizationStatus) | **GET** /v1/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
-[**unlinkUser**](UserApi.md#unlinkUser) | **DELETE** /v1/user/authorizations/{userAuthorizationId} | Unlink user
+[**getMaskedUserProfile**](UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
+[**getUserAuthorizationStatus**](UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
+[**unlinkUser**](UserApi.md#unlinkUser) | **DELETE** /v2/user/authorizations/{userAuthorizationId} | Unlink user
 
 
 <a name="getMaskedUserProfile"></a>

@@ -59,18 +59,19 @@ You need to setup your key and secret using the following:
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *PaymentApi* | [**createAccountLinkQRCode**](docs/PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
-*PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v1/payments/{merchantPaymentId} | Cancel a payment
-*PaymentApi* | [**capturePaymentAuth**](docs/PaymentApi.md#capturePaymentAuth) | **POST** /v1/payments/capture | Capture a payment authorization
-*PaymentApi* | [**createPayment**](docs/PaymentApi.md#createPayment) | **POST** /v1/payments | Create a payment
-*PaymentApi* | [**createQRCode**](docs/PaymentApi.md#createQRCode) | **POST** /v1/codes | Create a Code
-*PaymentApi* | [**deleteQRCode**](docs/PaymentApi.md#deleteQRCode) | **DELETE** /v1/codes/{codeId} | Delete a Code
-*PaymentApi* | [**getPaymentDetails**](docs/PaymentApi.md#getPaymentDetails) | **GET** /v1/payments/{merchantPaymentId} | Get payment details
-*PaymentApi* | [**getRefundDetails**](docs/PaymentApi.md#getRefundDetails) | **GET** /v1/refunds/{merchantRefundId} | Get refund details
-*PaymentApi* | [**refundPayment**](docs/PaymentApi.md#refundPayment) | **POST** /v1/refunds | Refund a payment
-*WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v1/wallet/check_balance | Check user wallet balance
-*UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v1/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
-*UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v1/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
-*UserApi* | [**unlinkUser**](docs/UserApi.md#unlinkUser) | **DELETE** /v1/user/authorizations/{userAuthorizationId} | Unlink user
+*PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
+*PaymentApi* | [**capturePaymentAuth**](docs/PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization
+*PaymentApi* | [**createPayment**](docs/PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
+*PaymentApi* | [**createQRCode**](docs/PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code
+*PaymentApi* | [**deleteQRCode**](docs/PaymentApi.md#deleteQRCode) | **DELETE** /v2/codes/{codeId} | Delete a Code
+*PaymentApi* | [**getPaymentDetails**](docs/PaymentApi.md#getPaymentDetails) | **GET** /v2/payments/{merchantPaymentId} | Get payment details
+*PaymentApi* | [**getCodesPaymentDetails**](docs/PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
+*PaymentApi* | [**getRefundDetails**](docs/PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
+*PaymentApi* | [**refundPayment**](docs/PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
+*WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance
+*UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
+*UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
+*UserApi* | [**unlinkUser**](docs/UserApi.md#unlinkUser) | **DELETE** /v2/user/authorizations/{userAuthorizationId} | Unlink user
 
 ## Documentation for Models
 
