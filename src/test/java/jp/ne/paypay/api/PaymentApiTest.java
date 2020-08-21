@@ -131,7 +131,46 @@ public class PaymentApiTest {
         PaymentDetails response = api.createPayment(payment, agreeSimilarTransaction);
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
-    
+
+    /**
+     * Create a payment Authorization
+     *
+     * Create a direct debit payment and start the money transfer.  **Timeout: 30s**
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void createPaymentAuthorizationTest() throws ApiException {
+
+        Payment payment = new Payment();
+        payment.setAmount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        payment.setMerchantPaymentId("merchantPaymentId");
+        payment.setUserAuthorizationId("userAuthorizationId");
+        payment.setRequestedAt(Instant.now().getEpochSecond());
+        payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
+        payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
+        payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
+        payment.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
+        MerchantOrderItem merchantOrderItem =
+                new MerchantOrderItem()
+                        .category("Dessert").name("Red Velvet Cake")
+                        .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+                        .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+        merchantOrderItems.add(merchantOrderItem);
+        payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setResultInfo(resultInfo);
+        String agreeSimilarTransaction = "True";
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
+        Mockito.when(api.createPaymentAuthorizationWithHttpInfo(payment, agreeSimilarTransaction)).thenReturn(paymentDetailsApiResponse);
+        PaymentDetails response = api.createPaymentAuthorization(payment, agreeSimilarTransaction);
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+
     /**
      * Create a Code
      *

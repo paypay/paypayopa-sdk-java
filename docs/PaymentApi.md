@@ -1,11 +1,13 @@
 # PaymentApi
 
 Method | HTTP request | Description
-------------- | ------------- | -------------
+------------- | ------------- | ------------- 
 [**createAccountLinkQRCode**](PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
 [**cancelPayment**](PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
-[**capturePaymentAuth**](PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization
 [**createPayment**](PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
+[**createPaymentAuthorization**](PaymentApi.md#createPaymentAuthorization) | **POST** /v2/payments/preauthorize | Create a payment authorization to block the money
+[**revertAuth**](PaymentApi.md#revertAuth) | **POST** /v2/payments/preauthorize/revert | Revert a payment authorization
+[**capturePaymentAuth**](PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization
 [**createQRCode**](PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code
 [**deleteQRCode**](PaymentApi.md#deleteQRCode) | **DELETE** /v2/codes/{codeId} | Delete a Code
 [**getPaymentDetails**](PaymentApi.md#getPaymentDetails) | **GET** /v2/payments/{merchantPaymentId} | Get payment details
@@ -142,6 +144,96 @@ try {
 Please refer to the below document for more information :
 https://www.paypay.ne.jp/opa/doc/v1.0/direct_debit#operation/createPayment
 ```
+
+<a name="createPaymentAuthorization"></a>
+# **createPaymentAuthorization**
+> PaymentDetails createPaymentAuthorization(body, agreeSimilarTransaction)
+
+Create a payment authorization
+
+Create a payment authorization to block the money.  **Timeout: 30s** 
+
+### Example
+```java
+//Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
+
+
+PaymentApi apiInstance = new PaymentApi(apiClient);
+
+Payment payment = new Payment();
+      payment.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+      payment.setMerchantPaymentId("MERCHANT_PAYMENT_ID");
+      payment.setUserAuthorizationId("USER_AUTHORIZATION_ID");
+      payment.setRequestedAt(Instant.now().getEpochSecond());
+      payment.setStoreId("STORE_ID");
+      payment.setTerminalId("TERMINAL_ID");
+      payment.setOrderReceiptNumber("ORDER_RECEIPT_NUMBER");
+      payment.setOrderDescription("ORDER_DESCRIPTION");
+      MerchantOrderItem merchantOrderItem =
+              new MerchantOrderItem()
+                      .category("pasteries").name("Moon Cake")
+                      .productId("PRODUCT_ID").quantity(1)
+                      .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+      List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+      merchantOrderItems.add(merchantOrderItem);
+      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+
+boolean agreeSimilarTransaction = true; // Boolean | (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
+
+try {
+    PaymentDetails result = apiInstance.createPaymentAuthorization(body, agreeSimilarTransaction);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PaymentApi#createPaymentAuthorization");
+    e.printStackTrace();
+    System.out.println(e.getResponseBody());
+}
+```
+
+```
+Please refer to the below document for more information :
+https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/createAuth
+```
+
+<a name="revertAuth"></a>
+# **revertAuth**
+> PaymentDetails revertAuth(body, agreeSimilarTransaction)
+
+Revert a payment authorization
+
+This api is used in case, the merchant wants to cancel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s** 
+
+### Example
+```java
+//Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
+
+
+PaymentApi apiInstance = new PaymentApi(apiClient);
+
+PaymentStateRevert payment = new PaymentStateRevert();
+      payment.setPaymentId("Payment_Transaction_ID");
+      payment.setMerchantRevertId(UUID.randomUUID().toString());
+      payment.setRequestedAt(Instant.now().getEpochSecond());
+
+try {
+    RevertAuthResponse result = apiInstance.revertAuth(payment);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PaymentApi#revertAuth");
+    e.printStackTrace();
+    System.out.println(e.getResponseBody());
+}
+```
+
+```
+Please refer to the below document for more information :
+https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/revertAuth
+```
+
 
 <a name="createQRCode"></a>
 # **createQRCode**
