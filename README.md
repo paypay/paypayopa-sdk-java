@@ -1,4 +1,4 @@
-# PayPay SDK JAVA
+# PayPay SDK - JAVA
 
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-java.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-java)
