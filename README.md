@@ -5,6 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/paypay/paypayopa-sdk-java/badge.svg?branch=master)](https://coveralls.io/github/paypay/paypayopa-sdk-java?branch=master)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/paypay/paypayopa-sdk-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/paypay/paypayopa-sdk-java/context:java)
 [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/64c7339473ea7711415c/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-java/maintainability)
 
 Java SDK for interacting with PayPay APIs
 
