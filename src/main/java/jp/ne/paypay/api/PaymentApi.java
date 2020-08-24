@@ -743,7 +743,7 @@ public class PaymentApi {
 
     /**
      * Revert a payment authorization
-     * This api is used in case, the merchant wants to canel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s**
+     * This api is used in case, the merchant wants to cancel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s**
      *
      * @param body Revert Authorized Order Request (optional)
      * @return RevertAuthResponse
@@ -756,7 +756,7 @@ public class PaymentApi {
 
     /**
      * Revert a payment authorization
-     * This api is used in case, the merchant wants to canel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s**
+     * This api is used in case, the merchant wants to cancel the payment authorization because of cancellation of the order by the user.  **Timeout: 30s**
      *
      * @param body Revert Authorized Order Request (optional)
      * @return ApiResponse&lt;RevertAuthResponse&gt;
@@ -836,5 +836,79 @@ public class PaymentApi {
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
                 localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
+
+    /**
+     * Create a payment authorization
+     * Create a payment authorization to block the money.  **Timeout: 30s**
+     *
+     * @param body                    Payment
+     * @param agreeSimilarTransaction (Optional) If the parameter is set to \&quot;true\&quot;, the payment duplication check will be bypassed.  (optional)
+     * @return PaymentDetails
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public PaymentDetails createPaymentAuthorization(Payment body, String agreeSimilarTransaction) throws ApiException {
+        String message = validator.validate(body);
+        if (message != null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<PaymentDetails> resp = createPaymentAuthorizationWithHttpInfo(body, agreeSimilarTransaction);
+        return resp.getData();
+    }
+
+    /**
+     * Create a payment authorization
+     * Create a payment authorization to block the money.  **Timeout: 30s**
+     *
+     * @param body                    Payment
+     * @param agreeSimilarTransaction (Optional) If the parameter is set to \&quot;true\&quot;, the payment duplication check will be bypassed.  (optional)
+     * @return ApiResponse&lt;PaymentDetails&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<PaymentDetails> createPaymentAuthorizationWithHttpInfo(Object body, String agreeSimilarTransaction) throws ApiException {
+        com.squareup.okhttp.Call call = createPaymentAuthorizationCall(body, agreeSimilarTransaction);
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Build call for createPaymentAuthorization
+     *
+     * @param body                    Payment
+     * @param agreeSimilarTransaction (Optional) If the parameter is set to \&quot;true\&quot;, the payment duplication check will be bypassed.  (optional)
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    private com.squareup.okhttp.Call createPaymentAuthorizationCall(Object body, String agreeSimilarTransaction) throws ApiException {
+
+        // create path and map variables
+        String localVarPath = "/v2/payments/preauthorize";
+
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
+        if (agreeSimilarTransaction != null)
+            localVarQueryParams.addAll(apiClient.parameterToPair("agreeSimilarTransaction", agreeSimilarTransaction));
+
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+
+        Map<String, Object> localVarFormParams = new HashMap<>();
+
+        final String[] localVarAccepts = {
+                APPLICATION_JSON
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+
+        final String[] localVarContentTypes = {
+
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        apiClient.setReadTimeout(30);
+        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    }
+
+
 
 }
