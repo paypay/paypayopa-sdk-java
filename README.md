@@ -64,6 +64,7 @@ Class | Method | HTTP request | Description
 *PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
 *PaymentApi* | [**createPayment**](docs/PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
 *PaymentApi* | [**createPaymentAuthorization**](docs/PaymentApi.md#createPaymentAuthorization) | **POST** /v2/payments/preauthorize | Create a payment authorization to block the money 
+*PaymentApi* | [**createContinuousPayment**](docs/PaymentApi.md#createContinuousPayment) | **POST** /v1/subscription/payments | Create a continuous payment and start the money transfer
 *PaymentApi* | [**revertAuth**](docs/PaymentApi.md#revertAuth) | **POST** /v2/payments/preauthorize/revert | Revert a payment authorization 
 *PaymentApi* | [**capturePaymentAuth**](docs/PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization                                                                                                                                  
 *PaymentApi* | [**createQRCode**](docs/PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code

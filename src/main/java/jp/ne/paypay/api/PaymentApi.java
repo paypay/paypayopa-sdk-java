@@ -928,7 +928,7 @@ public class PaymentApi {
 
     /**
      * Create a continuous payment
-     * Create a continuous payment and start the money transfer..  **Timeout: 30s**
+     * Create a continuous payment and start the money transfer.  **Timeout: 30s**
      *
      * @param body                    Payment
      * @return ApiResponse&lt;PaymentDetails&gt;

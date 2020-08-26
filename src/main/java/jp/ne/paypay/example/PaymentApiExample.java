@@ -371,8 +371,8 @@ public class PaymentApiExample {
       qrCode.setStoreInfo("Just Bake");
       qrCode.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
       qrCode.setRequestedAt(Instant.now().getEpochSecond());
-      qrCode.redirectUrl("https://www.justbake.in/payment");
-      qrCode.redirectType(QRCode.RedirectTypeEnum.WEB_LINK);//For Deep Link, RedirectTypeEnum.APP_DEEP_LINK
+      qrCode.setRedirectUrl("https://paypay.ne.jp/");
+      qrCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);//For Deep Link, RedirectTypeEnum.APP_DEEP_LINK
       qrCode.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
       //qrCode.isAuthorization(true);
       //Long expireAt = Instant.now().getEpochSecond()+5000;
