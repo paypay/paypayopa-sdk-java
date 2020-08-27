@@ -63,11 +63,11 @@ In order to acquire an authorization you need to create a JWT Token -
 |scopes   |  Yes |Array of string |Items Enum: 'direct_debit' 'cashback' 'get_balance' 'quick_pay' 'continuous_payments' 'merchant_topup' 'pending_payments' 'user_notification' 'user_topup' 'user_profile' 'preauth_capture_native' 'preauth_capture_transaction' 'push_notification' 'notification_center_ob' 'notification_center_ab' 'notification_center_tl' Scopes of the user authorization   |
 |nonce   |  Yes |string  |Random generated string   |
 | redirectType |No    |string  |Default: 'WEB_LINK' Enum: 'APP_DEEP_LINK' 'WEB_LINK' Parameter to decide whether to redirect to merchant app or merchant web application   |
-|redirectUrl   |  Yes |string  |The callback endpoint provided by client. For 'WEB_LINK' it must be HTTPS, and its domain should be in the allowed authorization callback domains|
-|referenceId   |Yes   |The id used to identify the user in merchant system. It will be stored in the PayPay db for reconsilliation purpose |
-|phoneNumber   |No    |The user mobile phone number |
-|deviceId      |No    |The user mobile phone device id. If it is provided, we can use it to verify the user and skip the SMS verification, so as to provide more fluent UX |
-|userAgent     |Yes   |The User agent of the web browser. When redirectType is 'WEB_LINK' this parameter is provided, on mobile devices PayPay tries to open the browser that the merchant website is using. |
+|redirectUrl   |Yes   |string  |The callback endpoint provided by client. For 'WEB_LINK' it must be HTTPS, and its domain should be in the allowed authorization callback domains|
+|referenceId   |Yes   |string  |The id used to identify the user in merchant system. It will be stored in the PayPay db for reconsilliation purpose |
+|phoneNumber   |No    |string  |The user mobile phone number |
+|deviceId      |No    |string  |The user mobile phone device id. If it is provided, we can use it to verify the user and skip the SMS verification, so as to provide more fluent UX |
+|userAgent     |Yes   |string  |The User agent of the web browser. When redirectType is 'WEB_LINK' this parameter is provided, on mobile devices PayPay tries to open the browser that the merchant website is using. |
 
 ```java
 PaymentApi apiInstance = new PaymentApi(apiClient);
