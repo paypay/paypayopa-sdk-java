@@ -149,7 +149,6 @@ public class PaymentApiExample {
   private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId, boolean continuousPayment){
 
     String merchantPaymentId  = UUID.randomUUID().toString();
-    System.out.println("Checking wallet balance...");
     int amount =1; String currency = "JPY";
     WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
@@ -165,14 +164,12 @@ public class PaymentApiExample {
                 + "ID:"+merchantPaymentId);
         String refundId = UUID.randomUUID().toString();
         paymentDetails = getPaymentDetails(paymentApi, merchantPaymentId);
-        if(paymentDetails != null) {
           System.out.println("Creating Refund for the payment:" + paymentDetails.getData().getPaymentId());
           createRefund(paymentApi, paymentDetails.getData().getPaymentId(), refundId);
           System.out.println("Get refund details:"+refundId);
           getRefundDetails(paymentApi, refundId);
           System.out.println("Finally cancel the payment");
           cancelPayment(paymentApi, merchantPaymentId);
-        }
       }
     }
 
@@ -288,18 +285,14 @@ public class PaymentApiExample {
       payment.setMerchantPaymentId(merchantPaymentId);
       payment.setUserAuthorizationId(userAuthorizationId);
       payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
-      payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
       payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
       payment.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
       MerchantOrderItem merchantOrderItem =
-              new MerchantOrderItem()
-                      .category("Dessert").name("Red Velvet Cake")
-                      .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+              new MerchantOrderItem().category("Dessert").name("Red Velvet Cake").productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
                       .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
       List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
       merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+      payment.setOrderItems(merchantOrderItems);
       result = apiInstance.createContinuousPayment(payment);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result.getResultInfo().getCode());
