@@ -1,6 +1,7 @@
 # PayPay SDK - JAVA
 
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/jp.ne.paypay/paypayopa)](https://search.maven.org/artifact/jp.ne.paypay/paypayopa)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-java.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-java)
 [![Coverage Status](https://coveralls.io/repos/github/paypay/paypayopa-sdk-java/badge.svg?branch=master)](https://coveralls.io/github/paypay/paypayopa-sdk-java?branch=master)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/paypay/paypayopa-sdk-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/paypay/paypayopa-sdk-java/context:java)
