@@ -50,9 +50,11 @@ public class PaymentApiExample {
     String userAuthorizationId = "USER_AUTHORIZATION_ID";
     preAuthCaptureFlow(walletApiInstance, paymentApi, userAuthorizationId);
     preAuthRevertAuthFlow(walletApiInstance, paymentApi, userAuthorizationId);
-    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId);
-    continuousPaymentFlow(walletApiInstance, paymentApi, userAuthorizationId);
+    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, false);
+//Continuous payment flow
+    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
+
   }
 
   private static PaymentDetails createPaymentAuthorization(final PaymentApi apiInstance, String merchantPaymentId,
@@ -108,32 +110,7 @@ public class PaymentApiExample {
     }
 
   }
-  private static void continuousPaymentFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId){
 
-    String merchantPaymentId  = UUID.randomUUID().toString();
-    System.out.println("Checking wallet balance...");
-    int amount =1; String currency = "JPY";
-    WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
-    if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
-      System.out.println("There is enough balance, now creating payment...");
-      PaymentDetails paymentDetails = createContinuousPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
-      if (paymentDetails != null) {
-        System.out.println("Payment created successfully, Now calling the API to get payment details for payment "
-                + "ID:"+merchantPaymentId);
-        String refundId = UUID.randomUUID().toString();
-        paymentDetails = getPaymentDetails(paymentApi, merchantPaymentId);
-        if(paymentDetails != null) {
-          System.out.println("Creating Refund for the payment:" + paymentDetails.getData().getPaymentId());
-          createRefund(paymentApi, paymentDetails.getData().getPaymentId(), refundId);
-          System.out.println("Get refund details:"+refundId);
-          getRefundDetails(paymentApi, refundId);
-          System.out.println("Finally cancel the payment");
-          cancelPayment(paymentApi, merchantPaymentId);
-        }
-      }
-    }
-
-  }
   private static void appInvokeFlow(final PaymentApi paymentApi, final WalletApi walletApiInstance,
                                     final String userAuthorizationId) {
     int amount =1;
@@ -169,7 +146,7 @@ public class PaymentApiExample {
     }
   }
 
-  private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId){
+  private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId, boolean continuousPayment){
 
     String merchantPaymentId  = UUID.randomUUID().toString();
     System.out.println("Checking wallet balance...");
@@ -177,7 +154,12 @@ public class PaymentApiExample {
     WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
       System.out.println("There is enough balance, now creating payment...");
-      PaymentDetails paymentDetails = createPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
+      PaymentDetails paymentDetails;
+      if(continuousPayment){
+         paymentDetails = createContinuousPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
+      }else{
+        paymentDetails = createPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
+      }
       if (paymentDetails != null) {
         System.out.println("Payment created successfully, Now calling the API to get payment details for payment "
                 + "ID:"+merchantPaymentId);
@@ -320,7 +302,7 @@ public class PaymentApiExample {
       payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
       result = apiInstance.createContinuousPayment(payment);
       System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result);
+      System.out.println(result.getResultInfo().getCode());
     } catch (ApiException e) {
       System.err.println(e.getResponseBody());
     }
