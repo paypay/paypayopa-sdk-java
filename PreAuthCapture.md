@@ -293,7 +293,7 @@ PayPay uses HTTP response status codes and error code to indicate the success or
 Everything works as expected.
 
 **201**
-The requested resource(e.g. dynamic QR code) was created.
+The requested resource(e.g. Create payment authorization) was created.
 
 **202**
 Means the request is received, and will be processed sometime later.
@@ -365,14 +365,6 @@ There are two ways to react with this situation:
 |500|	08101000|	INTERNAL_SERVER_ERROR|	Something went wrong on PayPay service side|
 |503|	08100999|	MAINTENANCE_MODE|	Sorry, we are down for scheduled maintenance|
 
-**Create a QRCode**
-
-|Status	|CodeId	|Code	|Message|
-|---|---|---|---|
-|400|	01652073|	DUPLICATE_DYNAMIC_QR_REQUEST|	Duplicate Dynamic QR request error|
-|400|	00400060|	PRE_AUTH_CAPTURE_UNSUPPORTED_MERCHANT|	Merchant do not support| Pre-Auth-Capture
-|400|	00400061|	PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE|	Provided Expiry Date is above the allowed limit of Max allowed expiry days|
-|400|	01650000|	DYNAMIC_QR_BAD_REQUEST|	Dynamic QR bad request error|
 
 **Get payment details**
 
@@ -381,13 +373,6 @@ There are two ways to react with this situation:
 |400|	01652075|	DYNAMIC_QR_PAYMENT_NOT_FOUND|	Dynamic QR payment not found|
 |400|	01650000|	DYNAMIC_QR_BAD_REQUEST|	Dynamic QR bad request error|
 
-**Delete a QRCode**
-
-|Status	|CodeId	|Code	|Message|
-|---|---|---|---|
-|400	|01652074	|DYNAMIC_QR_ALREADY_PAID|	Dynamic QR already paid|
-|400	|01650000	|DYNAMIC_QR_BAD_REQUEST|	Dynamic QR bad request error|
-|404	|01652072	|DYNAMIC_QR_NOT_FOUND|	Dynamic qr code not found|
 
 **Cancel a Payment**
 
