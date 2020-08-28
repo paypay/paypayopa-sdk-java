@@ -114,13 +114,16 @@ public class PaymentApiTest {
         capture.setMerchantCaptureId(captureObject.getMerchantCaptureId());
         capture.setOrderDescription(captureObject.getOrderDescription());
         capture.setRequestedAt(captureObject.getRequestedAt());
+        capture.setAcceptedAt(Instant.now().getNano());
         capture.setStatus(Capture.StatusEnum.COMPLETED);
+        Assertions.assertNotNull(capture.toString());
         paymentStateCaptures.addDataItem(capture);
         payment.setCaptures(paymentStateCaptures);
         paymentDetails.setData(payment);
         ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
         Mockito.when(api.capturePaymentAuthWithHttpInfo(captureObject)).thenReturn(paymentDetailsApiResponse);
         PaymentDetails response = api.capturePaymentAuth(captureObject);
+        Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
         Assertions.assertNotNull(response.getData());
         Assertions.assertEquals(response.getData().getMerchantPaymentId(), "merchantPaymentId");
@@ -216,6 +219,7 @@ public class PaymentApiTest {
         ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
         Mockito.when(api.createPaymentAuthorizationWithHttpInfo(payment, agreeSimilarTransaction)).thenReturn(paymentDetailsApiResponse);
         PaymentDetails response = api.createPaymentAuthorization(payment, agreeSimilarTransaction);
+        Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
         Assertions.assertEquals(response.getData().getMerchantPaymentId(), "merchantPaymentId");
         Assertions.assertEquals(response.getData().getUserAuthorizationId(), "userAuthorizationId");
@@ -291,6 +295,7 @@ public class PaymentApiTest {
         ApiResponse<QRCodeDetails> qrCodeDetailsApiResponse = new ApiResponse<>(00001, null, qrCodeDetails);
         Mockito.when(api.createQRCodeWithHttpInfo(qrCode)).thenReturn(qrCodeDetailsApiResponse);
         QRCodeDetails response = api.createQRCode(qrCode);
+        Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
         Assertions.assertEquals(response.getData().getStoreInfo(), storeInfo);
         Assertions.assertEquals(response.getData().getCodeType(), codeType);
@@ -324,6 +329,7 @@ public class PaymentApiTest {
         Mockito.when(apiClient.escapeString(codeId)).thenReturn(codeId);
         Mockito.when(api.deleteQRCodeWithHttpInfo(codeId)).thenReturn(notDataResponseApiResponse);
         NotDataResponse response = api.deleteQRCode(codeId);
+        Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     /**
@@ -413,8 +419,9 @@ public class PaymentApiTest {
         refundDetails.setData(refund);
         ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
         Mockito.when(api.refundPaymentWithHttpInfo(refund)).thenReturn(paymentDetailsApiResponse);
+        Assertions.assertNotNull(refund.toString());
         RefundDetails response = api.refundPayment(refund);
-
+        Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
 
@@ -444,6 +451,7 @@ public class PaymentApiTest {
         revertAuthResponse.setData(revertAuthResponseData);
         ApiResponse<RevertAuthResponse> revertAuthResponseApiResponse = new ApiResponse<>(00001, null, revertAuthResponse);
         Mockito.when(api.revertAuthWithHttpInfo(paymentStateRevert)).thenReturn(revertAuthResponseApiResponse);
+        Assertions.assertNotNull(paymentStateRevert.toString());
         RevertAuthResponse response = api.revertAuth(paymentStateRevert);
         Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
@@ -480,8 +488,92 @@ public class PaymentApiTest {
         linkQRCodeResponse.setResultInfo(resultInfo);
         ApiResponse<LinkQRCodeResponse> paymentDetailsApiResponse = new ApiResponse<>(8100001, null, linkQRCodeResponse);
         Mockito.when(api.createAccountLinkQRCodeWithHttpInfo(accountLinkQRCode)).thenReturn(paymentDetailsApiResponse);
+        Assertions.assertNotNull(accountLinkQRCode.toString());
+        LinkQRCodeResponse response = api.createAccountLinkQRCode(accountLinkQRCode);
+        Assertions.assertNotNull(response.toString());
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+    /**
+     * Create an Account Link QRCode Failed response
+     * Create an ACCOUNT LINK QR and display it to the user.  **Timeout: 10s**
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void createAccountLinkQRCodeFailedTest() throws ApiException {
+
+        AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
+        List<AuthorizationScope> scopes = new ArrayList<>();
+        scopes.add(AuthorizationScope.DIRECT_DEBIT);
+        accountLinkQRCode.setScopes(scopes)
+        .setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase())
+        .setDeviceId("device_id")
+        .setRedirectUrl("merchant.domain/test")
+        .setPhoneNumber("phone_number")
+        .setReferenceId("reference_id")
+        .setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
+        Assertions.assertNotNull(accountLinkQRCode.toString());
+        LinkQRCodeResponse linkQRCodeResponse = new LinkQRCodeResponse();
+        resultInfo.setMessage("FAILED");
+        linkQRCodeResponse.setResultInfo(resultInfo);
+        ApiResponse<LinkQRCodeResponse> paymentDetailsApiResponse = new ApiResponse<>(8100001, null, linkQRCodeResponse);
+        Mockito.when(api.createAccountLinkQRCodeWithHttpInfo(accountLinkQRCode)).thenReturn(paymentDetailsApiResponse);
         LinkQRCodeResponse response = api.createAccountLinkQRCode(accountLinkQRCode);
 
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "FAILED");
+    }
+
+    /**
+     * Create continuous payment
+     *
+     * Create a continuous payment and start the money transfer.  **Timeout: 30s**
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void createContinuousPaymentTest() throws ApiException {
+
+        Payment payment = new Payment();
+        payment.setAmount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        payment.merchantPaymentId("merchantPaymentId")
+                .userAuthorizationId("userAuthorizationId")
+                .requestedAt(Instant.now().getEpochSecond())
+                .storeId(RandomStringUtils.randomAlphabetic(8))
+                .terminalId(RandomStringUtils.randomAlphanumeric(8))
+                .orderReceiptNumber(RandomStringUtils.randomAlphanumeric(8))
+                .orderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
+        MerchantOrderItem merchantOrderItem =
+                new MerchantOrderItem()
+                        .category("Dessert").name("Red Velvet Cake")
+                        .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+                        .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+        merchantOrderItems.add(merchantOrderItem);
+        payment.orderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.resultInfo(resultInfo);
+        payment.status(PaymentState.StatusEnum.COMPLETED).authorizedAt(Instant.now().getNano()).paymentId("paymentId");
+        paymentDetails.data(payment);
+        Assertions.assertNotNull(payment.toString());
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(90001, null, paymentDetails);
+        Mockito.when(api.createContinuousPaymentWithHttpInfo(payment)).thenReturn(paymentDetailsApiResponse);
+        PaymentDetails response = api.createContinuousPayment(payment);
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assertions.assertEquals(response.getData().getMerchantPaymentId(), "merchantPaymentId");
+        Assertions.assertEquals(response.getData().getUserAuthorizationId(), "userAuthorizationId");
+        Assertions.assertEquals(response.getData().getPaymentId(), "paymentId");
+        Assertions.assertEquals(response.getData().getStatus(), PaymentState.StatusEnum.COMPLETED);
+        Assertions.assertNotNull(response.getData());
+        Assertions.assertNotNull(response.getData().getTerminalId());
+        Assertions.assertNotNull(response.getData().getOrderReceiptNumber());
+        Assertions.assertNotNull(response.getData().getAmount());
+        Assertions.assertNotNull(response.getData().getRequestedAt());
+        Assertions.assertNotNull(response.getData().getOrderItems());
+        Assertions.assertNotNull(response.getData().getAuthorizedAt());
+
     }
 }
