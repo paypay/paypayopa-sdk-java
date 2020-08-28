@@ -188,7 +188,7 @@ Did you get **SUCCESS** in the print statement above, if yes then the API execut
 For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/capturePaymentAuth).
 
 ### Revert a payment authorization
-So the user has cancelled the order while the payment status was still AUTHORIZED, please use the revert a payment authorization method to refund back to the user. Following are the important parameters that you can provide for this method:
+So the user has cancelled the order while the payment status was still AUTHORIZED, please use the revert payment authorization method to refund back to the user. Following are the important parameters that you can provide for this method:
 
 | Field  | Required  |Type   | Description  |  
 |---|---|---|---|
