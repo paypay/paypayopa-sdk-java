@@ -7,6 +7,7 @@
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/paypay/paypayopa-sdk-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/paypay/paypayopa-sdk-java/context:java)
 [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/64c7339473ea7711415c/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-java/maintainability)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_shield)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/paypay/paypayopa-sdk-java)
 
 Java SDK for interacting with PayPay APIs
@@ -110,3 +111,7 @@ Class | Method | HTTP request | Description
  - [RefundState](docs/RefundState.md)
  - [ResultInfo](docs/ResultInfo.md)
  - [AccountLinkQRCode](docs/AccountLinkQRCode.md)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_large)
