@@ -73,7 +73,8 @@ In order to acquire an authorization you need to create a JWT Token -
 PaymentApi apiInstance = new PaymentApi(apiClient);
 AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
 List<AuthorizationScope> scopes = new ArrayList<>();
-	scopes.add(AuthorizationScope.DIRECT_DEBIT);
+	scopes.add(AuthorizationScope.PREAUTH_CAPTURE_NATIVE);
+	scopes.add(AuthorizationScope.PREAUTH_CAPTURE_TRANSACTIONS);
 	accountLinkQRCode.setScopes(scopes);
 	accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
 	accountLinkQRCode.setDeviceId("device_id");
@@ -154,6 +155,66 @@ Once the payment is captured, the status will be COMPLETED.
 
 For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/getPaymentDetails)
 
+### Capture a payment authorization
+So you are implementing a PreAuth and Capture, and hence want to capture the payment later. If you want to increase the amount, we will send a notification to the user asking for consent.
+In this case, please ensure you have created payment authorization. Following are the important parameters that you can provide for this method:
+
+| Field  | Required  |Type   | Description  |  
+|---|---|---|---|
+|merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
+|merchantCaptureId   |  Yes |string <= 64 characters  |The unique capture transaction id provided by merchant  |
+| amount  |Yes   |integer <= 11 characters  |Amount to be captured   |
+| requestedAt  |Yes   |integer |Epoch timestamp in seconds   |
+|orderDescription   |Yes   |string <= 255 characters|Description of the Capture for the user|
+
+```java
+
+// Creating the payload to capture a Payment Authorization, additional parameters can be added basis the API Documentation
+CaptureObject captureObject = new CaptureObject();
+      captureObject.setMerchantCaptureId("merchant_capture_id");
+      captureObject.setMerchantPaymentId("merchant_payment_id");
+      captureObject.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+      captureObject.setOrderDescription("Order Shipped, Cake with toppings");
+      captureObject.setRequestedAt(Instant.now().getEpochSecond());
+
+// Calling the method to Capture a Payment Authorization
+PaymentApi apiInstance = new PaymentApi(apiClient);
+PaymentDetails response = apiInstance.capturePaymentAuth(captureObject);
+// Printing if the method call was SUCCESS
+System.out.println(response.getResultInfo().getCode());
+```
+Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
+
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/capturePaymentAuth).
+
+### Revert a payment authorization
+So the user has cancelled the order while the payment status was still AUTHORIZED, please use the revert a payment authorization method to refund back to the user. Following are the important parameters that you can provide for this method:
+
+| Field  | Required  |Type   | Description  |  
+|---|---|---|---|
+|merchantRevertId   |  Yes |string <= 64 characters  |The unique revert transaction id provided by merchant   |
+|paymentId   |  Yes |string <= 64 characters  |The payment transaction id provided by PayPay |
+|requestedAt  |Yes   |integer |Epoch timestamp in seconds   |
+|reason   |No   |string <= 255 characters|Reason for reverting the payment authorization|
+
+```java
+// Creating the payload to revert a Payment Authorization, additional parameters can be added basis the API Documentation
+PaymentStateRevert payment = new PaymentStateRevert();
+      payment.setPaymentId("paypay_payment_id");
+      payment.merchantRevertId("merchant_revert_id");
+      payment.setRequestedAt(Instant.now().getEpochSecond());
+      payment.setReason("reason for refund");
+
+// Calling the method to Revert a Payment Authorization
+PaymentApi apiInstance = new PaymentApi(apiClient);
+RevertAuthResponse response = apiInstance.revertAuth(payment);
+// Printing if the method call was SUCCESS
+System.out.println(response.getResultInfo().getCode());
+```
+Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
+
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/revertAuth).
+
 ### Cancel a payment
 So you want to cancel a Payment. In most cases this should not be needed for payment happening in this flow, however following can be a case when this might be needed.
 - Polling for Get Payment Details timeout, and you are uncertain of the status
@@ -225,65 +286,6 @@ Did you get **SUCCESS** in the print statement above, if yes then the API execut
 
 For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/getRefundDetails).
 
-### Capture a payment authorization
-So you are implementing a PreAuth and Capture, and hence want to capture the payment later. If you want to increase the amount, we will send a notification to the user asking for consent.
-In this case, please ensure you have created payment authorization. Following are the important parameters that you can provide for this method:
-
-| Field  | Required  |Type   | Description  |  
-|---|---|---|---|
-|merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
-|merchantCaptureId   |  Yes |string <= 64 characters  |The unique capture transaction id provided by merchant  |
-| amount  |Yes   |integer <= 11 characters  |Amount to be captured   |
-| requestedAt  |Yes   |integer |Epoch timestamp in seconds   |
-|orderDescription   |Yes   |string <= 255 characters|Description of the Capture for the user|
-
-```java
-
-// Creating the payload to capture a Payment Authorization, additional parameters can be added basis the API Documentation
-CaptureObject captureObject = new CaptureObject();
-      captureObject.setMerchantCaptureId("merchant_capture_id");
-      captureObject.setMerchantPaymentId("merchant_payment_id");
-      captureObject.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
-      captureObject.setOrderDescription("Order Shipped, Cake with toppings");
-      captureObject.setRequestedAt(Instant.now().getEpochSecond());
-
-// Calling the method to Capture a Payment Authorization
-PaymentApi apiInstance = new PaymentApi(apiClient);
-PaymentDetails response = apiInstance.capturePaymentAuth(captureObject);
-// Printing if the method call was SUCCESS
-System.out.println(response.getResultInfo().getCode());
-```
-Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
-
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/capturePaymentAuth).
-
-### Revert a payment authorization
-So the user has cancelled the order while the payment status was still AUTHORIZED, please use the revert a payment authorization method to refund back to the user. Following are the important parameters that you can provide for this method:
-
-| Field  | Required  |Type   | Description  |  
-|---|---|---|---|
-|merchantRevertId   |  Yes |string <= 64 characters  |The unique revert transaction id provided by merchant   |
-|paymentId   |  Yes |string <= 64 characters  |The payment transaction id provided by PayPay |
-|requestedAt  |Yes   |integer |Epoch timestamp in seconds   |
-|reason   |No   |string <= 255 characters|Reason for reverting the payment authorization|
-
-```java
-// Creating the payload to revert a Payment Authorization, additional parameters can be added basis the API Documentation
-PaymentStateRevert payment = new PaymentStateRevert();
-      payment.setPaymentId("paypay_payment_id");
-      payment.merchantRevertId("merchant_revert_id");
-      payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setReason("reason for refund");
-
-// Calling the method to Revert a Payment Authorization
-PaymentApi apiInstance = new PaymentApi(apiClient);
-RevertAuthResponse response = apiInstance.revertAuth(payment);
-// Printing if the method call was SUCCESS
-System.out.println(response.getResultInfo().getCode());
-```
-Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
-
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/revertAuth).
 
 ### Error Handling
 PayPay uses HTTP response status codes and error code to indicate the success or failure of the requests. With this information, you can decide what error handling strategy to use. In general, PayPay returns the following http status codes.
@@ -407,12 +409,12 @@ There are two ways to react with this situation:
 
 |Status	|CodeId	|Code	|Message|
 |---|---|---|---|
-|400	|	|CANCELED_USER	|Canceled user|
-|400	|	|INVALID_PARAMS	|Invalid parameters received|
+|400	|01103027	|CANCELED_USER	|Canceled user|
+|400	|00200004|INVALID_PARAMS	|Invalid parameters received|
 |400	|	|NO_SUFFICIENT_FUND	|The user's balance is insufficient to make payment.|
 |400	|	|UNSUPPORTED_PAYMENT_METHOD	|Payment method is not supported|
-|400	|	|PRE_AUTH_CAPTURE_UNSUPPORTED_MERCHANT	|Merchant do not support Pre-Auth-Capture|
-|400	|	|PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE	|Provided Expiry Date is above the allowed limit of Max allowed expiry days|
+|400	|00400060	|PRE_AUTH_CAPTURE_UNSUPPORTED_MERCHANT	|Merchant do not support Pre-Auth-Capture|
+|400	|00400061	|PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE	|Provided Expiry Date is above the allowed limit of Max allowed expiry days|
 |400	|	|SUSPECTED_DUPLICATE_PAYMENT	|If a merchant tries collect same amount money from same user again within 5 minutes, the request would be rejected with this very error code. This design is mainly to prevent the duplicated payments which are usually caused by design flaws in client code. However, sometimes, the merchant would intentionally collect mutiple same amount payments from a single user. In such case, the client need to send a specific parameter in order to bypass the duplication check. This is detailed in the payment creation api spec.|
 |400	|	|UNACCEPTABLE_OP	|The requested operation is not able to be processed due to the current condition. E.g. the transaction limit exceeded|
 |401	|	|USER_STATE_IS_NOT_ACTIVE	|Inactive user|
