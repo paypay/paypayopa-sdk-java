@@ -203,7 +203,7 @@ PaymentStateRevert payment = new PaymentStateRevert();
       payment.setPaymentId("paypay_payment_id");
       payment.merchantRevertId("merchant_revert_id");
       payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setReason("reason for refund");
+      payment.setReason("reason for revert");
 
 // Calling the method to Revert a Payment Authorization
 PaymentApi apiInstance = new PaymentApi(apiClient);
