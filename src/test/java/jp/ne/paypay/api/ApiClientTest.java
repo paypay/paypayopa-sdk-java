@@ -9,12 +9,14 @@ import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
+import jp.ne.paypay.Configuration;
 import jp.ne.paypay.JSON;
 import jp.ne.paypay.Pair;
 import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.ResultInfo;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -29,6 +31,13 @@ import java.util.Map;
 public class ApiClientTest {
 
     ApiClient apiClient = new ApiClient();
+
+    @Test
+    public void configTest(){
+        Configuration configuration = new Configuration();
+        configuration.setDefaultApiClient(apiClient);
+        Assertions.assertNotNull(configuration.getDefaultApiClient());
+    }
 
     @Test
     public void parameterToStringTest(){
@@ -219,5 +228,22 @@ public class ApiClientTest {
         System.out.println(request);
         Assert.assertEquals(request.method(), "POST");
         Assert.assertTrue(request.urlString().contains("/v2/qrcode"));
+    }
+
+    @Test
+    public void ApiExceptionTest(){
+        ApiException apiException = new ApiException();
+        Assertions.assertNull(apiException.getCause());
+        apiException = new ApiException(new Throwable("throwable"));
+        Assertions.assertEquals(apiException.getCause().getMessage(), "throwable");
+        apiException = new ApiException(100, null, "ResponseBody");
+        Assertions.assertEquals(apiException.getCode(), 100);
+        apiException = new ApiException(100, "Message");
+        Assertions.assertEquals(apiException.getMessage(), "Message");
+        apiException = new ApiException(100, "Message_1", null, "ResponseBody");
+        Assertions.assertEquals(apiException.getMessage(), "Message_1");
+        Assertions.assertEquals(apiException.getResponseBody(), "ResponseBody");
+        Assertions.assertNull(apiException.getResponseHeaders());
+
     }
 }

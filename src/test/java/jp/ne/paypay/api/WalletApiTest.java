@@ -78,7 +78,6 @@ public class WalletApiTest {
         Assertions.assertNotNull(api.getApiClient());
         walletBalance.setResultInfo(resultInfo);
 
-        ApiResponse<WalletBalance> walletBalanceApiResponse = new ApiResponse<>(00001, null, walletBalance);
         Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(null, amount, currency, productType));
         Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(userAuthorizationId, null, currency, productType));
         Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(userAuthorizationId, amount, null, productType));
