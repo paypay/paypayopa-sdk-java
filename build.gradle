@@ -37,7 +37,7 @@ jacocoTestReport {
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: 'jp/ne/paypay/model/**')
+            fileTree(dir: it, exclude: ['jp/ne/paypay/model/**', 'jp/ne/paypay/example/**'])
         }))
     }
 }
