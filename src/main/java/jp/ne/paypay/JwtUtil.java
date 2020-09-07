@@ -46,15 +46,14 @@ public class JwtUtil {
      * Method to validate JWT token for user authorization services
      *
      * @param jwtToken JWT token to be verified for authenticity
-     * @param jwtAudience JWT audience
      * @param apiKeySecret KeySecret to decode JWT token
      * @return JwtResponseDto object with token params
      * @throws JwtException if fails to parse JWT token
      */
-    public static JwtResponseDto validateJWT(String jwtToken, String jwtAudience, String apiKeySecret) throws JwtException {
+    public static JwtResponseDto validateJWT(String jwtToken, String apiKeySecret) throws JwtException {
         try{
             Algorithm algorithm = Algorithm.HMAC256(Base64.getDecoder().decode(apiKeySecret));
-            JWTVerifier verifier = JWT.require(algorithm).withAudience(jwtAudience).build();
+            JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(jwtToken);
             return new JwtResponseDto(jwt.getClaim("referenceId").asString(), jwt.getClaim("userAuthorizationId").asString());
         }catch(Exception e){
