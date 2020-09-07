@@ -35,6 +35,11 @@ jacocoTestReport {
         xml.enabled = true // coveralls plugin depends on xml format report
         html.enabled = true
     }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'jp/ne/paypay/model/**')
+        }))
+    }
 }
 
 def isDevBuild

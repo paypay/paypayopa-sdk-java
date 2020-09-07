@@ -8,6 +8,7 @@ import jp.ne.paypay.model.AuthorizationScope;
 import jp.ne.paypay.model.Capture;
 import jp.ne.paypay.model.CaptureObject;
 import jp.ne.paypay.model.LinkQRCodeResponse;
+import jp.ne.paypay.model.LinkQRCodeResponseData;
 import jp.ne.paypay.model.MerchantOrderItem;
 import jp.ne.paypay.model.MerchantOrderItemResponse;
 import jp.ne.paypay.model.MoneyAmount;
@@ -483,15 +484,26 @@ public class PaymentApiTest {
         accountLinkQRCode.setPhoneNumber("phone_number");
         accountLinkQRCode.setReferenceId("reference_id");
         accountLinkQRCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
-
         LinkQRCodeResponse linkQRCodeResponse = new LinkQRCodeResponse();
         linkQRCodeResponse.setResultInfo(resultInfo);
+        LinkQRCodeResponseData linkQRCodeResponseData = new LinkQRCodeResponseData();
+        linkQRCodeResponseData.setLinkQRCodeURL("urlLink");
+        linkQRCodeResponse.setData(linkQRCodeResponseData);
         ApiResponse<LinkQRCodeResponse> paymentDetailsApiResponse = new ApiResponse<>(8100001, null, linkQRCodeResponse);
         Mockito.when(api.createAccountLinkQRCodeWithHttpInfo(accountLinkQRCode)).thenReturn(paymentDetailsApiResponse);
         Assertions.assertNotNull(accountLinkQRCode.toString());
+        Assertions.assertNotNull(accountLinkQRCode.getScopes());
+        Assertions.assertNotNull(accountLinkQRCode.getNonce());
+        Assertions.assertNotNull(accountLinkQRCode.getDeviceId());
+        Assertions.assertNotNull(accountLinkQRCode.getRedirectUrl());
+        Assertions.assertNotNull(accountLinkQRCode.getPhoneNumber());
+        Assertions.assertNotNull(accountLinkQRCode.getReferenceId());
+
         LinkQRCodeResponse response = api.createAccountLinkQRCode(accountLinkQRCode);
         Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assertions.assertNotNull(response.getData());
+        Assertions.assertNotNull(response.getData().getLinkQRCodeURL());
     }
 
     /**
