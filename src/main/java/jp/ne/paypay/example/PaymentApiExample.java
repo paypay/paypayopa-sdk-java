@@ -54,18 +54,6 @@ public class PaymentApiExample {
 
   }
 
-  private static PaymentDetails createPaymentAuthorization(final PaymentApi apiInstance, Payment payment) {
-    PaymentDetails result = null;
-    try {
-      result = apiInstance.createPaymentAuthorization(payment, "true");
-      System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println(e.getResponseBody());
-    }
-    return result;
-  }
-
   private static Payment getPaymentObject(String merchantPaymentId, String userAuthorizationId, int amount) {
     Payment payment = new Payment();
     payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
@@ -123,7 +111,7 @@ public class PaymentApiExample {
               + "can makes the payment using PayPay App");
       System.out.println("For this example, we will create payment using the API...");
       Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, amount);
-      PaymentDetails paymentDetails = createPayment(paymentApi, payment);
+      PaymentDetails paymentDetails = createPayment(paymentApi, payment, false);
       if (paymentDetails != null) {
         System.out.println("Payment created successfully, Now calling the API to get payment details for payment " + "ID:"
                 + merchantPaymentId);
@@ -157,7 +145,7 @@ public class PaymentApiExample {
          payment.setAmount(new MoneyAmount().amount(2).currency(MoneyAmount.CurrencyEnum.JPY));
          paymentDetails = createContinuousPayment(paymentApi, payment);
       }else{
-        paymentDetails = createPayment(paymentApi, payment);
+        paymentDetails = createPayment(paymentApi, payment, false);
       }
       if (paymentDetails != null) {
         System.out.println("Payment created successfully, Now calling the API to get payment details for payment "
@@ -184,7 +172,7 @@ public class PaymentApiExample {
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
       System.out.println("There is enough balance, now creating payment...");
       Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, amount);
-      PaymentDetails paymentDetails = createPaymentAuthorization(paymentApi, payment);
+      PaymentDetails paymentDetails = createPayment(paymentApi, payment, true);
       if (paymentDetails != null) {
         System.out.println("Now capture the payment authorization for a payment, Don't capture if you need to check cancel payment");
         capturePayment(paymentApi, merchantPaymentId, amount);
@@ -216,7 +204,7 @@ public class PaymentApiExample {
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
       System.out.println("There is enough balance, now creating payment...");
       Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 1);
-      PaymentDetails paymentDetails = createPaymentAuthorization(paymentApi, payment);
+      PaymentDetails paymentDetails = createPayment(paymentApi, payment, true);
       if (paymentDetails != null) {
         System.out.println("Payment Authorized successfully, Now calling the API to get payment details for payment "
                 + "ID:"+merchantPaymentId);
@@ -246,11 +234,15 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static PaymentDetails createPayment(final PaymentApi apiInstance, Payment payment) {
+  private static PaymentDetails createPayment(final PaymentApi apiInstance, Payment payment, boolean authorization) {
     PaymentDetails result = null;
     try {
+      if(authorization){
+        result = apiInstance.createPaymentAuthorization(payment, "true");
+      }else{
+        result = apiInstance.createPayment(payment, "true");
+      }
 
-      result = apiInstance.createPayment(payment, "true");
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
     } catch (ApiException e) {
