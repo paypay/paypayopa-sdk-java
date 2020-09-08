@@ -50,9 +50,9 @@ public class PaymentApiExample {
     String userAuthorizationId = "USER_AUTHORIZATION_ID";
     preAuthCaptureFlow(walletApiInstance, paymentApi, userAuthorizationId);
     preAuthRevertAuthFlow(walletApiInstance, paymentApi, userAuthorizationId);
-    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, 1, false);
+    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId,  false);
     //Continuous payment flow
-    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, 2, true);
+    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
 
   }
@@ -61,23 +61,7 @@ public class PaymentApiExample {
                                                            String userAuthorizationId, int amount) {
     PaymentDetails result = null;
     try {
-      Payment payment = new Payment();
-      payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
-      payment.setMerchantPaymentId(merchantPaymentId);
-      payment.setUserAuthorizationId(userAuthorizationId);
-      payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
-      payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
-      payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
-      payment.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
-      MerchantOrderItem merchantOrderItem =
-              new MerchantOrderItem()
-                      .category("Dessert").name("Red Velvet Cake")
-                      .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
-                      .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
-      List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
-      merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(merchantOrderItems);
+      Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, amount);
       result = apiInstance.createPaymentAuthorization(payment, "true");
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
@@ -85,6 +69,27 @@ public class PaymentApiExample {
       System.err.println(e.getResponseBody());
     }
     return result;
+  }
+
+  private static Payment getPaymentObject(String merchantPaymentId, String userAuthorizationId, int amount) {
+    Payment payment = new Payment();
+    payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
+    payment.setMerchantPaymentId(merchantPaymentId);
+    payment.setUserAuthorizationId(userAuthorizationId);
+    payment.setRequestedAt(Instant.now().getEpochSecond());
+    payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
+    payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
+    payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
+    payment.setOrderDescription("Payment for Order ID:" + UUID.randomUUID().toString());
+    MerchantOrderItem merchantOrderItem =
+            new MerchantOrderItem()
+                    .category("Dessert").name("Red Velvet Cake")
+                    .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+                    .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+    List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+    merchantOrderItems.add(merchantOrderItem);
+    payment.setOrderItems(merchantOrderItems);
+    return payment;
   }
 
 
@@ -146,16 +151,17 @@ public class PaymentApiExample {
     }
   }
 
-  private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId, int amount, boolean continuousPayment){
+  private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId, boolean continuousPayment){
 
     String merchantPaymentId  = UUID.randomUUID().toString();
     String currency = "JPY";
+    int amount =1;
     WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
       System.out.println("There is enough balance, now creating payment...");
       PaymentDetails paymentDetails;
       if(continuousPayment){
-         paymentDetails = createContinuousPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
+         paymentDetails = createContinuousPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount+1);
       }else{
         paymentDetails = createPayment(paymentApi, merchantPaymentId, userAuthorizationId, amount);
       }
@@ -250,23 +256,7 @@ public class PaymentApiExample {
                                               String userAuthorizationId, int amount) {
     PaymentDetails result = null;
     try {
-      Payment payment = new Payment();
-      payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
-      payment.setMerchantPaymentId(merchantPaymentId);
-      payment.setUserAuthorizationId(userAuthorizationId);
-      payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
-      payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
-      payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
-      payment.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
-      MerchantOrderItem merchantOrderItem =
-              new MerchantOrderItem()
-                      .category("Dessert").name("Red Velvet Cake")
-                      .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
-                      .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
-      List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
-      merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(merchantOrderItems);
+      Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, amount);
       result = apiInstance.createPayment(payment, "true");
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
@@ -280,19 +270,7 @@ public class PaymentApiExample {
                                               String userAuthorizationId, int amount) {
     PaymentDetails result = null;
     try {
-      Payment payment = new Payment();
-      payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
-      payment.setMerchantPaymentId(merchantPaymentId);
-      payment.setUserAuthorizationId(userAuthorizationId);
-      payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
-      payment.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
-      MerchantOrderItem merchantOrderItem =
-              new MerchantOrderItem().category("Dessert").name("Red Velvet Cake").productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
-                      .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
-      List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
-      merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(merchantOrderItems);
+      Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, amount);
       result = apiInstance.createContinuousPayment(payment);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result.getResultInfo().getCode());
