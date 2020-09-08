@@ -1,7 +1,9 @@
 package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Call;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -9,6 +11,7 @@ import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
+import jp.ne.paypay.ApiResponse;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.JSON;
 import jp.ne.paypay.Pair;
@@ -17,9 +20,14 @@ import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.ResultInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,11 +40,26 @@ public class ApiClientTest {
 
     ApiClient apiClient = new ApiClient();
 
+    @Mock
+    Call call;
+    @Mock
+    OkHttpClient httpClient;
+
+    @BeforeEach
+    void  init(){
+        MockitoAnnotations.openMocks(this);
+    }
     @Test
     public void configTest(){
         Configuration configuration = new Configuration();
+        apiClient.setProductionMode(false);
+        apiClient.setApiKey("api-key");
+        apiClient.setApiSecretKey("api-secret-key");
+        apiClient.setBasePath("basePath");
         configuration.setDefaultApiClient(apiClient);
         Assertions.assertNotNull(configuration.getDefaultApiClient());
+        Assertions.assertNotNull(apiClient.getBasePath());
+        Assert.assertFalse(apiClient.isProductionMode());
     }
 
     @Test
@@ -140,7 +163,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void handleResponseTest() throws ApiException {
+    public void handleResponseTest() throws ApiException, IOException {
         Request.Builder requestBuild = new Request.Builder();
         requestBuild.url("http://paypay.ne.jp/v2/qrcode");
         requestBuild.header("content-type", "application/json");
@@ -174,10 +197,17 @@ public class ApiClientTest {
         }.getType();
         result = apiClient.handleResponse(response, localVarReturnType);
         Assert.assertTrue(result instanceof File);
+
+        Mockito.when(call.execute()).thenReturn(response);
+        ApiResponse<Object> apiResponse = apiClient.execute(call, localVarReturnType);
+        Assertions.assertEquals(200, apiResponse.getStatusCode());
+        Mockito.when(call.execute()).thenThrow(IOException.class);
+        Assert.assertThrows(ApiException.class, ()->apiClient.execute(call, new TypeToken<File>() {
+        }.getType()));
     }
 
     @Test
-    public void handleUnsuccessfulResponseTest() throws ApiException {
+    public void handleUnsuccessfulResponseTest() throws ApiException, IOException {
         Request.Builder requestBuild = new Request.Builder();
         requestBuild.url("http://paypay.ne.jp/v2/qrcode");
         requestBuild.header("content-type", "application/json");
@@ -196,7 +226,8 @@ public class ApiClientTest {
         QRCodeDetails qrCodeDetails = new QRCodeDetails();
         qrCodeDetails.setResultInfo(resultInfo);
         JSON json = new JSON();
-        builder.body(ResponseBody.create(MediaType.parse("application/json"), json.serialize(qrCodeDetails) ));
+        ResponseBody responseBody = ResponseBody.create(MediaType.parse("application/json"), json.serialize(qrCodeDetails));
+        builder.body(responseBody);
         Response response = builder.build();
 
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
@@ -225,7 +256,6 @@ public class ApiClientTest {
         headerParams.put("content-type", "application/json");
         String[] localVarAuthNames = new String[]{"HmacAuth"};
         Request request = apiClient.buildRequest("/v2/qrcode", "POST", queryParams, queryParams, qrCode, headerParams, null, localVarAuthNames);
-        System.out.println(request);
         Assert.assertEquals(request.method(), "POST");
         Assert.assertTrue(request.urlString().contains("/v2/qrcode"));
     }
@@ -245,5 +275,25 @@ public class ApiClientTest {
         Assertions.assertEquals(apiException.getResponseBody(), "ResponseBody");
         Assertions.assertNull(apiException.getResponseHeaders());
 
+    }
+
+    @Test
+    public void buildRequestBodyFormEncodingTest(){
+        Map<String, Object> formParams = new HashMap<>();
+        formParams.put("name","paypay");
+        formParams.put("expiresAt", new Date());
+        RequestBody requestBody = apiClient.buildRequestBodyFormEncoding(formParams);
+        Assertions.assertEquals(MediaType.parse("application/x-www-form-urlencoded"),requestBody.contentType());
+    }
+
+    @Test
+    public void buildCallTest() throws ApiException {
+        Map<String, Object> formParams = new HashMap<>();
+        formParams.put("name","paypay");
+        formParams.put("expiresAt", new Date());
+        Map<String, String> headerParams = new HashMap<>();
+        headerParams.put("content-type", "application/json");
+        Call call = apiClient.buildCall("/v2/path","GET", null, null, null, headerParams, formParams, new String[]{"HmacAuth"});
+        Assertions.assertNotNull(call);
     }
 }

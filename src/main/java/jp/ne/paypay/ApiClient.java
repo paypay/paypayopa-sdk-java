@@ -1,35 +1,24 @@
 package jp.ne.paypay;
 
-import jp.ne.paypay.auth.Authentication;
-import jp.ne.paypay.auth.HmacAuth;
 import com.squareup.okhttp.Call;
-import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.http.HttpMethod;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
+import jp.ne.paypay.auth.Authentication;
+import jp.ne.paypay.auth.HmacAuth;
+import okio.BufferedSink;
+import okio.Okio;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.SecureRandom;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -44,33 +33,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-
-import org.apache.commons.lang3.StringUtils;
-import okio.BufferedSink;
-import okio.Okio;
-
 public class ApiClient {
 
     private String basePath = "https://stg-api.sandbox.paypay.ne.jp";
     private String basePathProd = "https://api.paypay.ne.jp";
     private String basePathSandbox = "https://stg-api.sandbox.paypay.ne.jp";
-    private boolean debugging = false;
     private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
     private String tempFolderPath = null;
-
     private Map<String, Authentication> authentications;
-
     private OkHttpClient httpClient;
     private JSON json;
-
-    private HttpLoggingInterceptor loggingInterceptor;
     private String assumeMerchant;
     private boolean productionMode;
 
@@ -82,7 +54,7 @@ public class ApiClient {
         json = new JSON();
         // Set default User-Agent.
         setUserAgent("PayPay-SDK/1.0.0/java");
-        authentications = new HashMap<String, Authentication>();
+        authentications = new HashMap<>();
         authentications.put("HmacAuth", new HmacAuth());
         authentications = Collections.unmodifiableMap(authentications);
     }
@@ -132,15 +104,6 @@ public class ApiClient {
         return this;
     }
 
-    public HttpLoggingInterceptor getLoggingInterceptor() {
-        return loggingInterceptor;
-    }
-
-    public ApiClient setLoggingInterceptor(HttpLoggingInterceptor loggingInterceptor) {
-        this.loggingInterceptor = loggingInterceptor;
-        return this;
-    }
-
     public ApiClient setProductionMode(boolean productionMode) {
         this.productionMode = productionMode;
         if(productionMode){
@@ -164,7 +127,7 @@ public class ApiClient {
     /**
      * Set base path
      *
-     * @param basePath Base path of the URL (e.g https://stg-api.paypay.ne.jp
+     * @param basePath Base path of the URL (e.g https://stg-api.sandbox.paypay.ne.jp)
      * @return An instance of OkHttpClient
      */
     public ApiClient setBasePath(String basePath) {
@@ -204,25 +167,6 @@ public class ApiClient {
         return this;
     }
 
-    /**
-     * Get JSON
-     *
-     * @return JSON object
-     */
-    public JSON getJSON() {
-        return json;
-    }
-
-    /**
-     * Set JSON
-     *
-     * @param json JSON object
-     * @return ApiClient
-     */
-    public ApiClient setJSON(JSON json) {
-        this.json = json;
-        return this;
-    }
 
     /**
      * Get authentications (key: authentication name, value: authentication).
@@ -318,35 +262,6 @@ public class ApiClient {
         return this;
     }
 
-    /**
-     * Check that whether debugging is enabled for this API client.
-     *
-     * @return True if debugging is enabled, false otherwise.
-     */
-    public boolean isDebugging() {
-        return debugging;
-    }
-
-    /**
-     * Enable/disable debugging for this API client.
-     *
-     * @param debugging To enable (true) or disable (false) debugging
-     * @return ApiClient
-     */
-    public ApiClient setDebugging(boolean debugging) {
-        if (debugging != this.debugging) {
-            if (debugging) {
-                loggingInterceptor = new HttpLoggingInterceptor();
-                loggingInterceptor.setLevel(Level.BODY);
-                httpClient.interceptors().add(loggingInterceptor);
-            } else {
-                httpClient.interceptors().remove(loggingInterceptor);
-                loggingInterceptor = null;
-            }
-        }
-        this.debugging = debugging;
-        return this;
-    }
 
     /**
      * The path of temporary folder used to store downloaded files from endpoints
@@ -729,48 +644,6 @@ public class ApiClient {
     }
 
     /**
-     * {@link #executeAsync(Call, Type, ApiCallback)}
-     *
-     * @param <T> Type
-     * @param call An instance of the Call object
-     * @param callback ApiCallback object
-     */
-    public <T> void executeAsync(Call call, ApiCallback<T> callback) {
-        executeAsync(call, null, callback);
-    }
-
-    /**
-     * Execute HTTP call asynchronously.
-     *
-     * @see #execute(Call, Type)
-     * @param <T> Type
-     * @param call The callback to be executed when the API call finishes
-     * @param returnType Return type
-     * @param callback ApiCallback
-     */
-    @SuppressWarnings("unchecked")
-    public <T> void executeAsync(Call call, final Type returnType, final ApiCallback<T> callback) {
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {
-                callback.onFailure(new ApiException(e), 0, null);
-            }
-
-            @Override
-            public void onResponse(Response response) throws IOException {
-                T result;
-                try {
-                    result = (T) handleResponse(response, returnType);
-                } catch (ApiException e) {
-                    callback.onFailure(e, response.code(), response.headers().toMultimap());
-                    return;
-                }
-                callback.onSuccess(result, response.code(), response.headers().toMultimap());
-            }
-        });
-    }
-
-    /**
      * Handle the given response, return the deserialized object when the response is successful.
      *
      * @param <T> Type
@@ -862,8 +735,6 @@ public class ApiClient {
             reqBody = null;
         } else if ("application/x-www-form-urlencoded".equals(contentType)) {
             reqBody = buildRequestBodyFormEncoding(formParams);
-        } else if ("multipart/form-data".equals(contentType)) {
-            reqBody = buildRequestBodyMultipart(formParams);
         } else if (body == null) {
             if ("DELETE".equals(method)) {
                 // allow calling DELETE without sending a request body
@@ -971,43 +842,5 @@ public class ApiClient {
             formBuilder.add(param.getKey(), parameterToString(param.getValue()));
         }
         return formBuilder.build();
-    }
-
-    /**
-     * Build a multipart (file uploading) request body with the given form parameters,
-     * which could contain text fields and file fields.
-     *
-     * @param formParams Form parameters in the form of Map
-     * @return RequestBody
-     */
-    public RequestBody buildRequestBodyMultipart(Map<String, Object> formParams) {
-        MultipartBuilder mpBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
-        for (Entry<String, Object> param : formParams.entrySet()) {
-            if (param.getValue() instanceof File) {
-                File file = (File) param.getValue();
-                Headers partHeaders = Headers.of("Content-Disposition", "form-data; name=\"" + param.getKey() + "\"; filename=\"" + file.getName() + "\"");
-                MediaType mediaType = MediaType.parse(guessContentTypeFromFile(file));
-                mpBuilder.addPart(partHeaders, RequestBody.create(mediaType, file));
-            } else {
-                Headers partHeaders = Headers.of("Content-Disposition", "form-data; name=\"" + param.getKey() + "\"");
-                mpBuilder.addPart(partHeaders, RequestBody.create(null, parameterToString(param.getValue())));
-            }
-        }
-        return mpBuilder.build();
-    }
-
-    /**
-     * Guess Content-Type header from the given file (defaults to "application/octet-stream").
-     *
-     * @param file The given file
-     * @return The guessed Content-Type
-     */
-    public String guessContentTypeFromFile(File file) {
-        String contentType = URLConnection.guessContentTypeFromName(file.getName());
-        if (contentType == null) {
-            return "application/octet-stream";
-        } else {
-            return contentType;
-        }
     }
 }

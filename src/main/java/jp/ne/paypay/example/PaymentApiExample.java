@@ -50,9 +50,9 @@ public class PaymentApiExample {
     String userAuthorizationId = "USER_AUTHORIZATION_ID";
     preAuthCaptureFlow(walletApiInstance, paymentApi, userAuthorizationId);
     preAuthRevertAuthFlow(walletApiInstance, paymentApi, userAuthorizationId);
-    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, false);
-//Continuous payment flow
-    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
+    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, 1, false);
+    //Continuous payment flow
+    directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, 2, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
 
   }
@@ -77,7 +77,7 @@ public class PaymentApiExample {
                       .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
       List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
       merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+      payment.setOrderItems(merchantOrderItems);
       result = apiInstance.createPaymentAuthorization(payment, "true");
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
@@ -146,10 +146,10 @@ public class PaymentApiExample {
     }
   }
 
-  private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId, boolean continuousPayment){
+  private static void directDebitFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId, int amount, boolean continuousPayment){
 
     String merchantPaymentId  = UUID.randomUUID().toString();
-    int amount =1; String currency = "JPY";
+    String currency = "JPY";
     WalletBalance walletBalance = getWalletBalance(walletApiInstance, userAuthorizationId, amount, currency);
     if(walletBalance != null && walletBalance.getData().isHasEnoughBalance()){
       System.out.println("There is enough balance, now creating payment...");
@@ -266,7 +266,7 @@ public class PaymentApiExample {
                       .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
       List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
       merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+      payment.setOrderItems(merchantOrderItems);
       result = apiInstance.createPayment(payment, "true");
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
