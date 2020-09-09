@@ -8,6 +8,7 @@ import jp.ne.paypay.model.AuthorizationScope;
 import jp.ne.paypay.model.Capture;
 import jp.ne.paypay.model.CaptureObject;
 import jp.ne.paypay.model.LinkQRCodeResponse;
+import jp.ne.paypay.model.LinkQRCodeResponseData;
 import jp.ne.paypay.model.MerchantOrderItem;
 import jp.ne.paypay.model.MerchantOrderItemResponse;
 import jp.ne.paypay.model.MoneyAmount;
@@ -27,8 +28,10 @@ import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.RevertAuthResponse;
 import jp.ne.paypay.model.RevertAuthResponseData;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -70,6 +73,8 @@ public class PaymentApiTest {
         NotDataResponse notDataResponse = new NotDataResponse();
         notDataResponse.setResultInfo(resultInfo);
         ApiResponse<NotDataResponse> notDataResponseApiResponse = new ApiResponse<>(00001, null, notDataResponse);
+        Assertions.assertEquals(notDataResponseApiResponse.getStatusCode(), 00001);
+        Assertions.assertNull(notDataResponseApiResponse.getHeaders());
         Mockito.when(apiClient.escapeString(merchantPaymentId)).thenReturn(merchantPaymentId);
         Mockito.when(api.cancelPaymentWithHttpInfo(merchantPaymentId)).thenReturn(notDataResponseApiResponse);
         NotDataResponse response = api.cancelPayment(merchantPaymentId);
@@ -483,15 +488,26 @@ public class PaymentApiTest {
         accountLinkQRCode.setPhoneNumber("phone_number");
         accountLinkQRCode.setReferenceId("reference_id");
         accountLinkQRCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);
-
         LinkQRCodeResponse linkQRCodeResponse = new LinkQRCodeResponse();
         linkQRCodeResponse.setResultInfo(resultInfo);
+        LinkQRCodeResponseData linkQRCodeResponseData = new LinkQRCodeResponseData();
+        linkQRCodeResponseData.setLinkQRCodeURL("urlLink");
+        linkQRCodeResponse.setData(linkQRCodeResponseData);
         ApiResponse<LinkQRCodeResponse> paymentDetailsApiResponse = new ApiResponse<>(8100001, null, linkQRCodeResponse);
         Mockito.when(api.createAccountLinkQRCodeWithHttpInfo(accountLinkQRCode)).thenReturn(paymentDetailsApiResponse);
         Assertions.assertNotNull(accountLinkQRCode.toString());
+        Assertions.assertNotNull(accountLinkQRCode.getScopes());
+        Assertions.assertNotNull(accountLinkQRCode.getNonce());
+        Assertions.assertNotNull(accountLinkQRCode.getDeviceId());
+        Assertions.assertNotNull(accountLinkQRCode.getRedirectUrl());
+        Assertions.assertNotNull(accountLinkQRCode.getPhoneNumber());
+        Assertions.assertNotNull(accountLinkQRCode.getReferenceId());
+
         LinkQRCodeResponse response = api.createAccountLinkQRCode(accountLinkQRCode);
         Assertions.assertNotNull(response.toString());
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assertions.assertNotNull(response.getData());
+        Assertions.assertNotNull(response.getData().getLinkQRCodeURL());
     }
 
     /**
@@ -575,5 +591,39 @@ public class PaymentApiTest {
         Assertions.assertNotNull(response.getData().getOrderItems());
         Assertions.assertNotNull(response.getData().getAuthorizedAt());
 
+    }
+
+    @Test
+    @DisplayName("Constraint Violations Test")
+    public void constraintViolationsTest() throws ApiException {
+
+        Payment payment = new Payment();
+        payment.setAmount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        //payment.setMerchantPaymentId("merchantPaymentId");
+        payment.setUserAuthorizationId("userAuthorizationId");
+        payment.setRequestedAt(Instant.now().getEpochSecond());
+        payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
+        payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
+        payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
+        payment.setOrderDescription("Payment for Order ID:" + UUID.randomUUID().toString());
+        MerchantOrderItem merchantOrderItem =
+                new MerchantOrderItem()
+                        .category("Dessert").name("Red Velvet Cake")
+                        .productId(RandomStringUtils.randomAlphanumeric(8)).quantity(1)
+                        .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
+        List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
+        merchantOrderItems.add(merchantOrderItem);
+        payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+
+        PaymentDetails paymentDetails = new PaymentDetails();
+        paymentDetails.setResultInfo(resultInfo);
+        payment.setStatus(PaymentState.StatusEnum.AUTHORIZED);
+        payment.setAuthorizedAt(Instant.now().getNano());
+        payment.setPaymentId("paymentId");
+        paymentDetails.setData(payment);
+        String agreeSimilarTransaction = "True";
+        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, paymentDetails);
+        Mockito.when(api.createPaymentAuthorizationWithHttpInfo(payment, agreeSimilarTransaction)).thenReturn(paymentDetailsApiResponse);
+        Assert.assertThrows(IllegalArgumentException.class, () -> api.createPaymentAuthorization(payment, agreeSimilarTransaction));
     }
 }
