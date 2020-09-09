@@ -1,6 +1,5 @@
 # PayPay SDK - JAVA
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/701cdfe4502d48f7bb4063a94592b7ac)](https://app.codacy.com/gh/paypay/paypayopa-sdk-java?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-java&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/jp.ne.paypay/paypayopa)](https://search.maven.org/artifact/jp.ne.paypay/paypayopa)
 [![javadoc](https://javadoc.io/badge2/jp.ne.paypay/paypayopa/javadoc.svg)](https://javadoc.io/doc/jp.ne.paypay/paypayopa)
@@ -11,6 +10,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/64c7339473ea7711415c/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-java/maintainability)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_shield)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/paypay/paypayopa-sdk-java)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/701cdfe4502d48f7bb4063a94592b7ac)](https://app.codacy.com/gh/paypay/paypayopa-sdk-java?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-java&utm_campaign=Badge_Grade_Dashboard)
 
 Java SDK for interacting with PayPay APIs
 
