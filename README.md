@@ -1,5 +1,6 @@
 # PayPay SDK - JAVA
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/701cdfe4502d48f7bb4063a94592b7ac)](https://app.codacy.com/gh/paypay/paypayopa-sdk-java?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-java&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/jp.ne.paypay/paypayopa)](https://search.maven.org/artifact/jp.ne.paypay/paypayopa)
 [![javadoc](https://javadoc.io/badge2/jp.ne.paypay/paypayopa/javadoc.svg)](https://javadoc.io/doc/jp.ne.paypay/paypayopa)
