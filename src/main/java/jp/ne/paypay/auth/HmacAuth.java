@@ -1,7 +1,10 @@
 package jp.ne.paypay.auth;
 
 import jp.ne.paypay.Pair;
+import org.apache.commons.lang3.RandomStringUtils;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
@@ -10,11 +13,6 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.lang3.RandomStringUtils;
 
 public class HmacAuth implements Authentication {
     private String apiKey;

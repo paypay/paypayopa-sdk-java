@@ -1,7 +1,6 @@
 package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
-import jp.ne.paypay.ApiCallback;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
@@ -52,11 +51,9 @@ public class UserApi {
         
      */
     private com.squareup.okhttp.Call getMaskedUserProfileCall(String userAuthorizationId) throws ApiException {
-        Object localVarPostBody = null;
-        
         // create path and map variables
         String localVarPath = "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}"
-                .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));;
+                .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -80,9 +77,8 @@ public class UserApi {
 
         String[] localVarAuthNames = new String[] { HMAC_AUTH };
         apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
-    @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call getMaskedUserProfileValidateBeforeCall(String userAuthorizationId) throws ApiException {
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
@@ -127,8 +123,6 @@ public class UserApi {
         
      */
     private com.squareup.okhttp.Call getUserAuthorizationStatusCall(String userAuthorizationId) throws ApiException {
-        Object localVarPostBody = null;
-        
         // create path and map variables
         String localVarPath = "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}"
             .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));
@@ -153,10 +147,9 @@ public class UserApi {
         localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[] { HMAC_AUTH };
         apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
     
-    @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call getUserAuthorizationStatusValidateBeforeCall(String userAuthorizationId) throws ApiException {
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
@@ -201,8 +194,6 @@ public class UserApi {
         
      */
     private com.squareup.okhttp.Call unlinkUserCall(String userAuthorizationId) throws ApiException {
-        Object localVarPostBody = null;
-        
         // create path and map variables
         String localVarPath = "/v2/user/authorizations/{userAuthorizationId}"
             .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));
@@ -227,10 +218,9 @@ public class UserApi {
         localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[] { HMAC_AUTH };
         apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
     
-    @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call unlinkUserValidateBeforeCall(String userAuthorizationId) throws ApiException {
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {

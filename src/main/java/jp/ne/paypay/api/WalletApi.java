@@ -1,7 +1,6 @@
 package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
-import jp.ne.paypay.ApiCallback;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
@@ -50,8 +49,7 @@ public class WalletApi {
      */
     private com.squareup.okhttp.Call checkWalletBalanceCall(String userAuthorizationId, Integer amount, String currency,
             ProductType productType) throws ApiException {
-        Object localVarPostBody = null;
-        
+
         // create path and map variables
         String localVarPath = "/v2/wallet/check_balance";
 
@@ -85,10 +83,9 @@ public class WalletApi {
         String[] localVarAuthNames = new String[] { "HmacAuth" };
         apiClient.setReadTimeout(15);
         return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams,
-                localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+                null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
     
-    @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call checkWalletBalanceValidateBeforeCall(String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
         
         
