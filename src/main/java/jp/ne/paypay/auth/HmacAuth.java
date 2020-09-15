@@ -57,7 +57,7 @@ public class HmacAuth implements Authentication {
             Mac sha256HMAC = Mac.getInstance(HMAC_KEY);
             sha256HMAC.init(signingKey);
             byte[] rawHmac = sha256HMAC.doFinal(dataToSign);
-            return java.util.Base64.getEncoder().encodeToString(rawHmac);
+            return Base64.getEncoder().encodeToString(rawHmac);
         } catch (GeneralSecurityException e) {
             System.err.println("Unexpected error while creating hash: " + e.getMessage());
             throw new IllegalArgumentException(e);

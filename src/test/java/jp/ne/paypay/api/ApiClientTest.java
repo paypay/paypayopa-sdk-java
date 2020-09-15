@@ -261,7 +261,7 @@ public class ApiClientTest {
     }
 
     @Test
-    public void ApiExceptionTest(){
+    public void apiExceptionTest(){
         ApiException apiException = new ApiException();
         Assertions.assertNull(apiException.getCause());
         apiException = new ApiException(new Throwable("throwable"));

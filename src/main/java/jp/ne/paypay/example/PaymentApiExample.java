@@ -51,6 +51,7 @@ public class PaymentApiExample {
     //Continuous payment flow
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
+    pendingPayment(paymentApi, userAuthorizationId);
 
   }
 
@@ -80,7 +81,7 @@ public class PaymentApiExample {
     try{
       AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
       List<AuthorizationScope> scopes = new ArrayList<>();
-      scopes.add(AuthorizationScope.DIRECT_DEBIT);
+      scopes.add(AuthorizationScope.PENDING_PAYMENTS);
       accountLinkQRCode.setScopes(scopes);
       accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
       accountLinkQRCode.setDeviceId("device_id");
@@ -160,6 +161,14 @@ public class PaymentApiExample {
           cancelPayment(paymentApi, merchantPaymentId);
       }
     }
+
+  }
+
+  private static void pendingPayment(PaymentApi paymentApi, String userAuthorizationId) {
+
+    String merchantPaymentId = UUID.randomUUID().toString();
+    Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 1);
+    createPendingPayment(paymentApi, payment);
 
   }
 
@@ -257,6 +266,19 @@ public class PaymentApiExample {
       result = apiInstance.createContinuousPayment(payment);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result.getResultInfo().getCode());
+    } catch (ApiException e) {
+      System.err.println(e.getResponseBody());
+    }
+    return result;
+  }
+
+  private static PaymentDetails createPendingPayment(final PaymentApi apiInstance, Payment payment) {
+    PaymentDetails result = null;
+    try {
+      result = apiInstance.createPendingPayment(payment);
+      System.out.println("\nAPI RESPONSE\n------------------\n");
+      System.out.println(result.getResultInfo().getCode());
+      System.out.println(result);
     } catch (ApiException e) {
       System.err.println(e.getResponseBody());
     }

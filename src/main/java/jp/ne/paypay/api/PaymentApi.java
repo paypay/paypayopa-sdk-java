@@ -792,7 +792,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<LinkQRCodeResponse> createAccountLinkQRCodeWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = CreateAccountLinkQRCodeCall(body);
+        com.squareup.okhttp.Call call = createAccountLinkQRCodeCall(body);
         Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
@@ -805,7 +805,7 @@ public class PaymentApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    private com.squareup.okhttp.Call CreateAccountLinkQRCodeCall(Object body) throws ApiException {
+    private com.squareup.okhttp.Call createAccountLinkQRCodeCall(Object body) throws ApiException {
 
         // create path and map variables
         String localVarPath = "/v1/qr/sessions";
@@ -971,5 +971,69 @@ public class PaymentApi {
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
+    /**
+     * Create a pending payment
+     * Sends a push notification to the user requesting payment.  **Timeout: 30s**
+     *
+     * @param body                    Payment
+     * @return PaymentDetails
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public PaymentDetails createPendingPayment(Payment body) throws ApiException {
+        String message = validator.validate(body);
+        if (message != null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<PaymentDetails> resp = createPendingPaymentWithHttpInfo(body);
+        return resp.getData();
+    }
+
+    /**
+     * Create a pending payment
+     * Sends a push notification to the user requesting payment.  **Timeout: 30s**
+     *
+     * @param body                    Payment
+     * @return ApiResponse&lt;PaymentDetails&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<PaymentDetails> createPendingPaymentWithHttpInfo(Object body) throws ApiException {
+        com.squareup.okhttp.Call call = createPendingPaymentCall(body);
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Build call for PendingPayment
+     *
+     * @param body                    Payment
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    private com.squareup.okhttp.Call createPendingPaymentCall(Object body) throws ApiException {
+
+        // create path and map variables
+        String localVarPath = "/v1/requestOrder";
+
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+        Map<String, Object> localVarFormParams = new HashMap<>();
+
+        final String[] localVarAccepts = {
+                APPLICATION_JSON
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+
+        final String[] localVarContentTypes = {
+
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        apiClient.setReadTimeout(30);
+        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    }
 
 }
