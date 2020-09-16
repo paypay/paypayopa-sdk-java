@@ -169,6 +169,8 @@ public class PaymentApiExample {
     String merchantPaymentId = UUID.randomUUID().toString();
     Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 1);
     createPendingPayment(paymentApi, payment);
+    PaymentDetails paymentDetails = getPendingPaymentDetails(paymentApi, merchantPaymentId);
+    System.out.println(paymentDetails);
 
   }
 
@@ -284,6 +286,20 @@ public class PaymentApiExample {
     }
     return result;
   }
+
+  private static PaymentDetails getPendingPaymentDetails(final PaymentApi apiInstance, String merchantPaymentId) {
+    PaymentDetails result = null;
+    try {
+      result = apiInstance.getPendingPaymentDetails(merchantPaymentId);
+      System.out.println("\nAPI RESPONSE\n------------------\n");
+      System.out.println(result.getResultInfo().getCode());
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println(e.getResponseBody());
+    }
+    return result;
+  }
+
 
   private static void capturePayment(final PaymentApi apiInstance, String merchantPaymentId, int amount){
     try {
