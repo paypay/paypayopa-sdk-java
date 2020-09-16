@@ -556,39 +556,6 @@ public class PaymentApiTest {
 
     }
 
-    /**
-     * Create pending payment
-     *
-     * Sends a push notification to the user requesting payment.  **Timeout: 30s**
-     *
-     * @throws ApiException if the Api call fails
-     */
-    @Test
-    public void createPendingPaymentTest() throws ApiException {
-
-
-        PaymentDetails paymentDetails = new PaymentDetails();
-        paymentDetails.resultInfo(resultInfo);
-        payment.status(PaymentState.StatusEnum.COMPLETED).authorizedAt(Instant.now().getNano()).paymentId("paymentId");
-        paymentDetails.data(payment);
-        Assertions.assertNotNull(payment.toString());
-        ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(90001, null, paymentDetails);
-        Mockito.when(api.createPendingPaymentWithHttpInfo(payment)).thenReturn(paymentDetailsApiResponse);
-        PaymentDetails response = api.createPendingPayment(payment);
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
-        Assertions.assertEquals(response.getData().getMerchantPaymentId(), "merchantPaymentId");
-        Assertions.assertEquals(response.getData().getUserAuthorizationId(), "userAuthorizationId");
-        Assertions.assertEquals(response.getData().getStatus(), PaymentState.StatusEnum.COMPLETED);
-        Assertions.assertNotNull(response.getData());
-        Assertions.assertNotNull(response.getData().getTerminalId());
-        Assertions.assertNotNull(response.getData().getOrderReceiptNumber());
-        Assertions.assertNotNull(response.getData().getAmount());
-        Assertions.assertNotNull(response.getData().getRequestedAt());
-        Assertions.assertNotNull(response.getData().getOrderItems());
-        Assertions.assertNotNull(response.getData().getAuthorizedAt());
-
-    }
-
     @Test
     @DisplayName("Constraint Violations Test")
     public void constraintViolationsTest() throws ApiException {

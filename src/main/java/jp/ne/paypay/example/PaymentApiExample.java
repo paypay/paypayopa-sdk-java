@@ -4,6 +4,7 @@ import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.api.PaymentApi;
+import jp.ne.paypay.api.PendingPaymentApi;
 import jp.ne.paypay.api.WalletApi;
 import jp.ne.paypay.model.AccountLinkQRCode;
 import jp.ne.paypay.model.AuthorizationScope;
@@ -39,6 +40,7 @@ public class PaymentApiExample {
     apiClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
 
     PaymentApi paymentApi = new PaymentApi(apiClient);
+    PendingPaymentApi pendingPaymentApi = new PendingPaymentApi(apiClient);
     WalletApi walletApiInstance = new WalletApi(apiClient);
 
     createAccountLinkQrCode(paymentApi);
@@ -50,7 +52,7 @@ public class PaymentApiExample {
     //Continuous payment flow
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
-    pendingPayment(paymentApi, userAuthorizationId);
+    pendingPayment(pendingPaymentApi, userAuthorizationId);
 
   }
 
@@ -162,14 +164,15 @@ public class PaymentApiExample {
 
   }
 
-  private static void pendingPayment(PaymentApi paymentApi, String userAuthorizationId) {
+  private static void pendingPayment(PendingPaymentApi paymentApi, String userAuthorizationId) {
 
     String merchantPaymentId = UUID.randomUUID().toString();
-    Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 1);
+    Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 2);
     createPendingPayment(paymentApi, payment);
     PaymentDetails paymentDetails = getPendingPaymentDetails(paymentApi, merchantPaymentId);
-    System.out.println(paymentDetails);
-
+    if(paymentDetails != null && paymentDetails.getData() != null){
+      cancelPendingOrder(paymentApi, paymentDetails.getData().getMerchantPaymentId());
+    }
   }
 
   private static void preAuthCaptureFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId){
@@ -272,7 +275,7 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static PaymentDetails createPendingPayment(final PaymentApi apiInstance, Payment payment) {
+  private static PaymentDetails createPendingPayment(final PendingPaymentApi apiInstance, Payment payment) {
     PaymentDetails result = null;
     try {
       result = apiInstance.createPendingPayment(payment);
@@ -285,10 +288,10 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static PaymentDetails getPendingPaymentDetails(final PaymentApi apiInstance, String merchantPaymentId) {
+  private static PaymentDetails getPendingPaymentDetails(final PendingPaymentApi apiInstance, String merchantPaymentId) {
     PaymentDetails result = null;
     try {
-      result = apiInstance.getPendingPaymentDetails(merchantPaymentId);
+      result = apiInstance.getPaymentDetails(merchantPaymentId);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result.getResultInfo().getCode());
       System.out.println(result);
@@ -296,6 +299,17 @@ public class PaymentApiExample {
       System.err.println(e.getResponseBody());
     }
     return result;
+  }
+
+  private static void cancelPendingOrder(final PendingPaymentApi apiInstance, String merchantPaymentId) {
+    try {
+      NotDataResponse result = apiInstance.cancelPendingOrder(merchantPaymentId);
+      System.out.println("\n\nAPI RESPONSE\n------------------\n");
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling PaymentApi#cancelPayment" + e.getMessage());
+      System.err.println(e.getResponseBody());
+    }
   }
 
 
