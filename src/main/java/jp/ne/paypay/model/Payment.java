@@ -2,6 +2,7 @@ package jp.ne.paypay.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class Payment extends PaymentState {
   
   @SerializedName("requestedAt")
   @NotNull(message =  "requestedAt is required")
-  private Long requestedAt = null;
+  private Long requestedAt = Instant.now().getEpochSecond();
   
   @SerializedName("storeId")
   @Size(max =255 ,message = "maximum 255 characters allowed for storeId")

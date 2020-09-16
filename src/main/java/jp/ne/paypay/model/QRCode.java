@@ -7,6 +7,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class QRCode {
   private String terminalId = null;
   
   @SerializedName("requestedAt")
-  private Long requestedAt = null;
+  private Long requestedAt = Instant.now().getEpochSecond();
   
   @SerializedName("isAuthorization")
   private Boolean isAuthorization = null;
