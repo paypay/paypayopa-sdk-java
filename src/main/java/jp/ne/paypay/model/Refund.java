@@ -2,6 +2,7 @@ package jp.ne.paypay.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.Instant;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -32,7 +33,7 @@ public class Refund extends RefundState {
 
     @SerializedName("requestedAt")
     @NotNull(message = "requestedAt is required")
-    private Long requestedAt = null;
+    private Long requestedAt = Instant.now().getEpochSecond();
 
     @SerializedName("reason")
     @Size(max = 255, message = "maximum 255 characters allowed for reason")
