@@ -2,6 +2,7 @@ package jp.ne.paypay.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.time.Instant;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -22,7 +23,7 @@ public class PaymentStateRevert {
   private String paymentId = null;
   
   @SerializedName("requestedAt")
-  private Long requestedAt = null;
+  private Long requestedAt = Instant.now().getEpochSecond();
   
   @SerializedName("reason")
   private String reason = null;

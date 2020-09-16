@@ -24,7 +24,6 @@ import jp.ne.paypay.model.RevertAuthResponse;
 import jp.ne.paypay.model.WalletBalance;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -59,7 +58,6 @@ public class PaymentApiExample {
     payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
     payment.setMerchantPaymentId(merchantPaymentId);
     payment.setUserAuthorizationId(userAuthorizationId);
-    payment.setRequestedAt(Instant.now().getEpochSecond());
     payment.setStoreId(RandomStringUtils.randomAlphabetic(8));
     payment.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
     payment.setOrderReceiptNumber(RandomStringUtils.randomAlphanumeric(8));
@@ -270,7 +268,6 @@ public class PaymentApiExample {
       captureObject.setMerchantPaymentId(merchantPaymentId);
       captureObject.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
       captureObject.setOrderDescription("new Order");
-      captureObject.setRequestedAt(Instant.now().getEpochSecond());
       PaymentDetails paymentDetails = apiInstance.capturePaymentAuth(captureObject);
       System.out.println(paymentDetails);
     } catch (ApiException e) {
@@ -287,7 +284,6 @@ public class PaymentApiExample {
       refund.setMerchantRefundId(refundId);
       refund.setPaymentId(paymentId);
       refund.setReason("Testing");
-      refund.setRequestedAt(Instant.now().getEpochSecond());
       RefundDetails result = apiInstance.refundPayment(refund);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
@@ -306,7 +302,6 @@ public class PaymentApiExample {
       qrCode.setStoreId(RandomStringUtils.randomAlphabetic(8));
       qrCode.setStoreInfo("Just Bake");
       qrCode.setTerminalId(RandomStringUtils.randomAlphanumeric(8));
-      qrCode.setRequestedAt(Instant.now().getEpochSecond());
       qrCode.setRedirectUrl("https://paypay.ne.jp/");
       qrCode.setRedirectType(QRCode.RedirectTypeEnum.WEB_LINK);//For Deep Link, RedirectTypeEnum.APP_DEEP_LINK
       qrCode.setOrderDescription("Payment for Order ID:"+UUID.randomUUID().toString());
@@ -370,7 +365,6 @@ public class PaymentApiExample {
       PaymentStateRevert payment = new PaymentStateRevert();
       payment.setPaymentId(paymentId);
       payment.setMerchantRevertId(UUID.randomUUID().toString());
-      payment.setRequestedAt(Instant.now().getEpochSecond());
       RevertAuthResponse result = apiInstance.revertAuth(payment);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
