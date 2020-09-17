@@ -9,6 +9,9 @@ import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
 import jp.ne.paypay.model.PaymentState;
+import jp.ne.paypay.model.Refund;
+import jp.ne.paypay.model.RefundDetails;
+import jp.ne.paypay.model.RefundState;
 import jp.ne.paypay.model.ResultInfo;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
@@ -29,6 +32,8 @@ public class PendingPaymentApiTest {
 
     @Mock
     private final PendingPaymentApi api = Mockito.spy(new PendingPaymentApi());
+    @Mock
+    private final PaymentApi paymentApi = Mockito.spy(new PaymentApi());
     private ResultInfo resultInfo;
     private ApiClient apiClient;
     private Payment payment;
@@ -37,6 +42,7 @@ public class PendingPaymentApiTest {
     public void setUp() {
         apiClient = Mockito.mock(ApiClient.class);
         api.setApiClient(apiClient);
+        paymentApi.setApiClient(apiClient);
         resultInfo = new ResultInfo();
         resultInfo.setMessage("SUCCESS");
         payment = new Payment();
@@ -132,4 +138,54 @@ public class PendingPaymentApiTest {
         NotDataResponse response = api.cancelPendingOrder(merchantPaymentId);
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
+
+    /**
+     * Refund a payment
+     *
+     * Refund a payment.  **Timeout: 30s**
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void refundPaymentTest() throws ApiException {
+
+        Refund refund = new Refund();
+        refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+        refund.setMerchantRefundId("refundId");
+        refund.setPaymentId("paymentId");
+        refund.setReason("Testing");
+        refund.setRequestedAt(Instant.now().getEpochSecond());
+        RefundDetails refundDetails = new RefundDetails();
+        refundDetails.setResultInfo(resultInfo);
+        refund.setStatus(RefundState.StatusEnum.CREATED);
+        refundDetails.setData(refund);
+        ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
+        Mockito.when(api.refundPaymentWithHttpInfo(refund)).thenReturn(paymentDetailsApiResponse);
+        Assertions.assertNotNull(refund.toString());
+        RefundDetails response = api.refundPayment(refund);
+        Assertions.assertNotNull(response.toString());
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+    /**
+     * Get refund details
+     *
+     * Get refund details.  **Timeout: 15s**
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void getRefundDetailsTest() throws ApiException {
+
+        String merchantRefundId = "refundId";
+        RefundDetails refundDetails = new RefundDetails();
+        refundDetails.setResultInfo(resultInfo);
+        ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
+        Mockito.when(apiClient.escapeString(merchantRefundId)).thenReturn(merchantRefundId);
+        Mockito.when(paymentApi.getRefundDetailsWithHttpInfo(merchantRefundId)).thenReturn(paymentDetailsApiResponse);
+        RefundDetails response = api.getRefundDetails(merchantRefundId);
+
+        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
 }

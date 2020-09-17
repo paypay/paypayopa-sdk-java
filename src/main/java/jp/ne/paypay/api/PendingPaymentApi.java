@@ -11,6 +11,8 @@ import jp.ne.paypay.Validator;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
+import jp.ne.paypay.model.Refund;
+import jp.ne.paypay.model.RefundDetails;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.Map;
 
 public class PendingPaymentApi {
     private ApiClient apiClient;
+    private PaymentApi paymentApi;
     private static final String APPLICATION_JSON = "application/json";
     private static final String ACCEPT = "Accept";
     private static final String MERCHANT_PAYMENT_ID = "merchantPaymentId";
@@ -33,6 +36,7 @@ public class PendingPaymentApi {
 
     public PendingPaymentApi(ApiClient apiClient) {
         this.apiClient = apiClient;
+        this.paymentApi = new PaymentApi(apiClient);
     }
 
     public ApiClient getApiClient() {
@@ -41,13 +45,14 @@ public class PendingPaymentApi {
 
     public void setApiClient(ApiClient apiClient) {
         this.apiClient = apiClient;
+        this.paymentApi = new PaymentApi(apiClient);
     }
 
     /**
      * Create a pending payment
      * Sends a push notification to the user requesting payment.  **Timeout: 30s**
      *
-     * @param payment                    Payment
+     * @param payment Payment
      * @return PaymentDetails
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
@@ -64,7 +69,7 @@ public class PendingPaymentApi {
      * Create a pending payment
      * Sends a push notification to the user requesting payment.  **Timeout: 30s**
      *
-     * @param payment                    Payment
+     * @param payment Payment
      * @return ApiResponse&lt;PaymentDetails&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
@@ -78,7 +83,7 @@ public class PendingPaymentApi {
     /**
      * Build call for PendingPayment
      *
-     * @param payment                    Payment
+     * @param payment Payment
      * @return Call to execute
      * @throws ApiException If fail to serialize the request payment object
      */
@@ -252,4 +257,78 @@ public class PendingPaymentApi {
         return cancelPendingOrderCall(merchantPaymentId);
     }
 
+    /**
+     * Refund a payment
+     *
+     * @param refund Refund
+     * @return PaymentDetails
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public RefundDetails refundPayment(Refund refund) throws ApiException {
+        String message = validator.validate(refund);
+        if (message != null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<RefundDetails> resp = refundPaymentWithHttpInfo(refund);
+        return resp.getData();
+    }
+
+    /**
+     * Refund a payment
+     *
+     * @param refund Refund
+     * @return ApiResponse&lt;PaymentDetails&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<RefundDetails> refundPaymentWithHttpInfo(Refund refund) throws ApiException {
+        Call call = refundPaymentCall(refund);
+        Type localVarReturnType = new TypeToken<RefundDetails>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Build call for refundPayment
+     *
+     * @param refund Refund
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request payment object
+     */
+    private Call refundPaymentCall(Refund refund) throws ApiException {
+
+        // create path and map variables
+        String localVarPath = "/v1/requestOrder/refunds";
+
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+        Map<String, Object> localVarFormParams = new HashMap<>();
+
+        final String[] localVarAccepts = {
+                APPLICATION_JSON
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+
+        final String[] localVarContentTypes = {
+
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        apiClient.setReadTimeout(30);
+        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, refund, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    }
+
+    /**
+     * Get refund details
+     * Get refund details.  **Timeout: 15s**
+     *
+     * @param merchantRefundId (required)
+     * @return RefundDetails
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public RefundDetails getRefundDetails(String merchantRefundId) throws ApiException {
+        return paymentApi.getRefundDetails(merchantRefundId);
+    }
 }

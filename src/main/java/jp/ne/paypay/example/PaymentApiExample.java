@@ -52,7 +52,9 @@ public class PaymentApiExample {
     //Continuous payment flow
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
-    pendingPayment(pendingPaymentApi, userAuthorizationId);
+    pendingPayment(pendingPaymentApi, userAuthorizationId, false);
+    //Cancel Pending Order
+    pendingPayment(pendingPaymentApi, userAuthorizationId, true);
 
   }
 
@@ -164,14 +166,27 @@ public class PaymentApiExample {
 
   }
 
-  private static void pendingPayment(PendingPaymentApi paymentApi, String userAuthorizationId) {
+  private static void pendingPayment(PendingPaymentApi paymentApi, String userAuthorizationId, boolean cancelPendingOrder) {
 
     String merchantPaymentId = UUID.randomUUID().toString();
-    Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 2);
+    Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 1);
     createPendingPayment(paymentApi, payment);
     PaymentDetails paymentDetails = getPendingPaymentDetails(paymentApi, merchantPaymentId);
-    if(paymentDetails != null && paymentDetails.getData() != null){
-      cancelPendingOrder(paymentApi, paymentDetails.getData().getMerchantPaymentId());
+    if (paymentDetails != null && paymentDetails.getData() != null) {
+      if(cancelPendingOrder){
+        cancelPendingOrder(paymentApi, paymentDetails.getData().getMerchantPaymentId());
+        getPendingPaymentDetails(paymentApi, merchantPaymentId);
+      }else{
+        //Complete the payment before Refund
+        String refundId = UUID.randomUUID().toString();
+        String paymentId = paymentDetails.getData().getPaymentId();
+        if(paymentId != null){
+          RefundDetails refundDetails = refundPendingPayment(paymentApi, paymentDetails.getData().getPaymentId(), refundId);
+          if (refundDetails.getData().getMerchantRefundId() != null) {
+            getRefundDetails(paymentApi, refundDetails.getData().getMerchantRefundId());
+          }
+        }
+      }
     }
   }
 
@@ -275,10 +290,22 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static PaymentDetails createPendingPayment(final PendingPaymentApi apiInstance, Payment payment) {
-    PaymentDetails result = null;
+  private static void createPendingPayment(final PendingPaymentApi apiInstance, Payment payment) {
     try {
-      result = apiInstance.createPendingPayment(payment);
+      PaymentDetails result = apiInstance.createPendingPayment(payment);
+      System.out.println("\nAPI RESPONSE\n------------------\n");
+      System.out.println(result.getResultInfo().getCode());
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println(e.getResponseBody());
+    }
+  }
+
+  private static RefundDetails refundPendingPayment(final PendingPaymentApi apiInstance, String paymentId, String refundId) {
+    RefundDetails result = null;
+    try {
+      Refund refund = getRefundObject(paymentId, refundId);
+      result = apiInstance.refundPayment(refund);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result.getResultInfo().getCode());
       System.out.println(result);
@@ -286,6 +313,17 @@ public class PaymentApiExample {
       System.err.println(e.getResponseBody());
     }
     return result;
+  }
+
+  private static void getRefundDetails(final PendingPaymentApi apiInstance, final String merchantRefundId) {
+
+    try {
+      RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
+      System.out.println("\nAPI RESPONSE\n------------------\n");
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println(e.getResponseBody());
+    }
   }
 
   private static PaymentDetails getPendingPaymentDetails(final PendingPaymentApi apiInstance, String merchantPaymentId) {
@@ -331,17 +369,22 @@ public class PaymentApiExample {
   private static void createRefund(final PaymentApi apiInstance, String paymentId, String refundId) {
 
     try {
-      Refund refund = new Refund();
-      refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
-      refund.setMerchantRefundId(refundId);
-      refund.setPaymentId(paymentId);
-      refund.setReason("Testing");
+      Refund refund = getRefundObject(paymentId, refundId);
       RefundDetails result = apiInstance.refundPayment(refund);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println(e.getResponseBody());
     }
+  }
+
+  private static Refund getRefundObject(String paymentId, String refundId) {
+    Refund refund = new Refund();
+    refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+    refund.setMerchantRefundId(refundId);
+    refund.setPaymentId(paymentId);
+    refund.setReason("Testing");
+    return refund;
   }
 
   private static QRCodeDetails createQRCode(final PaymentApi apiInstance, int amount) {
