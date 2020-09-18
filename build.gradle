@@ -85,7 +85,7 @@ dependencies {
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
 
-    testCompile 'org.mockito:mockito-core:3.5.10'
+    testCompile 'org.mockito:mockito-core:3.5.11'
 
     testCompile("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testCompile("org.junit.platform:junit-platform-runner:1.6.2")
