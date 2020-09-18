@@ -345,7 +345,7 @@ public class PaymentApiExample {
       System.out.println("\n\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PaymentApi#cancelPayment" + e.getMessage());
+      System.err.println("Exception when calling PaymentApi#cancelPendingOrder" + e.getMessage());
       System.err.println(e.getResponseBody());
     }
   }
