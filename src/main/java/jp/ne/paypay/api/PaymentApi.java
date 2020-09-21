@@ -102,10 +102,14 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> capturePaymentAuthWithHttpInfo(Object body) throws ApiException {
-        Call call = ApiUtil.postCallObject(apiClient, "/v2/payments/capture", body, null);
+        Call call = capturePaymentAuthCall(body);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
+    }
+
+    private Call capturePaymentAuthCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v2/payments/capture", body, null);
     }
 
     private Call createPaymentValidateBeforeCall(Object body, String agreeSimilarTransaction) throws ApiException {
@@ -417,10 +421,14 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<LinkQRCodeResponse> createAccountLinkQRCodeWithHttpInfo(Object body) throws ApiException {
-        Call call = ApiUtil.postCallObject(apiClient, "/v1/qr/sessions", body, null);
+        Call call = createAccountLinkQrCodeCall(body);
         Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
+    }
+
+    private Call createAccountLinkQrCodeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/qr/sessions", body, null);
     }
 
 
@@ -479,10 +487,14 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> createContinuousPaymentWithHttpInfo(Object body) throws ApiException {
-        Call call = ApiUtil.postCallObject(apiClient, "/v1/subscription/payments", body, null);
+        Call call = createContinuousPaymentCall(body);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
+    }
+
+    private Call createContinuousPaymentCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/subscription/payments", body, null);
     }
 
 }
