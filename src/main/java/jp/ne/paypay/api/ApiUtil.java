@@ -5,6 +5,7 @@ import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.Pair;
 import jp.ne.paypay.Validator;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +14,8 @@ import java.util.Map;
 
 public class ApiUtil {
     public static Call getCallObject(ApiClient apiClient, String url, Pair pair, String method) throws ApiException {
-        if (pair.getValue() == null) {
-            throw new ApiException("Missing the required parameter"+pair.getName());
+        if (StringUtils.isEmpty(pair.getValue())) {
+            throw new IllegalArgumentException("Missing the required parameter"+pair.getName());
         }
         String localVarPath = url
                 .replaceAll("\\{" + pair.getName()+ "}", apiClient.escapeString(pair.getValue()));
