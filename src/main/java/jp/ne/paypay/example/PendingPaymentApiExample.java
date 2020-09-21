@@ -48,11 +48,11 @@ public class PendingPaymentApiExample extends PaymentApiExample {
     return getPendingPaymentDetails(paymentApi, merchantPaymentId);
   }
 
-  private static void cancelPendingPayment(PendingPaymentApi paymentApi, String merchantPaymentId) {
+  private static void cancelPendingPayment(PendingPaymentApi pendingPaymentApi, String merchantPaymentId) {
 
     if (merchantPaymentId != null) {
-      cancelPendingOrder(paymentApi, merchantPaymentId);
-      getPendingPaymentDetails(paymentApi, merchantPaymentId);
+      cancelPendingOrder(pendingPaymentApi, merchantPaymentId);
+      getPendingPaymentDetails(pendingPaymentApi, merchantPaymentId);
     }
   }
 
@@ -115,11 +115,12 @@ public class PendingPaymentApiExample extends PaymentApiExample {
     return result;
   }
 
-  private static void cancelPendingOrder(final PendingPaymentApi apiInstance, String merchantPaymentId) {
+  private static void cancelPendingOrder(final PendingPaymentApi pendingPaymentApi, String merchantPaymentId) {
     try {
-      NotDataResponse pendingOrderCancelled = apiInstance.cancelPendingOrder(merchantPaymentId);
+      pendingPaymentApi.cancelPendingOrder(merchantPaymentId);
+      PaymentDetails cancelledPendingOrder = getPendingPaymentDetails(pendingPaymentApi, merchantPaymentId);
       System.out.println("\n\nCancel Pending Order API RESPONSE\n------------------\n");
-      System.out.println(pendingOrderCancelled);
+      System.out.println(cancelledPendingOrder);
     } catch (ApiException e) {
       System.err.println("Exception when calling PaymentApi#cancelPendingOrder" + e.getMessage());
       System.err.println(e.getResponseBody());

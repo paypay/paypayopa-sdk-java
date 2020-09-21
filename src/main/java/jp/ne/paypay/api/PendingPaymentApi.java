@@ -52,10 +52,7 @@ public class PendingPaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public PaymentDetails createPendingPayment(Payment payment) throws ApiException {
-        String message = validator.validate(payment);
-        if (message != null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, payment);
         ApiResponse<PaymentDetails> resp = createPendingPaymentWithHttpInfo(payment);
         return resp.getData();
     }

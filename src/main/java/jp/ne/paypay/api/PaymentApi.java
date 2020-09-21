@@ -95,7 +95,7 @@ public class PaymentApi {
     private Call capturePaymentAuthCall(Object body) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v2/payments/capture";
+        String capturePaymentUrl = "/v2/payments/capture";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -118,7 +118,7 @@ public class PaymentApi {
 
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(capturePaymentUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
     private Call capturePaymentAuthValidateBeforeCall(Object body) throws ApiException {
@@ -167,7 +167,7 @@ public class PaymentApi {
     private Call createPaymentCall(Object body, String agreeSimilarTransaction) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v2/payments";
+        String createPaymentUrl = "/v2/payments";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -191,7 +191,7 @@ public class PaymentApi {
         localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(createPaymentUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
     private Call createPaymentValidateBeforeCall(Object body, String agreeSimilarTransaction) throws ApiException {
@@ -242,7 +242,7 @@ public class PaymentApi {
     private Call createQRCodeCall(Object body) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v2/codes";
+        String createQrCodeUrl = "/v2/codes";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -264,7 +264,7 @@ public class PaymentApi {
 
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
+        return apiClient.buildCall(createQrCodeUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
                 localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
@@ -467,7 +467,7 @@ public class PaymentApi {
     private Call refundPaymentCall(Object body) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v2/refunds";
+        String refundPaymentUrl = "/v2/refunds";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -489,7 +489,7 @@ public class PaymentApi {
         localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(refundPaymentUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
     private Call refundPaymentValidateBeforeCall(Object body) throws ApiException {
@@ -536,7 +536,7 @@ public class PaymentApi {
     private Call revertAuthCall(Object body) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v2/payments/preauthorize/revert";
+        String revertAuthUrl = "/v2/payments/preauthorize/revert";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -558,7 +558,7 @@ public class PaymentApi {
         localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(revertAuthUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
     private Call revertAuthValidateBeforeCall(Object body) throws ApiException {
@@ -632,7 +632,7 @@ public class PaymentApi {
     private Call createAccountLinkQRCodeCall(Object body) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v1/qr/sessions";
+        String createAccountLinkUrl = "/v1/qr/sessions";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -654,7 +654,7 @@ public class PaymentApi {
 
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(10);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
+        return apiClient.buildCall(createAccountLinkUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
                 localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
@@ -766,7 +766,7 @@ public class PaymentApi {
     private Call createContinuousPaymentCall(Object body) throws ApiException {
 
         // create path and map variables
-        String localVarPath = "/v1/subscription/payments";
+        String continuousPaymentUrl = "/v1/subscription/payments";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -786,6 +786,6 @@ public class PaymentApi {
         localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(continuousPaymentUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 }
