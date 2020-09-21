@@ -35,10 +35,6 @@ public class UserApi {
     }
 
     private Call getMaskedUserProfileValidateBeforeCall(String userAuthorizationId) throws ApiException {
-        // verify the required parameter 'userAuthorizationId' is set
-        if (userAuthorizationId == null) {
-            throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getMaskedUserProfile(Async)");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "GET");
     }
@@ -72,10 +68,6 @@ public class UserApi {
 
     
     private Call getUserAuthorizationStatusValidateBeforeCall(String userAuthorizationId) throws ApiException {
-        // verify the required parameter 'userAuthorizationId' is set
-        if (userAuthorizationId == null) {
-            throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getUserAuthorizationStatus(Async)");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "GET");
     }
@@ -109,10 +101,6 @@ public class UserApi {
 
     
     private Call unlinkUserValidateBeforeCall(String userAuthorizationId) throws ApiException {
-        // verify the required parameter 'userAuthorizationId' is set
-        if (userAuthorizationId == null) {
-            throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling unlinkUser(Async)");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations/{userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "DELETE");
     }

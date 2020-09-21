@@ -13,6 +13,9 @@ import java.util.Map;
 
 public class ApiUtil {
     public static Call getCallObject(ApiClient apiClient, String url, Pair pair, String method) throws ApiException {
+        if (pair.getValue() == null) {
+            throw new ApiException("Missing the required parameter"+pair.getName());
+        }
         String localVarPath = url
                 .replaceAll("\\{" + pair.getName()+ "}", apiClient.escapeString(pair.getValue()));
 

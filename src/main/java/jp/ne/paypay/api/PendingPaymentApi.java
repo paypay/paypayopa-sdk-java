@@ -101,10 +101,6 @@ public class PendingPaymentApi {
     }
 
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling getPaymentDetails");
-        }
         return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "GET");
     }
@@ -138,10 +134,6 @@ public class PendingPaymentApi {
     }
 
     private Call cancelPendingOrderValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling cancelPayment");
-        }
         return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "DELETE");
     }

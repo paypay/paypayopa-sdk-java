@@ -45,10 +45,6 @@ public class PaymentApi {
 
 
     private Call cancelPaymentValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling cancelPayment");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "DELETE");
     }
@@ -198,10 +194,6 @@ public class PaymentApi {
     }
 
     private Call deleteQRCodeValidateBeforeCall(String codeId) throws ApiException {
-        // verify the required parameter 'codeId' is set
-        if (codeId == null) {
-            throw new ApiException("Missing the required parameter 'codeId' when calling deleteQRCode");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/codes/{codeId}", new Pair(Constants.CODE_ID,
                 codeId), "DELETE");
     }
@@ -235,10 +227,6 @@ public class PaymentApi {
     }
 
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling getPaymentDetails");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "GET");
     }
@@ -274,11 +262,6 @@ public class PaymentApi {
 
 
     private Call getCodesPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling "
-                    + "getCodesPaymentDetails");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/codes/payments/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "GET");
     }
@@ -314,10 +297,6 @@ public class PaymentApi {
 
 
     private Call getRefundDetailsValidateBeforeCall(String merchantRefundId) throws ApiException {
-        // verify the required parameter 'merchantRefundId' is set
-        if (merchantRefundId == null) {
-            throw new ApiException("Missing the required parameter 'merchantRefundId' when calling getRefundDetails");
-        }
         return ApiUtil.getCallObject(apiClient, "/v2/refunds/{merchantRefundId}", new Pair(Constants.MERCHANT_REFUND_ID,
                 merchantRefundId), "GET");
     }
