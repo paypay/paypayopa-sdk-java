@@ -66,44 +66,11 @@ public class PendingPaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> createPendingPaymentWithHttpInfo(Payment payment) throws ApiException {
-        Call call = createPaymentCall(payment);
+        Call call = ApiUtil.postCallObject(apiClient, "/v1/requestOrder", payment, null);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
-
-    /**
-     * Build call for PendingPayment
-     *
-     * @param payment Payment
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request payment object
-     */
-    private Call createPaymentCall(Payment payment) throws ApiException {
-
-        String localVarPath = "/v1/requestOrder";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                Constants.APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, payment, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
 
     /**
      * Get payment details for pending payments
@@ -138,8 +105,8 @@ public class PendingPaymentApi {
         if (merchantPaymentId == null) {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling getPaymentDetails");
         }
-        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
-                merchantPaymentId, "GET");
+        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId), "GET");
     }
 
     /**
@@ -175,8 +142,8 @@ public class PendingPaymentApi {
         if (merchantPaymentId == null) {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling cancelPayment");
         }
-        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
-                merchantPaymentId, "DELETE");
+        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId), "DELETE");
     }
 
     /**

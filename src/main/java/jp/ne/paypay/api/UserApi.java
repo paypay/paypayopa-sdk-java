@@ -6,6 +6,7 @@ import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
 import jp.ne.paypay.Configuration;
+import jp.ne.paypay.Pair;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
@@ -38,8 +39,8 @@ public class UserApi {
         if (userAuthorizationId == null) {
             throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getMaskedUserProfile(Async)");
         }
-        return ApiUtil.getCallObject(apiClient, "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}", Constants.USER_AUTHORIZATION_ID,
-                userAuthorizationId, "GET");
+        return ApiUtil.getCallObject(apiClient, "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
+                userAuthorizationId), "GET");
     }
 
     /**
@@ -75,8 +76,8 @@ public class UserApi {
         if (userAuthorizationId == null) {
             throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getUserAuthorizationStatus(Async)");
         }
-        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}", Constants.USER_AUTHORIZATION_ID,
-                userAuthorizationId, "GET");
+        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
+                userAuthorizationId), "GET");
     }
 
     /**
@@ -112,8 +113,8 @@ public class UserApi {
         if (userAuthorizationId == null) {
             throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling unlinkUser(Async)");
         }
-        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations/{userAuthorizationId}", Constants.USER_AUTHORIZATION_ID,
-                userAuthorizationId, "DELETE");
+        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations/{userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
+                userAuthorizationId), "DELETE");
     }
 
     /**

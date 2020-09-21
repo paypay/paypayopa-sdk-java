@@ -318,8 +318,7 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static void getRefundDetails(final PaymentApi apiInstance, final String merchantRefundId) {
-
+  protected static void getRefundDetails(final PaymentApi apiInstance, final String merchantRefundId) {
     try {
       RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
       System.out.println("\nAPI RESPONSE\n------------------\n");

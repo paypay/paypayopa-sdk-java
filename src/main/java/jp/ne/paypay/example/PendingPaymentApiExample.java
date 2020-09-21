@@ -3,8 +3,8 @@ package jp.ne.paypay.example;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.Configuration;
+import jp.ne.paypay.api.PaymentApi;
 import jp.ne.paypay.api.PendingPaymentApi;
-import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
 import jp.ne.paypay.model.Refund;
@@ -23,10 +23,11 @@ public class PendingPaymentApiExample extends PaymentApiExample {
     apiClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
     String userAuthorizationId = "USER_AUTHORIZATION_ID";
     PendingPaymentApi pendingPaymentApi = new PendingPaymentApi(apiClient);
+    PaymentApi paymentApi = new PaymentApi(apiClient);
 
-    PaymentDetails paymentDetails = pendingPayment(pendingPaymentApi, userAuthorizationId, 1);
+    PaymentDetails paymentDetails = pendingPayment(pendingPaymentApi, userAuthorizationId, 2);
     //Uncomment below line and comment above line and replace merchantPaymentId to check refund payment
-    //PaymentDetails paymentDetails = getPendingPaymentDetails(pendingPaymentApi, "merchantPaymentId");
+    //PaymentDetails paymentDetails = getPendingPaymentDetails(pendingPaymentApi, "db81feeb-6993-48fc-9b34-a742a8f8935e");
 
     if(paymentDetails != null && paymentDetails.getData() != null){
       String merchantPaymentId = paymentDetails.getData().getMerchantPaymentId();
@@ -34,9 +35,8 @@ public class PendingPaymentApiExample extends PaymentApiExample {
       //Cancel Pending Order
       cancelPendingPayment(pendingPaymentApi, merchantPaymentId);
       //Refund payment. Run this after payment is complete
-      refundPendingPayment(pendingPaymentApi, paymentDetails.getData().getPaymentId());
+      //refundPendingPayment(paymentApi, pendingPaymentApi, paymentDetails.getData().getPaymentId());
     }
-
 
   }
 
@@ -56,10 +56,10 @@ public class PendingPaymentApiExample extends PaymentApiExample {
     }
   }
 
-  private static void refundPendingPayment(PendingPaymentApi paymentApi, String paymentId) {
+  private static void refundPendingPayment(PaymentApi paymentApi, PendingPaymentApi pendingPaymentApi, String paymentId) {
     String refundId = UUID.randomUUID().toString();
     if(paymentId != null){
-      RefundDetails refundDetails = refundPendingPayment(paymentApi, paymentId, refundId);
+      RefundDetails refundDetails = refundPendingPayment(pendingPaymentApi, paymentId, refundId);
       if (refundDetails.getData().getMerchantRefundId() != null) {
         getRefundDetails(paymentApi, refundDetails.getData().getMerchantRefundId());
       }
@@ -89,17 +89,6 @@ public class PendingPaymentApiExample extends PaymentApiExample {
       System.err.println(e.getResponseBody());
     }
     return result;
-  }
-
-  private static void getRefundDetails(final PendingPaymentApi apiInstance, final String merchantRefundId) {
-
-    try {
-      RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
-      System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println(e.getResponseBody());
-    }
   }
 
   private static PaymentDetails getPendingPaymentDetails(final PendingPaymentApi apiInstance, String merchantPaymentId) {
