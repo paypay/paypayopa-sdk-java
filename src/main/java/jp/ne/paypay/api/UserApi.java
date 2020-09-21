@@ -35,7 +35,7 @@ public class UserApi {
     }
 
     private Call getMaskedUserProfileValidateBeforeCall(String userAuthorizationId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}", new Pair(ApiConstants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "GET");
     }
 
@@ -68,7 +68,7 @@ public class UserApi {
 
     
     private Call getUserAuthorizationStatusValidateBeforeCall(String userAuthorizationId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}", new Pair(ApiConstants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "GET");
     }
 
@@ -101,7 +101,7 @@ public class UserApi {
 
     
     private Call unlinkUserValidateBeforeCall(String userAuthorizationId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations/{userAuthorizationId}", new Pair(Constants.USER_AUTHORIZATION_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations/{userAuthorizationId}", new Pair(ApiConstants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "DELETE");
     }
 

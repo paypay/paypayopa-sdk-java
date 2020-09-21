@@ -27,17 +27,17 @@ public class ApiUtil {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                Constants.APPLICATION_JSON
+                ApiConstants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(ApiConstants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
+        localVarHeaderParams.put(ApiConstants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{ApiConstants.HMAC_AUTH};
         apiClient.setReadTimeout(15);
         return apiClient.buildCall(localVarPath, method, localVarQueryParams, localVarCollectionQueryParams,
                 null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
@@ -55,13 +55,13 @@ public class ApiUtil {
         if(agreeSimilarTransaction != null){
             localVarQueryParams.addAll(apiClient.parameterToPair("agreeSimilarTransaction", agreeSimilarTransaction));
         }
-        final String localVarAccept = apiClient.selectHeaderAccept(new String[]{Constants.APPLICATION_JSON});
+        final String localVarAccept = apiClient.selectHeaderAccept(new String[]{ApiConstants.APPLICATION_JSON});
         Map<String, String> localVarHeaderParams = new HashMap<>();
-        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(ApiConstants.ACCEPT, localVarAccept);
 
         final String localVarContentType = apiClient.selectHeaderContentType(new String[]{});
-        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
+        localVarHeaderParams.put(ApiConstants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{ApiConstants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         Map<String, Object> localVarFormParams = new HashMap<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();

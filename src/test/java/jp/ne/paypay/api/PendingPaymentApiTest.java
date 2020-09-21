@@ -14,7 +14,7 @@ import jp.ne.paypay.model.RefundDetails;
 import jp.ne.paypay.model.RefundState;
 import jp.ne.paypay.model.ResultInfo;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -78,21 +78,21 @@ public class PendingPaymentApiTest {
         paymentDetails.resultInfo(resultInfo);
         payment.status(PaymentState.StatusEnum.COMPLETED).authorizedAt(Instant.now().getNano()).paymentId("paymentId");
         paymentDetails.data(payment);
-        Assertions.assertNotNull(payment.toString());
+        Assert.assertNotNull(payment.toString());
         ApiResponse<PaymentDetails> paymentDetailsApiResponse = new ApiResponse<>(90001, null, paymentDetails);
         Mockito.when(api.createPendingPaymentWithHttpInfo(payment)).thenReturn(paymentDetailsApiResponse);
         PaymentDetails response = api.createPendingPayment(payment);
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
-        Assertions.assertEquals(response.getData().getMerchantPaymentId(), "merchantPaymentId");
-        Assertions.assertEquals(response.getData().getUserAuthorizationId(), "userAuthorizationId");
-        Assertions.assertEquals(response.getData().getStatus(), PaymentState.StatusEnum.COMPLETED);
-        Assertions.assertNotNull(response.getData());
-        Assertions.assertNotNull(response.getData().getTerminalId());
-        Assertions.assertNotNull(response.getData().getOrderReceiptNumber());
-        Assertions.assertNotNull(response.getData().getAmount());
-        Assertions.assertNotNull(response.getData().getRequestedAt());
-        Assertions.assertNotNull(response.getData().getOrderItems());
-        Assertions.assertNotNull(response.getData().getAuthorizedAt());
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getData().getMerchantPaymentId(), "merchantPaymentId");
+        Assert.assertEquals(response.getData().getUserAuthorizationId(), "userAuthorizationId");
+        Assert.assertEquals(response.getData().getStatus(), PaymentState.StatusEnum.COMPLETED);
+        Assert.assertNotNull(response.getData());
+        Assert.assertNotNull(response.getData().getTerminalId());
+        Assert.assertNotNull(response.getData().getOrderReceiptNumber());
+        Assert.assertNotNull(response.getData().getAmount());
+        Assert.assertNotNull(response.getData().getRequestedAt());
+        Assert.assertNotNull(response.getData().getOrderItems());
+        Assert.assertNotNull(response.getData().getAuthorizedAt());
 
     }
 
@@ -114,7 +114,7 @@ public class PendingPaymentApiTest {
         Mockito.when(api.getPendingPaymentDetailsWithHttpInfo(merchantPaymentId)).thenReturn(paymentDetailsApiResponse);
         PaymentDetails response = api.getPaymentDetails(merchantPaymentId);
 
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
 
     /**
@@ -131,12 +131,12 @@ public class PendingPaymentApiTest {
         NotDataResponse notDataResponse = new NotDataResponse();
         notDataResponse.setResultInfo(resultInfo);
         ApiResponse<NotDataResponse> notDataResponseApiResponse = new ApiResponse<>(00001, null, notDataResponse);
-        Assertions.assertEquals(notDataResponseApiResponse.getStatusCode(), 00001);
-        Assertions.assertNull(notDataResponseApiResponse.getHeaders());
+        Assert.assertEquals(notDataResponseApiResponse.getStatusCode(), 00001);
+        Assert.assertNull(notDataResponseApiResponse.getHeaders());
         Mockito.when(apiClient.escapeString(merchantPaymentId)).thenReturn(merchantPaymentId);
         Mockito.when(api.cancelPendingOrderWithHttpInfo(merchantPaymentId)).thenReturn(notDataResponseApiResponse);
         NotDataResponse response = api.cancelPendingOrder(merchantPaymentId);
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
 
     /**
@@ -161,10 +161,10 @@ public class PendingPaymentApiTest {
         refundDetails.setData(refund);
         ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
         Mockito.when(api.refundPaymentWithHttpInfo(refund)).thenReturn(paymentDetailsApiResponse);
-        Assertions.assertNotNull(refund.toString());
+        Assert.assertNotNull(refund.toString());
         RefundDetails response = api.refundPayment(refund);
-        Assertions.assertNotNull(response.toString());
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertNotNull(response.toString());
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
 
     /**
@@ -185,7 +185,7 @@ public class PendingPaymentApiTest {
         Mockito.when(paymentApi.getRefundDetailsWithHttpInfo(merchantRefundId)).thenReturn(paymentDetailsApiResponse);
         RefundDetails response = api.getRefundDetails(merchantRefundId);
 
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
 
 }

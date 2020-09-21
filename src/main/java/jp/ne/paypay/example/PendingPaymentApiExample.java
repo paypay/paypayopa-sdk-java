@@ -35,7 +35,7 @@ public class PendingPaymentApiExample extends PaymentApiExample {
       //Cancel Pending Order
       cancelPendingPayment(pendingPaymentApi, merchantPaymentId);
       //Refund payment. Run this after payment is complete
-      //refundPendingPayment(paymentApi, pendingPaymentApi, paymentDetails.getData().getPaymentId());
+      refundPendingPayment(paymentApi, pendingPaymentApi, paymentDetails.getData().getPaymentId());
     }
 
   }

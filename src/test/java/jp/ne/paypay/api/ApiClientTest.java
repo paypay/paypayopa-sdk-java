@@ -19,7 +19,6 @@ import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.ResultInfo;
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -57,8 +56,8 @@ public class ApiClientTest {
         apiClient.setApiSecretKey("api-secret-key");
         apiClient.setBasePath("basePath");
         configuration.setDefaultApiClient(apiClient);
-        Assertions.assertNotNull(configuration.getDefaultApiClient());
-        Assertions.assertNotNull(apiClient.getBasePath());
+        Assert.assertNotNull(configuration.getDefaultApiClient());
+        Assert.assertNotNull(apiClient.getBasePath());
         Assert.assertFalse(apiClient.isProductionMode());
     }
 
@@ -200,7 +199,7 @@ public class ApiClientTest {
 
         Mockito.when(call.execute()).thenReturn(response);
         ApiResponse<Object> apiResponse = apiClient.execute(call, localVarReturnType);
-        Assertions.assertEquals(200, apiResponse.getStatusCode());
+        Assert.assertEquals(200, apiResponse.getStatusCode());
         Mockito.when(call.execute()).thenThrow(IOException.class);
         Assert.assertThrows(ApiException.class, ()->apiClient.execute(call, new TypeToken<File>() {
         }.getType()));
@@ -263,17 +262,17 @@ public class ApiClientTest {
     @Test
     public void apiExceptionTest(){
         ApiException apiException = new ApiException();
-        Assertions.assertNull(apiException.getCause());
+        Assert.assertNull(apiException.getCause());
         apiException = new ApiException(new Throwable("throwable"));
-        Assertions.assertEquals(apiException.getCause().getMessage(), "throwable");
+        Assert.assertEquals(apiException.getCause().getMessage(), "throwable");
         apiException = new ApiException(100, null, "ResponseBody");
-        Assertions.assertEquals(apiException.getCode(), 100);
+        Assert.assertEquals(apiException.getCode(), 100);
         apiException = new ApiException(100, "Message");
-        Assertions.assertEquals(apiException.getMessage(), "Message");
+        Assert.assertEquals(apiException.getMessage(), "Message");
         apiException = new ApiException(100, "Message_1", null, "ResponseBody");
-        Assertions.assertEquals(apiException.getMessage(), "Message_1");
-        Assertions.assertEquals(apiException.getResponseBody(), "ResponseBody");
-        Assertions.assertNull(apiException.getResponseHeaders());
+        Assert.assertEquals(apiException.getMessage(), "Message_1");
+        Assert.assertEquals(apiException.getResponseBody(), "ResponseBody");
+        Assert.assertNull(apiException.getResponseHeaders());
 
     }
 
@@ -283,7 +282,7 @@ public class ApiClientTest {
         formParams.put("name","paypay");
         formParams.put("expiresAt", new Date());
         RequestBody requestBody = apiClient.buildRequestBodyFormEncoding(formParams);
-        Assertions.assertEquals(MediaType.parse("application/x-www-form-urlencoded"),requestBody.contentType());
+        Assert.assertEquals(MediaType.parse("application/x-www-form-urlencoded"),requestBody.contentType());
     }
 
     @Test
@@ -294,6 +293,6 @@ public class ApiClientTest {
         Map<String, String> headerParams = new HashMap<>();
         headerParams.put("content-type", "application/json");
         Call call = apiClient.buildCall("/v2/path","GET", null, null, null, headerParams, formParams, new String[]{"HmacAuth"});
-        Assertions.assertNotNull(call);
+        Assert.assertNotNull(call);
     }
 }

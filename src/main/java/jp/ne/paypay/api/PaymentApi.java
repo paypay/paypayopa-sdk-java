@@ -45,7 +45,7 @@ public class PaymentApi {
 
 
     private Call cancelPaymentValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "DELETE");
     }
 
@@ -198,7 +198,7 @@ public class PaymentApi {
     }
 
     private Call deleteQRCodeValidateBeforeCall(String codeId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/codes/{codeId}", new Pair(Constants.CODE_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/codes/{codeId}", new Pair(ApiConstants.CODE_ID,
                 codeId), "DELETE");
     }
 
@@ -231,7 +231,7 @@ public class PaymentApi {
     }
 
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "GET");
     }
 
@@ -266,7 +266,7 @@ public class PaymentApi {
 
 
     private Call getCodesPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/codes/payments/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/codes/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "GET");
     }
 
@@ -301,7 +301,7 @@ public class PaymentApi {
 
 
     private Call getRefundDetailsValidateBeforeCall(String merchantRefundId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v2/refunds/{merchantRefundId}", new Pair(Constants.MERCHANT_REFUND_ID,
+        return ApiUtil.getCallObject(apiClient, "/v2/refunds/{merchantRefundId}", new Pair(ApiConstants.MERCHANT_REFUND_ID,
                 merchantRefundId), "GET");
     }
 

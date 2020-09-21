@@ -6,7 +6,6 @@ import jp.ne.paypay.model.JwtRequestDto;
 import jp.ne.paypay.model.JwtResponseDto;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -29,10 +28,10 @@ public class JwtUtilTest {
         jwtRequestDto.setScope("ORDER_QR");
         jwtRequestDto.setReferenceId("referenceId");
         String jwtToken = JwtUtil.createJwtToken(jwtRequestDto, apiKeySecret);
-        Assertions.assertNotNull(jwtToken);
+        Assert.assertNotNull(jwtToken);
         JwtResponseDto jwtResponseDto = JwtUtil.validateJWT(jwtToken, apiKeySecret);
-        Assertions.assertNotNull(jwtResponseDto);
-        Assertions.assertEquals(jwtResponseDto.getReferenceId(), jwtRequestDto.getReferenceId());
+        Assert.assertNotNull(jwtResponseDto);
+        Assert.assertEquals(jwtResponseDto.getReferenceId(), jwtRequestDto.getReferenceId());
 
     }
 
@@ -55,17 +54,17 @@ public class JwtUtilTest {
         jwtRequestDto.setScope("ORDER_QR");
         jwtRequestDto.setReferenceId("referenceId");
         String jwtToken = JwtUtil.createJwtToken(jwtRequestDto, apiKeySecret);
-        Assertions.assertNotNull(jwtToken);
+        Assert.assertNotNull(jwtToken);
         Assert.assertThrows(JwtException.class, () -> JwtUtil.validateJWT(jwtToken+"invalid", apiKeySecret));
 
     }
     @Test
     public void jwtExceptioinTest(){
         JwtException jwtException = new JwtException();
-        Assertions.assertEquals(jwtException.getCode(), 0);
+        Assert.assertEquals(jwtException.getCode(), 0);
         jwtException = new JwtException(100, "Exception");
-        Assertions.assertEquals(jwtException.getCode(), 100);
+        Assert.assertEquals(jwtException.getCode(), 100);
         jwtException = new JwtException(new Throwable("throwable"));
-        Assertions.assertEquals(jwtException.getCause().getMessage(), "throwable");
+        Assert.assertEquals(jwtException.getCause().getMessage(), "throwable");
     }
 }

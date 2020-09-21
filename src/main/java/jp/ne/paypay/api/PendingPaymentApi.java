@@ -105,7 +105,7 @@ public class PendingPaymentApi {
     }
 
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "GET");
     }
 
@@ -138,7 +138,7 @@ public class PendingPaymentApi {
     }
 
     private Call cancelPendingOrderValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(Constants.MERCHANT_PAYMENT_ID,
+        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
                 merchantPaymentId), "DELETE");
     }
 
@@ -185,17 +185,17 @@ public class PendingPaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                Constants.APPLICATION_JSON
+                ApiConstants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(ApiConstants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
+        localVarHeaderParams.put(ApiConstants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{ApiConstants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, refund, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }

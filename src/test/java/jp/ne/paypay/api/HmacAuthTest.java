@@ -28,7 +28,6 @@ public class HmacAuthTest {
         Map<String, String> headerParams = new HashMap<>();
         List<Pair> queryParams = new ArrayList<>();
         hmacAuth.applyToParams(queryParams, headerParams);
-        System.out.println(headerParams.get("Authorization"));
         Assert.assertTrue(headerParams.get("Authorization").startsWith("hmac"));
         Assert.assertNotNull(hmacAuth.getApiKey());
         Assert.assertNotNull(hmacAuth.getApiSecretKey());

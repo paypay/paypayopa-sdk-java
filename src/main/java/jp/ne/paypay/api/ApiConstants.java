@@ -1,6 +1,6 @@
 package jp.ne.paypay.api;
 
-public class Constants {
+public class ApiConstants {
 
     public static final String APPLICATION_JSON = "application/json";
     public static final String ACCEPT = "Accept";

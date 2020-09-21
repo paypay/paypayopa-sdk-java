@@ -7,7 +7,7 @@ import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.UserAuthorizationStatus;
-import org.junit.jupiter.api.Assertions;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -47,7 +47,7 @@ public class UserApiTest {
         Mockito.when(api.getMaskedUserProfileWithHttpInfo(userAuthorizationId)).thenReturn(maskedUserProfileResponseApiResponse);
         MaskedUserProfileResponse response = api.getMaskedUserProfile(userAuthorizationId);
 
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -70,7 +70,7 @@ public class UserApiTest {
         
         UserAuthorizationStatus response = api.getUserAuthorizationStatus(userAuthorizationId);
 
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
     /**
@@ -93,7 +93,7 @@ public class UserApiTest {
         
         NotDataResponse response = api.unlinkUser(userAuthorizationId);
 
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     
 }
