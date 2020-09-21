@@ -41,9 +41,9 @@ public class ApiClientTest {
     ApiClient apiClient = new ApiClient();
 
     @Mock
-    Call call;
+    private Call call;
     @Mock
-    OkHttpClient httpClient;
+    private OkHttpClient httpClient;
 
     @BeforeEach
     void  init(){
