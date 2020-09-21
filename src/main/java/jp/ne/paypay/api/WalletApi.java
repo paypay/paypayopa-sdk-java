@@ -1,6 +1,7 @@
 package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Call;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
@@ -47,7 +48,7 @@ public class WalletApi {
      * @throws ApiException If fail to serialize the request body object
         
      */
-    private com.squareup.okhttp.Call checkWalletBalanceCall(String userAuthorizationId, Integer amount, String currency,
+    private Call checkWalletBalanceCall(String userAuthorizationId, Integer amount, String currency,
             ProductType productType) throws ApiException {
 
         // create path and map variables
@@ -86,7 +87,7 @@ public class WalletApi {
                 null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
     
-    private com.squareup.okhttp.Call checkWalletBalanceValidateBeforeCall(String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
+    private Call checkWalletBalanceValidateBeforeCall(String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
         
         
         // verify the required parameter 'userAuthorizationId' is set
@@ -137,7 +138,7 @@ public class WalletApi {
      */
     protected ApiResponse<WalletBalance> checkWalletBalanceWithHttpInfo(String userAuthorizationId, Integer amount,
             String currency, ProductType productType) throws ApiException {
-        com.squareup.okhttp.Call call = checkWalletBalanceValidateBeforeCall(userAuthorizationId, amount, currency, productType);
+        Call call = checkWalletBalanceValidateBeforeCall(userAuthorizationId, amount, currency, productType);
         Type localVarReturnType = new TypeToken<WalletBalance>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }

@@ -23,11 +23,6 @@ import java.util.Map;
 public class PendingPaymentApi {
     private ApiClient apiClient;
     private PaymentApi paymentApi;
-    private static final String APPLICATION_JSON = "application/json";
-    private static final String ACCEPT = "Accept";
-    private static final String MERCHANT_PAYMENT_ID = "merchantPaymentId";
-    private static final String HMAC_AUTH = "HmacAuth";
-    private static final String CONTENT_TYPE = "Content-Type";
     private final Validator validator = Validator.getInstance();
 
     public PendingPaymentApi() {
@@ -98,17 +93,17 @@ public class PendingPaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, payment, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
@@ -142,48 +137,13 @@ public class PendingPaymentApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for getPendingPaymentDetails
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call getPendingPaymentDetailsCall(String merchantPaymentId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v1/requestOrder/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams,
-                null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
         // verify the required parameter 'merchantPaymentId' is set
         if (merchantPaymentId == null) {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling getPaymentDetails");
         }
-        return getPendingPaymentDetailsCall(merchantPaymentId);
+        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId, "GET");
     }
 
     /**
@@ -214,47 +174,13 @@ public class PendingPaymentApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for cancelPendingOrder
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call cancelPendingOrderCall(String merchantPaymentId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v1/requestOrder/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
     private Call cancelPendingOrderValidateBeforeCall(String merchantPaymentId) throws ApiException {
         // verify the required parameter 'merchantPaymentId' is set
         if (merchantPaymentId == null) {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling cancelPayment");
         }
-        return cancelPendingOrderCall(merchantPaymentId);
+        return ApiUtil.getCallObject(apiClient, "/v1/requestOrder/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId, "DELETE");
     }
 
     /**
@@ -265,10 +191,7 @@ public class PendingPaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public RefundDetails refundPayment(Refund refund) throws ApiException {
-        String message = validator.validate(refund);
-        if (message != null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, refund);
         ApiResponse<RefundDetails> resp = refundPaymentWithHttpInfo(refund);
         return resp.getData();
     }
@@ -305,17 +228,17 @@ public class PendingPaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, refund, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }

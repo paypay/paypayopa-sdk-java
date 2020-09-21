@@ -1,30 +1,21 @@
 package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Call;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
 import jp.ne.paypay.Configuration;
-import jp.ne.paypay.Pair;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 
 public class UserApi {
     private ApiClient apiClient;
-    private static final  String APPLICATION_JSON = "application/json";
-    private static final  String ACCEPT = "Accept";
-    private static final  String HMAC_AUTH = "HmacAuth";
-    private static final  String CONTENT_TYPE = "Content-Type";
-    private static final  String USER_AUTHORIZATION_ID = "userAuthorizationId";
 
     public UserApi() {
         this(new Configuration().getDefaultApiClient());
@@ -42,49 +33,13 @@ public class UserApi {
         this.apiClient = apiClient;
     }
 
-    
-    /**
-     * Build call for getMaskedUserProfile
-     * @param userAuthorizationId  (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-        
-     */
-    private com.squareup.okhttp.Call getMaskedUserProfileCall(String userAuthorizationId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}"
-                .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-            APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-            
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-
-        String[] localVarAuthNames = new String[] { HMAC_AUTH };
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-    private com.squareup.okhttp.Call getMaskedUserProfileValidateBeforeCall(String userAuthorizationId) throws ApiException {
+    private Call getMaskedUserProfileValidateBeforeCall(String userAuthorizationId) throws ApiException {
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
             throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getMaskedUserProfile(Async)");
         }
-        return getMaskedUserProfileCall(userAuthorizationId);
+        return ApiUtil.getCallObject(apiClient, "/v2/user/profile/secure?userAuthorizationId={userAuthorizationId}", Constants.USER_AUTHORIZATION_ID,
+                userAuthorizationId, "GET");
     }
 
     /**
@@ -109,53 +64,19 @@ public class UserApi {
         
      */
     protected ApiResponse<MaskedUserProfileResponse> getMaskedUserProfileWithHttpInfo(String userAuthorizationId) throws ApiException {
-        com.squareup.okhttp.Call call = getMaskedUserProfileValidateBeforeCall(userAuthorizationId);
+        Call call = getMaskedUserProfileValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<MaskedUserProfileResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     
-    /**
-     * Build call for getUserAuthorizationStatus
-     * @param userAuthorizationId  (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-        
-     */
-    private com.squareup.okhttp.Call getUserAuthorizationStatusCall(String userAuthorizationId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}"
-            .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-            APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-            
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[] { HMAC_AUTH };
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-    
-    private com.squareup.okhttp.Call getUserAuthorizationStatusValidateBeforeCall(String userAuthorizationId) throws ApiException {
+    private Call getUserAuthorizationStatusValidateBeforeCall(String userAuthorizationId) throws ApiException {
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
             throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getUserAuthorizationStatus(Async)");
         }
-        return getUserAuthorizationStatusCall(userAuthorizationId);
+        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations?userAuthorizationId={userAuthorizationId}", Constants.USER_AUTHORIZATION_ID,
+                userAuthorizationId, "GET");
     }
 
     /**
@@ -180,53 +101,19 @@ public class UserApi {
         
      */
     protected ApiResponse<UserAuthorizationStatus> getUserAuthorizationStatusWithHttpInfo(String userAuthorizationId) throws ApiException {
-        com.squareup.okhttp.Call call = getUserAuthorizationStatusValidateBeforeCall(userAuthorizationId);
+        Call call = getUserAuthorizationStatusValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<UserAuthorizationStatus>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
     
-    /**
-     * Build call for unlinkUser
-     * @param userAuthorizationId  (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-        
-     */
-    private com.squareup.okhttp.Call unlinkUserCall(String userAuthorizationId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/user/authorizations/{userAuthorizationId}"
-            .replaceAll("\\{" + USER_AUTHORIZATION_ID + "}", apiClient.escapeString(userAuthorizationId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-            APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-            
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[] { HMAC_AUTH };
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-    
-    private com.squareup.okhttp.Call unlinkUserValidateBeforeCall(String userAuthorizationId) throws ApiException {
+    private Call unlinkUserValidateBeforeCall(String userAuthorizationId) throws ApiException {
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
             throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling unlinkUser(Async)");
         }
-        return unlinkUserCall(userAuthorizationId);
+        return ApiUtil.getCallObject(apiClient, "/v2/user/authorizations/{userAuthorizationId}", Constants.USER_AUTHORIZATION_ID,
+                userAuthorizationId, "DELETE");
     }
 
     /**
@@ -251,7 +138,7 @@ public class UserApi {
         
      */
     protected ApiResponse<NotDataResponse> unlinkUserWithHttpInfo(String userAuthorizationId) throws ApiException {
-        com.squareup.okhttp.Call call = unlinkUserValidateBeforeCall(userAuthorizationId);
+        Call call = unlinkUserValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<NotDataResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
     }

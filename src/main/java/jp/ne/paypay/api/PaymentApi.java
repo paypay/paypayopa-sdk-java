@@ -28,11 +28,7 @@ import java.util.Map;
 
 public class PaymentApi {
     private ApiClient apiClient;
-    private static final String APPLICATION_JSON = "application/json";
-    private static final String ACCEPT = "Accept";
-    private static final String MERCHANT_PAYMENT_ID = "merchantPaymentId";
-    private static final String HMAC_AUTH = "HmacAuth";
-    private static final String CONTENT_TYPE = "Content-Type";
+
     private final Validator validator = Validator.getInstance();
 
     public PaymentApi() {
@@ -52,47 +48,13 @@ public class PaymentApi {
     }
 
 
-    /**
-     * Build call for cancelPayment
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call cancelPaymentCall(String merchantPaymentId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/payments/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
     private Call cancelPaymentValidateBeforeCall(String merchantPaymentId) throws ApiException {
         // verify the required parameter 'merchantPaymentId' is set
         if (merchantPaymentId == null) {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling cancelPayment");
         }
-        return cancelPaymentCall(merchantPaymentId);
+        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId, "DELETE");
     }
 
     /**
@@ -143,18 +105,18 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
 
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
@@ -217,17 +179,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
@@ -290,17 +252,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
 
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
                 localVarHeaderParams, localVarFormParams, localVarAuthNames);
@@ -342,47 +304,13 @@ public class PaymentApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for deleteQRCode
-     *
-     * @param codeId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call deleteQRCodeCall(String codeId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/codes/{codeId}"
-                .replaceAll("\\{" + "codeId" + "}", apiClient.escapeString(codeId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
     private Call deleteQRCodeValidateBeforeCall(String codeId) throws ApiException {
         // verify the required parameter 'codeId' is set
         if (codeId == null) {
             throw new ApiException("Missing the required parameter 'codeId' when calling deleteQRCode");
         }
-        return deleteQRCodeCall(codeId);
+        return ApiUtil.getCallObject(apiClient, "/v2/codes/{codeId}", Constants.CODE_ID,
+                codeId, "DELETE");
     }
 
     /**
@@ -413,48 +341,13 @@ public class PaymentApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for getPaymentDetails
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call getPaymentDetailsCall(String merchantPaymentId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/payments/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams,
-                null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
         // verify the required parameter 'merchantPaymentId' is set
         if (merchantPaymentId == null) {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling getPaymentDetails");
         }
-        return getPaymentDetailsCall(merchantPaymentId);
+        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId, "GET");
     }
 
     /**
@@ -485,40 +378,7 @@ public class PaymentApi {
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for getCodesPaymentDetails
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call getCodesPaymentDetailsCall(String merchantPaymentId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/codes/payments/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
 
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
 
     private Call getCodesPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
         // verify the required parameter 'merchantPaymentId' is set
@@ -526,7 +386,8 @@ public class PaymentApi {
             throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling "
                     + "getCodesPaymentDetails");
         }
-        return getCodesPaymentDetailsCall(merchantPaymentId);
+        return ApiUtil.getCallObject(apiClient, "/v2/codes/payments/{merchantPaymentId}", Constants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId, "GET");
     }
 
     /**
@@ -558,47 +419,14 @@ public class PaymentApi {
     }
 
 
-    /**
-     * Build call for getRefundDetails
-     *
-     * @param merchantRefundId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private Call getRefundDetailsCall(String merchantRefundId) throws ApiException {
-        // create path and map variables
-        String localVarPath = "/v2/refunds/{merchantRefundId}"
-                .replaceAll("\\{" + "merchantRefundId" + "}", apiClient.escapeString(merchantRefundId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
 
     private Call getRefundDetailsValidateBeforeCall(String merchantRefundId) throws ApiException {
         // verify the required parameter 'merchantRefundId' is set
         if (merchantRefundId == null) {
             throw new ApiException("Missing the required parameter 'merchantRefundId' when calling getRefundDetails");
         }
-        return getRefundDetailsCall(merchantRefundId);
+        return ApiUtil.getCallObject(apiClient, "/v2/refunds/{merchantRefundId}", Constants.MERCHANT_REFUND_ID,
+                merchantRefundId, "GET");
     }
 
     /**
@@ -649,17 +477,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
@@ -677,9 +505,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public RefundDetails refundPayment(Refund body) throws ApiException {
-        String message = validator.validate(body);
-        if (message!=null)
-            throw new IllegalArgumentException(message);
+        ApiUtil.validateObject(validator, body);
         ApiResponse<RefundDetails> resp = refundPaymentWithHttpInfo(body);
         return resp.getData();
     }
@@ -720,17 +546,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
@@ -776,10 +602,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public LinkQRCodeResponse createAccountLinkQRCode(AccountLinkQRCode body) throws ApiException {
-        String message = validator.validate(body);
-        if (message!=null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, body);
         ApiResponse<LinkQRCodeResponse> resp = createAccountLinkQRCodeWithHttpInfo(body);
         return resp.getData();
     }
@@ -819,17 +642,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
 
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(10);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
                 localVarHeaderParams, localVarFormParams, localVarAuthNames);
@@ -845,10 +668,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public PaymentDetails createPaymentAuthorization(Payment body, String agreeSimilarTransaction) throws ApiException {
-        String message = validator.validate(body);
-        if (message != null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, body);
         ApiResponse<PaymentDetails> resp = createPaymentAuthorizationWithHttpInfo(body, agreeSimilarTransaction);
         return resp.getData();
     }
@@ -892,17 +712,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
@@ -916,10 +736,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public PaymentDetails createContinuousPayment(Payment body) throws ApiException {
-        String message = validator.validate(body);
-        if (message != null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, body);
         ApiResponse<PaymentDetails> resp = createContinuousPaymentWithHttpInfo(body);
         return resp.getData();
     }
@@ -957,17 +774,17 @@ public class PaymentApi {
         Map<String, Object> localVarFormParams = new HashMap<>();
 
         final String[] localVarAccepts = {
-                APPLICATION_JSON
+                Constants.APPLICATION_JSON
         };
         final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+        if (localVarAccept != null) localVarHeaderParams.put(Constants.ACCEPT, localVarAccept);
 
         final String[] localVarContentTypes = {
 
         };
         final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }

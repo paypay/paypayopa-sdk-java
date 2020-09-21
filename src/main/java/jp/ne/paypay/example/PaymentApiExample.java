@@ -4,7 +4,6 @@ import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.api.PaymentApi;
-import jp.ne.paypay.api.PendingPaymentApi;
 import jp.ne.paypay.api.WalletApi;
 import jp.ne.paypay.model.AccountLinkQRCode;
 import jp.ne.paypay.model.AuthorizationScope;
@@ -38,27 +37,21 @@ public class PaymentApiExample {
     apiClient.setApiKey("API_KEY");
     apiClient.setApiSecretKey("API_SECRET_KEY");
     apiClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
+    String userAuthorizationId = "USER_AUTHORIZATION_ID";
 
     PaymentApi paymentApi = new PaymentApi(apiClient);
-    PendingPaymentApi pendingPaymentApi = new PendingPaymentApi(apiClient);
     WalletApi walletApiInstance = new WalletApi(apiClient);
 
     createAccountLinkQrCode(paymentApi);
-
-    String userAuthorizationId = "USER_AUTHORIZATION_ID";
     preAuthCaptureFlow(walletApiInstance, paymentApi, userAuthorizationId);
     preAuthRevertAuthFlow(walletApiInstance, paymentApi, userAuthorizationId);
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId,  false);
     //Continuous payment flow
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
-    pendingPayment(pendingPaymentApi, userAuthorizationId, false);
-    //Cancel Pending Order
-    pendingPayment(pendingPaymentApi, userAuthorizationId, true);
-
   }
 
-  private static Payment getPaymentObject(String merchantPaymentId, String userAuthorizationId, int amount) {
+  protected static Payment getPaymentObject(String merchantPaymentId, String userAuthorizationId, int amount) {
     Payment payment = new Payment();
     payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
     payment.setMerchantPaymentId(merchantPaymentId);
@@ -166,30 +159,6 @@ public class PaymentApiExample {
 
   }
 
-  private static void pendingPayment(PendingPaymentApi paymentApi, String userAuthorizationId, boolean cancelPendingOrder) {
-
-    String merchantPaymentId = UUID.randomUUID().toString();
-    Payment payment = getPaymentObject(merchantPaymentId, userAuthorizationId, 1);
-    createPendingPayment(paymentApi, payment);
-    PaymentDetails paymentDetails = getPendingPaymentDetails(paymentApi, merchantPaymentId);
-    if (paymentDetails != null && paymentDetails.getData() != null) {
-      if(cancelPendingOrder){
-        cancelPendingOrder(paymentApi, paymentDetails.getData().getMerchantPaymentId());
-        getPendingPaymentDetails(paymentApi, merchantPaymentId);
-      }else{
-        //Complete the payment before Refund
-        String refundId = UUID.randomUUID().toString();
-        String paymentId = paymentDetails.getData().getPaymentId();
-        if(paymentId != null){
-          RefundDetails refundDetails = refundPendingPayment(paymentApi, paymentDetails.getData().getPaymentId(), refundId);
-          if (refundDetails.getData().getMerchantRefundId() != null) {
-            getRefundDetails(paymentApi, refundDetails.getData().getMerchantRefundId());
-          }
-        }
-      }
-    }
-  }
-
   private static void preAuthCaptureFlow(WalletApi walletApiInstance, PaymentApi paymentApi, String userAuthorizationId){
 
     String merchantPaymentId  = UUID.randomUUID().toString();
@@ -290,67 +259,6 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static void createPendingPayment(final PendingPaymentApi apiInstance, Payment payment) {
-    try {
-      PaymentDetails result = apiInstance.createPendingPayment(payment);
-      System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result.getResultInfo().getCode());
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println(e.getResponseBody());
-    }
-  }
-
-  private static RefundDetails refundPendingPayment(final PendingPaymentApi apiInstance, String paymentId, String refundId) {
-    RefundDetails result = null;
-    try {
-      Refund refund = getRefundObject(paymentId, refundId);
-      result = apiInstance.refundPayment(refund);
-      System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result.getResultInfo().getCode());
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println(e.getResponseBody());
-    }
-    return result;
-  }
-
-  private static void getRefundDetails(final PendingPaymentApi apiInstance, final String merchantRefundId) {
-
-    try {
-      RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
-      System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println(e.getResponseBody());
-    }
-  }
-
-  private static PaymentDetails getPendingPaymentDetails(final PendingPaymentApi apiInstance, String merchantPaymentId) {
-    PaymentDetails result = null;
-    try {
-      result = apiInstance.getPaymentDetails(merchantPaymentId);
-      System.out.println("\nAPI RESPONSE\n------------------\n");
-      System.out.println(result.getResultInfo().getCode());
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println(e.getResponseBody());
-    }
-    return result;
-  }
-
-  private static void cancelPendingOrder(final PendingPaymentApi apiInstance, String merchantPaymentId) {
-    try {
-      NotDataResponse result = apiInstance.cancelPendingOrder(merchantPaymentId);
-      System.out.println("\n\nAPI RESPONSE\n------------------\n");
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling PaymentApi#cancelPendingOrder" + e.getMessage());
-      System.err.println(e.getResponseBody());
-    }
-  }
-
-
   private static void capturePayment(final PaymentApi apiInstance, String merchantPaymentId, int amount){
     try {
       CaptureObject captureObject = new CaptureObject();
@@ -378,7 +286,7 @@ public class PaymentApiExample {
     }
   }
 
-  private static Refund getRefundObject(String paymentId, String refundId) {
+  protected static Refund getRefundObject(String paymentId, String refundId) {
     Refund refund = new Refund();
     refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
     refund.setMerchantRefundId(refundId);
