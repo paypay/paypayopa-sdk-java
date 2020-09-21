@@ -51,7 +51,6 @@ public class WalletApi {
     private Call checkWalletBalanceCall(String userAuthorizationId, Integer amount, String currency,
             ProductType productType) throws ApiException {
 
-        // create path and map variables
         String localVarPath = "/v2/wallet/check_balance";
 
         List<Pair> localVarQueryParams = new ArrayList<>();

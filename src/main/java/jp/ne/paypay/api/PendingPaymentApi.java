@@ -81,7 +81,6 @@ public class PendingPaymentApi {
      */
     private Call createPaymentCall(Payment payment) throws ApiException {
 
-        // create path and map variables
         String localVarPath = "/v1/requestOrder";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
@@ -216,9 +215,7 @@ public class PendingPaymentApi {
      */
     private Call refundPaymentCall(Refund refund) throws ApiException {
 
-        // create path and map variables
         String localVarPath = "/v1/requestOrder/refunds";
-
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
         Map<String, String> localVarHeaderParams = new HashMap<>();

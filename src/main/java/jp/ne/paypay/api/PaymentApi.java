@@ -94,9 +94,7 @@ public class PaymentApi {
      */
     private Call capturePaymentAuthCall(Object body) throws ApiException {
 
-        // create path and map variables
         String capturePaymentUrl = "/v2/payments/capture";
-
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
 
@@ -166,9 +164,7 @@ public class PaymentApi {
      */
     private Call createPaymentCall(Object body, String agreeSimilarTransaction) throws ApiException {
 
-        // create path and map variables
         String createPaymentUrl = "/v2/payments";
-
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
         if (agreeSimilarTransaction != null)
@@ -241,9 +237,7 @@ public class PaymentApi {
      */
     private Call createQRCodeCall(Object body) throws ApiException {
 
-        // create path and map variables
         String createQrCodeUrl = "/v2/codes";
-
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
 
@@ -466,9 +460,7 @@ public class PaymentApi {
      */
     private Call refundPaymentCall(Object body) throws ApiException {
 
-        // create path and map variables
         String refundPaymentUrl = "/v2/refunds";
-
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
 
@@ -535,9 +527,7 @@ public class PaymentApi {
      */
     private Call revertAuthCall(Object body) throws ApiException {
 
-        // create path and map variables
         String revertAuthUrl = "/v2/payments/preauthorize/revert";
-
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
 
@@ -631,7 +621,7 @@ public class PaymentApi {
      */
     private Call createAccountLinkQRCodeCall(Object body) throws ApiException {
 
-        // create path and map variables
+
         String createAccountLinkUrl = "/v1/qr/sessions";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
@@ -699,8 +689,7 @@ public class PaymentApi {
      */
     private Call createPaymentAuthorizationCall(Object body, String agreeSimilarTransaction) throws ApiException {
 
-        // create path and map variables
-        String localVarPath = "/v2/payments/preauthorize";
+        String paymentAuthUrl = "/v2/payments/preauthorize";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -724,7 +713,7 @@ public class PaymentApi {
         localVarHeaderParams.put(Constants.CONTENT_TYPE, localVarContentType);
         String[] localVarAuthNames = new String[]{Constants.HMAC_AUTH};
         apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return apiClient.buildCall(paymentAuthUrl, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
     /**
@@ -765,7 +754,7 @@ public class PaymentApi {
      */
     private Call createContinuousPaymentCall(Object body) throws ApiException {
 
-        // create path and map variables
+
         String continuousPaymentUrl = "/v1/subscription/payments";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
