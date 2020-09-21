@@ -64,7 +64,12 @@ You need to setup your key and secret using the following:
 
 ## Documentation for API Endpoints
 Class | Method | HTTP request | Description
------------- | ------------- | ------------- | -------------
+------------------- | ------------- | ------------- | -------------
+*PendingPaymentApi* | [**createPendingPayment**](docs/PendingPaymentApi.md#createPendingPayment) | **POST** /v1/requestOrder | Create a pending payment
+*PendingPaymentApi* | [**getPaymentDetails**](docs/PendingPaymentApi.md#getPaymentDetails) | **GET** /v1/requestOrder/{merchantPaymentId} | Get payment details
+*PendingPaymentApi* | [**cancelPendingOrder**](docs/PendingPaymentApi.md#cancelPendingOrder) | **DELETE** /v1/requestOrder/{merchantPaymentId} | Cancel a Pending Order
+*PendingPaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
+*PendingPaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v1/requestOrder/refunds | Refund a payment
 *PaymentApi* | [**createAccountLinkQRCode**](docs/PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
 *PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
 *PaymentApi* | [**createPayment**](docs/PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
@@ -78,11 +83,7 @@ Class | Method | HTTP request | Description
 *PaymentApi* | [**getCodesPaymentDetails**](docs/PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
 *PaymentApi* | [**getRefundDetails**](docs/PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
 *PaymentApi* | [**refundPayment**](docs/PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
-*PaymentApi* | [**createPendingPayment**](docs/PendingPaymentApi.md#createPendingPayment) | **POST** /v1/requestOrder | Create a pending payment
-*PaymentApi* | [**getPaymentDetails**](docs/PendingPaymentApi.md#getPaymentDetails) | **GET** /v1/requestOrder/{merchantPaymentId} | Get payment details
-*PaymentApi* | [**cancelPendingOrder**](docs/PendingPaymentApi.md#cancelPendingOrder) | **DELETE** /v1/requestOrder/{merchantPaymentId} | Cancel a Pending Order
-*PaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
-*PaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v1/requestOrder/refunds | Refund a payment
+
 *WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance 
 *UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
 *UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
