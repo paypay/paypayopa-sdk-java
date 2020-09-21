@@ -66,10 +66,14 @@ public class PendingPaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> createPendingPaymentWithHttpInfo(Payment payment) throws ApiException {
-        Call call = ApiUtil.postCallObject(apiClient, "/v1/requestOrder", payment, null);
+        Call call = createPendingPaymentCall(payment);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
+    }
+
+    private Call createPendingPaymentCall(Payment payment) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/requestOrder", payment, null);
     }
 
     /**
