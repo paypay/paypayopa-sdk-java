@@ -83,7 +83,6 @@ Class | Method | HTTP request | Description
 *PaymentApi* | [**getCodesPaymentDetails**](docs/PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
 *PaymentApi* | [**getRefundDetails**](docs/PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
 *PaymentApi* | [**refundPayment**](docs/PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
-
 *WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance 
 *UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
 *UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
