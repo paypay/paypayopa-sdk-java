@@ -45,14 +45,14 @@ Building the API client library requires Gradle to be installed.
 Add this dependency to your project's build.gradle file:
 
 ```groovy
-compile "jp.ne.paypay:paypayopa:0.5.0"
+compile "jp.ne.paypay:paypayopa:0.6.0"
 ```
 
 ## Getting Started
 Please follow the [installation](#installation) instruction and execute the following Java code:
-> Please refer jp.ne.paypay.example.PaymentApiExample.java for usage of APIs
+> Please refer jp.ne.paypay.example.* for usage of APIs
 
-You need to setup your key and secret using the following:
+You need to set up your API key and secret using the following:
 
 ```java
     ApiClient apiClient = new Configuration().getDefaultApiClient();

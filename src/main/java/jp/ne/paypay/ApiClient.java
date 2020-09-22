@@ -38,7 +38,7 @@ public class ApiClient {
     private String basePath = "https://stg-api.sandbox.paypay.ne.jp";
     private String basePathProd = "https://api.paypay.ne.jp";
     private String basePathSandbox = "https://stg-api.sandbox.paypay.ne.jp";
-    private Map<String, String> defaultHeaderMap = new HashMap<String, String>();
+    private Map<String, String> defaultHeaderMap = new HashMap<>();
     private String tempFolderPath = null;
     private Map<String, Authentication> authentications;
     private OkHttpClient httpClient;
@@ -53,7 +53,7 @@ public class ApiClient {
         httpClient = new OkHttpClient();
         json = new JSON();
         // Set default User-Agent.
-        setUserAgent("PayPay-SDK/1.0.0/java");
+        setUserAgent("PayPay-SDK/0.6.0/java");
         authentications = new HashMap<>();
         authentications.put("HmacAuth", new HmacAuth());
         authentications = Collections.unmodifiableMap(authentications);

@@ -15,6 +15,8 @@ import jp.ne.paypay.ApiResponse;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.JSON;
 import jp.ne.paypay.Pair;
+import jp.ne.paypay.auth.Authentication;
+import jp.ne.paypay.auth.HmacAuth;
 import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.ResultInfo;
@@ -59,6 +61,29 @@ public class ApiClientTest {
         Assert.assertNotNull(configuration.getDefaultApiClient());
         Assert.assertNotNull(apiClient.getBasePath());
         Assert.assertFalse(apiClient.isProductionMode());
+        Assert.assertEquals(apiClient.getBasePathProd(), "https://api.paypay.ne.jp");
+        Assert.assertEquals(apiClient.getBasePathSandbox(), "https://stg-api.sandbox.paypay.ne.jp");
+        apiClient.setProductionMode(true);
+        Assert.assertEquals(apiClient.getBasePath(), "https://api.paypay.ne.jp");
+        apiClient.setBasePathProd("prodUrl");
+        Assert.assertEquals(apiClient.getBasePathProd(), "prodUrl");
+        apiClient.setBasePathSandbox("sandboxUrl");
+        Assert.assertEquals(apiClient.getBasePathSandbox(), "sandboxUrl");
+        apiClient.setDefaultHeaderMap(new HashMap<>());
+        Assert.assertNotNull(apiClient.getDefaultHeaderMap());
+        Assert.assertEquals(apiClient.getAuthentications().size(), 1);
+        Assert.assertNotNull(apiClient.getAuthentication("HmacAuth"));
+        Map<String, Authentication> authentications = new HashMap<>();
+        authentications.put("HmacAuth", new HmacAuth());
+        authentications.put("BasicAuth", null);
+        apiClient.setAuthentications(authentications);
+        Assert.assertEquals(authentications.size(), 2);
+        apiClient.setAssumeMerchant("merchantKey");
+        Assert.assertEquals(apiClient.getDefaultHeaderMap().get("X-ASSUME-MERCHANT"), "merchantKey");
+        Assert.assertEquals(apiClient.getAssumeMerchant(), "merchantKey");
+        apiClient.setJson(new JSON());
+        Assert.assertNotNull(apiClient.getJson());
+
     }
 
     @Test
@@ -152,13 +177,21 @@ public class ApiClientTest {
         }.getType();
         Object result = apiClient.deserialize(response, localVarReturnType);
         Assert.assertTrue(result instanceof QRCodeDetails);
-        //result = apiClient.handleResponse(response, localVarReturnType);
-        //Assert.assertTrue(result instanceof QRCodeDetails);
 
         localVarReturnType = new TypeToken<File>() {
         }.getType();
         result = apiClient.deserialize(response, localVarReturnType);
         Assert.assertTrue(result instanceof File);
+
+        json.setLenientOnJson(true);
+        builder.body(ResponseBody.create(MediaType.parse("application/json"), json.serialize(qrCodeDetails) ));
+        response = builder.build();
+        result = apiClient.deserialize(response, localVarReturnType);
+        Assert.assertTrue(result instanceof File);
+
+        result = apiClient.deserialize(null, localVarReturnType);
+        Assert.assertNull(result);
+
     }
 
     @Test
@@ -257,6 +290,10 @@ public class ApiClientTest {
         Request request = apiClient.buildRequest("/v2/qrcode", "POST", queryParams, queryParams, qrCode, headerParams, null, localVarAuthNames);
         Assert.assertEquals(request.method(), "POST");
         Assert.assertTrue(request.urlString().contains("/v2/qrcode"));
+        request = apiClient.buildRequest("/v2/qrcode", "POST", queryParams, queryParams, null, headerParams, null, localVarAuthNames);
+        Assert.assertNotNull(request.body());
+        request = apiClient.buildRequest("/v2/qrcode", "DELETE", queryParams, queryParams, null, headerParams, null, localVarAuthNames);
+        Assert.assertNull(request.body());
     }
 
     @Test
