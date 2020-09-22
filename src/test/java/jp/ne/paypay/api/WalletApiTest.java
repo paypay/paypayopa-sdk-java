@@ -8,7 +8,6 @@ import jp.ne.paypay.model.ProductType;
 import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.WalletBalance;
 import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,7 +52,7 @@ public class WalletApiTest {
 
         ProductType productType = null;
         WalletBalance walletBalance = new WalletBalance();
-        Assertions.assertNotNull(api.getApiClient());
+        Assert.assertNotNull(api.getApiClient());
         walletBalance.setResultInfo(resultInfo);
         BalanceData balanceData = new BalanceData();
         balanceData.setHasEnoughBalance(true);
@@ -61,7 +60,7 @@ public class WalletApiTest {
         ApiResponse<WalletBalance> walletBalanceApiResponse = new ApiResponse<>(00001, null, walletBalance);
         Mockito.when(api.checkWalletBalanceWithHttpInfo(userAuthorizationId, amount, currency, productType)).thenReturn(walletBalanceApiResponse);
         WalletBalance response = api.checkWalletBalance(userAuthorizationId, amount, currency, productType);
-        Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
     @Test
     @DisplayName("Wallet Balance API for invalid params test")
@@ -75,7 +74,7 @@ public class WalletApiTest {
 
         ProductType productType = null;
         WalletBalance walletBalance = new WalletBalance();
-        Assertions.assertNotNull(api.getApiClient());
+        Assert.assertNotNull(api.getApiClient());
         walletBalance.setResultInfo(resultInfo);
 
         Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(null, amount, currency, productType));

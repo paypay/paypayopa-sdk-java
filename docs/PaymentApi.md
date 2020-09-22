@@ -47,7 +47,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#cancelPayment");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -84,7 +83,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#capturePaymentAuth");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -127,16 +125,15 @@ Payment payment = new Payment();
                       .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
       List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
       merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+      payment.setOrderItems(merchantOrderItems);
 
 boolean agreeSimilarTransaction = true; // Boolean | (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
 
 try {
-    PaymentDetails result = apiInstance.createPayment(body, agreeSimilarTransaction);
+    PaymentDetails result = apiInstance.createPayment(payment, agreeSimilarTransaction);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createPayment");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -179,16 +176,15 @@ Payment payment = new Payment();
                       .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
       List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
       merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+      payment.setOrderItems(merchantOrderItems);
 
 boolean agreeSimilarTransaction = true; // Boolean | (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
 
 try {
-    PaymentDetails result = apiInstance.createPaymentAuthorization(body, agreeSimilarTransaction);
+    PaymentDetails result = apiInstance.createPaymentAuthorization(payment, agreeSimilarTransaction);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createPaymentAuthorization");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -230,10 +226,10 @@ Payment payment = new Payment();
                       .unitPrice(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
       List<MerchantOrderItem> merchantOrderItems = new ArrayList<>();
       merchantOrderItems.add(merchantOrderItem);
-      payment.setOrderItems(new ArrayList<MerchantOrderItem>(merchantOrderItems));
+      payment.setOrderItems(merchantOrderItems);
 
 try {
-    PaymentDetails result = apiInstance.createContinuousPayment(body);
+    PaymentDetails result = apiInstance.createContinuousPayment(payment);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createContinuousPayment");
@@ -273,7 +269,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#revertAuth");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -322,7 +317,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createQRCode");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -357,7 +351,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#deleteQRCode");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -393,7 +386,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#getPaymentDetails");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -420,14 +412,13 @@ import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi(apiClient);
 
-String merchantPaymentId = "MERCHANT_PAYMENT_ID"; // String
+String merchantPaymentId = "MERCHANT_PAYMENT_ID";
 
 try {
     PaymentDetails result = apiInstance.getCodesPaymentDetails(merchantPaymentId);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#getCodesPaymentDetails");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -455,14 +446,13 @@ import jp.ne.paypay.api.PaymentApi;
 
 PaymentApi apiInstance = new PaymentApi(apiClient);
 
-String merchantRefundId = "MERCHANT_REFUND_ID"; // String 
+String merchantRefundId = "MERCHANT_REFUND_ID";
 
 try {
     RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#getRefundDetails");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -502,7 +492,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#refundPayment");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -541,7 +530,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#revertAuth");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
@@ -583,7 +571,6 @@ try {
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling PaymentApi#createAccountLinkQRCode");
-    e.printStackTrace();
     System.out.println(e.getResponseBody());
 }
 ```
