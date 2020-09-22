@@ -76,7 +76,10 @@ public class PaymentApiExample {
     try{
       AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
       List<AuthorizationScope> scopes = new ArrayList<>();
+      scopes.add(AuthorizationScope.DIRECT_DEBIT);
       scopes.add(AuthorizationScope.PENDING_PAYMENTS);
+      scopes.add(AuthorizationScope.CONTINUOUS_PAYMENTS);
+      scopes.add(AuthorizationScope.PREAUTH_CAPTURE_NATIVE);
       accountLinkQRCode.setScopes(scopes);
       accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
       accountLinkQRCode.setDeviceId("device_id");
