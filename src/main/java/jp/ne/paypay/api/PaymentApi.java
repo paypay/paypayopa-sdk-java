@@ -1,21 +1,31 @@
 package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
-import jp.ne.paypay.*;
-import jp.ne.paypay.model.*;
-
+import com.squareup.okhttp.Call;
+import jp.ne.paypay.ApiClient;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.ApiResponse;
+import jp.ne.paypay.Configuration;
+import jp.ne.paypay.Pair;
+import jp.ne.paypay.Validator;
+import jp.ne.paypay.model.AccountLinkQRCode;
+import jp.ne.paypay.model.CaptureObject;
+import jp.ne.paypay.model.LinkQRCodeResponse;
+import jp.ne.paypay.model.NotDataResponse;
+import jp.ne.paypay.model.Payment;
+import jp.ne.paypay.model.PaymentDetails;
+import jp.ne.paypay.model.QRCode;
+import jp.ne.paypay.model.QRCodeDetails;
+import jp.ne.paypay.model.Refund;
+import jp.ne.paypay.model.RefundDetails;
+import jp.ne.paypay.model.RevertAuthResponse;
 
 import java.lang.reflect.Type;
-import java.util.*;
 
 public class PaymentApi {
     private ApiClient apiClient;
-    private static final String APPLICATION_JSON = "application/json";
-    private static final String ACCEPT = "Accept";
-    private static final String MERCHANT_PAYMENT_ID = "merchantPaymentId";
-    private static final String HMAC_AUTH = "HmacAuth";
-    private static final String CONTENT_TYPE = "Content-Type";
-    private Validator validator = Validator.getInstance();
+
+    private final Validator validator = Validator.getInstance();
 
     public PaymentApi() {
         this(new Configuration().getDefaultApiClient());
@@ -34,50 +44,9 @@ public class PaymentApi {
     }
 
 
-    /**
-     * Build call for cancelPayment
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call cancelPaymentCall(String merchantPaymentId) throws ApiException {
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/v2/payments/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call cancelPaymentValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling cancelPayment");
-        }
-        return cancelPaymentCall(merchantPaymentId);
+    private Call cancelPaymentValidateBeforeCall(String merchantPaymentId) throws ApiException {
+        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId), "DELETE");
     }
 
     /**
@@ -102,51 +71,10 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<NotDataResponse> cancelPaymentWithHttpInfo(String merchantPaymentId) throws ApiException {
-        com.squareup.okhttp.Call call = cancelPaymentValidateBeforeCall(merchantPaymentId);
+        Call call = cancelPaymentValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<NotDataResponse>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
-    }
-
-    /**
-     * Build call for capturePaymentAuth
-     *
-     * @param body (optional)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call capturePaymentAuthCall(Object body) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v2/payments/capture";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call capturePaymentAuthValidateBeforeCall(Object body) throws ApiException {
-        return capturePaymentAuthCall(body);
     }
 
     /**
@@ -174,53 +102,18 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> capturePaymentAuthWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = capturePaymentAuthValidateBeforeCall(body);
+        Call call = capturePaymentAuthCall(body);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for createPayment
-     *
-     * @param body                    Payment (optional)
-     * @param agreeSimilarTransaction (Optional) If the parameter is set to \&quot;true\&quot;, the payment duplication check will be bypassed.  (optional)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call createPaymentCall(Object body, String agreeSimilarTransaction) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v2/payments";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-        if (agreeSimilarTransaction != null)
-            localVarQueryParams.addAll(apiClient.parameterToPair("agreeSimilarTransaction", agreeSimilarTransaction));
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    private Call capturePaymentAuthCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v2/payments/capture", body, null);
     }
 
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call createPaymentValidateBeforeCall(Object body, String agreeSimilarTransaction) throws ApiException {
-        return createPaymentCall(body, agreeSimilarTransaction);
+    private Call createPaymentValidateBeforeCall(Object body, String agreeSimilarTransaction) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v2/payments", body, agreeSimilarTransaction);
     }
 
     /**
@@ -251,7 +144,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> createPaymentWithHttpInfo(Object body, String agreeSimilarTransaction) throws ApiException {
-        com.squareup.okhttp.Call call = createPaymentValidateBeforeCall(body, agreeSimilarTransaction);
+        Call call = createPaymentValidateBeforeCall(body, agreeSimilarTransaction);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
@@ -264,37 +157,11 @@ public class PaymentApi {
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
      */
-    private com.squareup.okhttp.Call createQRCodeCall(Object body) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v2/codes";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
-                localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    private Call createQRCodeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v2/codes", body, null);
     }
 
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call createQRCodeValidateBeforeCall(Object body) throws ApiException {
+    private Call createQRCodeValidateBeforeCall(Object body) throws ApiException {
         return createQRCodeCall(body);
     }
 
@@ -324,56 +191,15 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<QRCodeDetails> createQRCodeWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = createQRCodeValidateBeforeCall(body);
+        Call call = createQRCodeValidateBeforeCall(body);
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for deleteQRCode
-     *
-     * @param codeId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call deleteQRCodeCall(String codeId) throws ApiException {
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/v2/codes/{codeId}"
-                .replaceAll("\\{" + "codeId" + "}", apiClient.escapeString(codeId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call deleteQRCodeValidateBeforeCall(String codeId) throws ApiException {
-        // verify the required parameter 'codeId' is set
-        if (codeId == null) {
-            throw new ApiException("Missing the required parameter 'codeId' when calling deleteQRCode");
-        }
-        return deleteQRCodeCall(codeId);
+    private Call deleteQRCodeValidateBeforeCall(String codeId) throws ApiException {
+        return ApiUtil.getCallObject(apiClient, "/v2/codes/{codeId}", new Pair(ApiConstants.CODE_ID,
+                codeId), "DELETE");
     }
 
     /**
@@ -398,57 +224,15 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<NotDataResponse> deleteQRCodeWithHttpInfo(String codeId) throws ApiException {
-        com.squareup.okhttp.Call call = deleteQRCodeValidateBeforeCall(codeId);
+        Call call = deleteQRCodeValidateBeforeCall(codeId);
         Type localVarReturnType = new TypeToken<NotDataResponse>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for getPaymentDetails
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call getPaymentDetailsCall(String merchantPaymentId) throws ApiException {
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/v2/payments/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams,
-                localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling getPaymentDetails");
-        }
-        return getPaymentDetailsCall(merchantPaymentId);
+    private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
+        return ApiUtil.getCallObject(apiClient, "/v2/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId), "GET");
     }
 
     /**
@@ -473,57 +257,17 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> getPaymentDetailsWithHttpInfo(String merchantPaymentId) throws ApiException {
-        com.squareup.okhttp.Call call = getPaymentDetailsValidateBeforeCall(merchantPaymentId);
+        Call call = getPaymentDetailsValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for getCodesPaymentDetails
-     *
-     * @param merchantPaymentId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call getCodesPaymentDetailsCall(String merchantPaymentId) throws ApiException {
-        Object localVarPostBody = null;
 
-        // create path and map variables
-        String localVarPath = "/v2/codes/payments/{merchantPaymentId}"
-                .replaceAll("\\{" + MERCHANT_PAYMENT_ID + "}", apiClient.escapeString(merchantPaymentId));
 
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call getCodesPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
-        // verify the required parameter 'merchantPaymentId' is set
-        if (merchantPaymentId == null) {
-            throw new ApiException("Missing the required parameter 'merchantPaymentId' when calling "
-                    + "getCodesPaymentDetails");
-        }
-        return getCodesPaymentDetailsCall(merchantPaymentId);
+    private Call getCodesPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
+        return ApiUtil.getCallObject(apiClient, "/v2/codes/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
+                merchantPaymentId), "GET");
     }
 
     /**
@@ -548,57 +292,17 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> getCodesPaymentDetailsWithHttpInfo(String merchantPaymentId) throws ApiException {
-        com.squareup.okhttp.Call call = getCodesPaymentDetailsValidateBeforeCall(merchantPaymentId);
+        Call call = getCodesPaymentDetailsValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
 
-    /**
-     * Build call for getRefundDetails
-     *
-     * @param merchantRefundId (required)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call getRefundDetailsCall(String merchantRefundId) throws ApiException {
-        Object localVarPostBody = null;
 
-        // create path and map variables
-        String localVarPath = "/v2/refunds/{merchantRefundId}"
-                .replaceAll("\\{" + "merchantRefundId" + "}", apiClient.escapeString(merchantRefundId));
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call getRefundDetailsValidateBeforeCall(String merchantRefundId) throws ApiException {
-        // verify the required parameter 'merchantRefundId' is set
-        if (merchantRefundId == null) {
-            throw new ApiException("Missing the required parameter 'merchantRefundId' when calling getRefundDetails");
-        }
-        return getRefundDetailsCall(merchantRefundId);
+    private Call getRefundDetailsValidateBeforeCall(String merchantRefundId) throws ApiException {
+        return ApiUtil.getCallObject(apiClient, "/v2/refunds/{merchantRefundId}", new Pair(ApiConstants.MERCHANT_REFUND_ID,
+                merchantRefundId), "GET");
     }
 
     /**
@@ -623,50 +327,14 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<RefundDetails> getRefundDetailsWithHttpInfo(String merchantRefundId) throws ApiException {
-        com.squareup.okhttp.Call call = getRefundDetailsValidateBeforeCall(merchantRefundId);
+        Call call = getRefundDetailsValidateBeforeCall(merchantRefundId);
         Type localVarReturnType = new TypeToken<RefundDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for refundPayment
-     *
-     * @param body Refund (optional)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call refundPaymentCall(Object body) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v2/refunds";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call refundPaymentValidateBeforeCall(Object body) throws ApiException {
-        return refundPaymentCall(body);
+    private Call refundPaymentValidateBeforeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v2/refunds", body, null);
     }
 
     /**
@@ -678,9 +346,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public RefundDetails refundPayment(Refund body) throws ApiException {
-        String message = validator.validate(body);
-        if (message!=null)
-            throw new IllegalArgumentException(message);
+        ApiUtil.validateObject(validator, body);
         ApiResponse<RefundDetails> resp = refundPaymentWithHttpInfo(body);
         return resp.getData();
     }
@@ -694,51 +360,14 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<RefundDetails> refundPaymentWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = refundPaymentValidateBeforeCall(body);
+        Call call = refundPaymentValidateBeforeCall(body);
         Type localVarReturnType = new TypeToken<RefundDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-
-    /**
-     * Build call for revertAuth
-     *
-     * @param body Revert Authorized Order Request (optional)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call revertAuthCall(Object body) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v2/payments/preauthorize/revert";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call revertAuthValidateBeforeCall(Object body) throws ApiException {
-        return revertAuthCall(body);
+    private Call revertAuthValidateBeforeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v2/payments/preauthorize/revert", body, null);
     }
 
     /**
@@ -763,7 +392,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<RevertAuthResponse> revertAuthWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = revertAuthValidateBeforeCall(body);
+        Call call = revertAuthValidateBeforeCall(body);
         Type localVarReturnType = new TypeToken<RevertAuthResponse>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
@@ -778,10 +407,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public LinkQRCodeResponse createAccountLinkQRCode(AccountLinkQRCode body) throws ApiException {
-        String message = validator.validate(body);
-        if (message!=null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, body);
         ApiResponse<LinkQRCodeResponse> resp = createAccountLinkQRCodeWithHttpInfo(body);
         return resp.getData();
     }
@@ -795,47 +421,16 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<LinkQRCodeResponse> createAccountLinkQRCodeWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = CreateAccountLinkQRCodeCall(body);
+        Call call = createAccountLinkQrCodeCall(body);
         Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for CreateAccountLinkQRCode
-     *
-     * @param body Account Link Code Creation
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call CreateAccountLinkQRCodeCall(Object body) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v1/qr/sessions";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(10);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body,
-                localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    private Call createAccountLinkQrCodeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/qr/sessions", body, null);
     }
+
 
     /**
      * Create a payment authorization
@@ -847,10 +442,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public PaymentDetails createPaymentAuthorization(Payment body, String agreeSimilarTransaction) throws ApiException {
-        String message = validator.validate(body);
-        if (message != null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, body);
         ApiResponse<PaymentDetails> resp = createPaymentAuthorizationWithHttpInfo(body, agreeSimilarTransaction);
         return resp.getData();
     }
@@ -865,49 +457,12 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> createPaymentAuthorizationWithHttpInfo(Object body, String agreeSimilarTransaction) throws ApiException {
-        com.squareup.okhttp.Call call = createPaymentAuthorizationCall(body, agreeSimilarTransaction);
+        Call call =  ApiUtil.postCallObject(apiClient, "/v2/payments/preauthorize", body, agreeSimilarTransaction);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for createPaymentAuthorization
-     *
-     * @param body                    Payment
-     * @param agreeSimilarTransaction (Optional) If the parameter is set to \&quot;true\&quot;, the payment duplication check will be bypassed.  (optional)
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call createPaymentAuthorizationCall(Object body, String agreeSimilarTransaction) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v2/payments/preauthorize";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-        if (agreeSimilarTransaction != null)
-            localVarQueryParams.addAll(apiClient.parameterToPair("agreeSimilarTransaction", agreeSimilarTransaction));
-
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
-    }
 
     /**
      * Create a continuous payment
@@ -918,10 +473,7 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public PaymentDetails createContinuousPayment(Payment body) throws ApiException {
-        String message = validator.validate(body);
-        if (message != null) {
-            throw new IllegalArgumentException(message);
-        }
+        ApiUtil.validateObject(validator, body);
         ApiResponse<PaymentDetails> resp = createContinuousPaymentWithHttpInfo(body);
         return resp.getData();
     }
@@ -935,44 +487,14 @@ public class PaymentApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     protected ApiResponse<PaymentDetails> createContinuousPaymentWithHttpInfo(Object body) throws ApiException {
-        com.squareup.okhttp.Call call = createContinuousPaymentCall(body);
+        Call call = createContinuousPaymentCall(body);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
         return apiClient.execute(call, localVarReturnType);
     }
 
-    /**
-     * Build call for createContinuousPayment
-     *
-     * @param body                    Payment
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     */
-    private com.squareup.okhttp.Call createContinuousPaymentCall(Object body) throws ApiException {
-
-        // create path and map variables
-        String localVarPath = "/v1/subscription/payments";
-
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    private Call createContinuousPaymentCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/subscription/payments", body, null);
     }
-
 
 }

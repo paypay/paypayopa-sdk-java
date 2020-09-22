@@ -45,14 +45,14 @@ Building the API client library requires Gradle to be installed.
 Add this dependency to your project's build.gradle file:
 
 ```groovy
-compile "jp.ne.paypay:paypayopa:0.5.0"
+compile "jp.ne.paypay:paypayopa:0.6.0"
 ```
 
 ## Getting Started
 Please follow the [installation](#installation) instruction and execute the following Java code:
-> Please refer jp.ne.paypay.example.PaymentApiExample.java for usage of APIs
+> Please refer jp.ne.paypay.example.* for usage of APIs
 
-You need to setup your key and secret using the following:
+You need to set up your API key and secret using the following:
 
 ```java
     ApiClient apiClient = new Configuration().getDefaultApiClient();
@@ -63,7 +63,7 @@ You need to setup your key and secret using the following:
 ```
 
 ## Documentation for API Endpoints
-Class | Method | HTTP request | Description
+Title | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *PaymentApi* | [**createAccountLinkQRCode**](docs/PaymentApi.md#createAccountLinkQRCode) | **POST** /v1/qr/sessions | Create an ACCOUNT LINK QR and display it to the user
 *PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
@@ -78,7 +78,12 @@ Class | Method | HTTP request | Description
 *PaymentApi* | [**getCodesPaymentDetails**](docs/PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
 *PaymentApi* | [**getRefundDetails**](docs/PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
 *PaymentApi* | [**refundPayment**](docs/PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
-*WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance
+*PaymentApi* | [**createPendingPayment**](docs/PendingPaymentApi.md#createPendingPayment) | **POST** /v1/requestOrder | Create a pending payment
+*PaymentApi* | [**getPaymentDetails**](docs/PendingPaymentApi.md#getPaymentDetails) | **GET** /v1/requestOrder/{merchantPaymentId} | Get payment details (Pending Payment)
+*PaymentApi* | [**cancelPendingOrder**](docs/PendingPaymentApi.md#cancelPendingOrder) | **DELETE** /v1/requestOrder/{merchantPaymentId} | Cancel a Pending Order
+*PaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details (Pending Payment)
+*PaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v1/requestOrder/refunds | Refund a payment (Pending Payment)
+*WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance 
 *UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
 *UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
 *UserApi* | [**unlinkUser**](docs/UserApi.md#unlinkUser) | **DELETE** /v2/user/authorizations/{userAuthorizationId} | Unlink user

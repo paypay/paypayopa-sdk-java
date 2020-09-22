@@ -37,23 +37,21 @@ public class PaymentApiExample {
     apiClient.setApiKey("API_KEY");
     apiClient.setApiSecretKey("API_SECRET_KEY");
     apiClient.setAssumeMerchant("ASSUME_MERCHANT_ID");
+    String userAuthorizationId = "USER_AUTHORIZATION_ID";
 
     PaymentApi paymentApi = new PaymentApi(apiClient);
     WalletApi walletApiInstance = new WalletApi(apiClient);
 
     createAccountLinkQrCode(paymentApi);
-
-    String userAuthorizationId = "USER_AUTHORIZATION_ID";
     preAuthCaptureFlow(walletApiInstance, paymentApi, userAuthorizationId);
     preAuthRevertAuthFlow(walletApiInstance, paymentApi, userAuthorizationId);
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId,  false);
     //Continuous payment flow
     directDebitFlow(walletApiInstance, paymentApi, userAuthorizationId, true);
     appInvokeFlow(paymentApi, walletApiInstance, userAuthorizationId);
-
   }
 
-  private static Payment getPaymentObject(String merchantPaymentId, String userAuthorizationId, int amount) {
+  protected static Payment getPaymentObject(String merchantPaymentId, String userAuthorizationId, int amount) {
     Payment payment = new Payment();
     payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
     payment.setMerchantPaymentId(merchantPaymentId);
@@ -79,6 +77,9 @@ public class PaymentApiExample {
       AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
       List<AuthorizationScope> scopes = new ArrayList<>();
       scopes.add(AuthorizationScope.DIRECT_DEBIT);
+      scopes.add(AuthorizationScope.PENDING_PAYMENTS);
+      scopes.add(AuthorizationScope.CONTINUOUS_PAYMENTS);
+      scopes.add(AuthorizationScope.PREAUTH_CAPTURE_NATIVE);
       accountLinkQRCode.setScopes(scopes);
       accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
       accountLinkQRCode.setDeviceId("device_id");
@@ -279,17 +280,22 @@ public class PaymentApiExample {
   private static void createRefund(final PaymentApi apiInstance, String paymentId, String refundId) {
 
     try {
-      Refund refund = new Refund();
-      refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
-      refund.setMerchantRefundId(refundId);
-      refund.setPaymentId(paymentId);
-      refund.setReason("Testing");
+      Refund refund = getRefundObject(paymentId, refundId);
       RefundDetails result = apiInstance.refundPayment(refund);
       System.out.println("\nAPI RESPONSE\n------------------\n");
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println(e.getResponseBody());
     }
+  }
+
+  protected static Refund getRefundObject(String paymentId, String refundId) {
+    Refund refund = new Refund();
+    refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
+    refund.setMerchantRefundId(refundId);
+    refund.setPaymentId(paymentId);
+    refund.setReason("Testing");
+    return refund;
   }
 
   private static QRCodeDetails createQRCode(final PaymentApi apiInstance, int amount) {
@@ -315,8 +321,7 @@ public class PaymentApiExample {
     return result;
   }
 
-  private static void getRefundDetails(final PaymentApi apiInstance, final String merchantRefundId) {
-
+  protected static void getRefundDetails(final PaymentApi apiInstance, final String merchantRefundId) {
     try {
       RefundDetails result = apiInstance.getRefundDetails(merchantRefundId);
       System.out.println("\nAPI RESPONSE\n------------------\n");

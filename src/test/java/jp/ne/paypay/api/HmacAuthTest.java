@@ -28,7 +28,6 @@ public class HmacAuthTest {
         Map<String, String> headerParams = new HashMap<>();
         List<Pair> queryParams = new ArrayList<>();
         hmacAuth.applyToParams(queryParams, headerParams);
-        System.out.println(headerParams.get("Authorization"));
         Assert.assertTrue(headerParams.get("Authorization").startsWith("hmac"));
         Assert.assertNotNull(hmacAuth.getApiKey());
         Assert.assertNotNull(hmacAuth.getApiSecretKey());
@@ -36,6 +35,10 @@ public class HmacAuthTest {
         Assert.assertNotNull(hmacAuth.getHttpMethod());
         Assert.assertNotNull(hmacAuth.getRequestBody());
         Assert.assertNotNull(hmacAuth.getRequestUrl());
+        hmacAuth.setContentType(null);
+        headerParams = new HashMap<>();
+        hmacAuth.applyToParams(queryParams, headerParams);
+        Assert.assertNull(headerParams.get("Authorization"));
 
     }
 }

@@ -1,7 +1,10 @@
 package jp.ne.paypay.auth;
 
 import jp.ne.paypay.Pair;
+import org.apache.commons.lang3.RandomStringUtils;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
@@ -10,11 +13,6 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.lang3.RandomStringUtils;
 
 public class HmacAuth implements Authentication {
     private String apiKey;
@@ -59,7 +57,7 @@ public class HmacAuth implements Authentication {
             Mac sha256HMAC = Mac.getInstance(HMAC_KEY);
             sha256HMAC.init(signingKey);
             byte[] rawHmac = sha256HMAC.doFinal(dataToSign);
-            return java.util.Base64.getEncoder().encodeToString(rawHmac);
+            return Base64.getEncoder().encodeToString(rawHmac);
         } catch (GeneralSecurityException e) {
             System.err.println("Unexpected error while creating hash: " + e.getMessage());
             throw new IllegalArgumentException(e);
