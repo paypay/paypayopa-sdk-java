@@ -909,6 +909,70 @@ public class PaymentApi {
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
 
+    /**
+     * Create a continuous payment
+     * Create a continuous payment and start the money transfer..  **Timeout: 30s**
+     *
+     * @param body                    Payment
+     * @return PaymentDetails
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public PaymentDetails createContinuousPayment(Payment body) throws ApiException {
+        String message = validator.validate(body);
+        if (message != null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<PaymentDetails> resp = createContinuousPaymentWithHttpInfo(body);
+        return resp.getData();
+    }
+
+    /**
+     * Create a continuous payment
+     * Create a continuous payment and start the money transfer.  **Timeout: 30s**
+     *
+     * @param body                    Payment
+     * @return ApiResponse&lt;PaymentDetails&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<PaymentDetails> createContinuousPaymentWithHttpInfo(Object body) throws ApiException {
+        com.squareup.okhttp.Call call = createContinuousPaymentCall(body);
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType);
+    }
+
+    /**
+     * Build call for createContinuousPayment
+     *
+     * @param body                    Payment
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     */
+    private com.squareup.okhttp.Call createContinuousPaymentCall(Object body) throws ApiException {
+
+        // create path and map variables
+        String localVarPath = "/v1/subscription/payments";
+
+        List<Pair> localVarQueryParams = new ArrayList<>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+        Map<String, Object> localVarFormParams = new HashMap<>();
+
+        final String[] localVarAccepts = {
+                APPLICATION_JSON
+        };
+        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) localVarHeaderParams.put(ACCEPT, localVarAccept);
+
+        final String[] localVarContentTypes = {
+
+        };
+        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+        localVarHeaderParams.put(CONTENT_TYPE, localVarContentType);
+        String[] localVarAuthNames = new String[]{HMAC_AUTH};
+        apiClient.setReadTimeout(30);
+        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    }
 
 
 }

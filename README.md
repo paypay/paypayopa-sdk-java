@@ -2,11 +2,15 @@
 
 [![License](https://img.shields.io/:license-apache-orange.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/jp.ne.paypay/paypayopa)](https://search.maven.org/artifact/jp.ne.paypay/paypayopa)
+[![javadoc](https://javadoc.io/badge2/jp.ne.paypay/paypayopa/javadoc.svg)](https://javadoc.io/doc/jp.ne.paypay/paypayopa)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-java.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-java)
 [![Coverage Status](https://coveralls.io/repos/github/paypay/paypayopa-sdk-java/badge.svg?branch=master)](https://coveralls.io/github/paypay/paypayopa-sdk-java?branch=master)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/paypay/paypayopa-sdk-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/paypay/paypayopa-sdk-java/context:java)
 [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/64c7339473ea7711415c/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-java/maintainability)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_shield)
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/paypay/paypayopa-sdk-java)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/701cdfe4502d48f7bb4063a94592b7ac)](https://app.codacy.com/gh/paypay/paypayopa-sdk-java?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-java&utm_campaign=Badge_Grade_Dashboard)
 
 Java SDK for interacting with PayPay APIs
 
@@ -41,7 +45,7 @@ Building the API client library requires Gradle to be installed.
 Add this dependency to your project's build.gradle file:
 
 ```groovy
-compile "jp.ne.paypay:paypayopa:0.4.0"
+compile "jp.ne.paypay:paypayopa:0.5.0"
 ```
 
 ## Getting Started
@@ -65,6 +69,7 @@ Class | Method | HTTP request | Description
 *PaymentApi* | [**cancelPayment**](docs/PaymentApi.md#cancelPayment) | **DELETE** /v2/payments/{merchantPaymentId} | Cancel a payment
 *PaymentApi* | [**createPayment**](docs/PaymentApi.md#createPayment) | **POST** /v2/payments | Create a payment
 *PaymentApi* | [**createPaymentAuthorization**](docs/PaymentApi.md#createPaymentAuthorization) | **POST** /v2/payments/preauthorize | Create a payment authorization to block the money 
+*PaymentApi* | [**createContinuousPayment**](docs/PaymentApi.md#createContinuousPayment) | **POST** /v1/subscription/payments | Create a continuous payment and start the money transfer
 *PaymentApi* | [**revertAuth**](docs/PaymentApi.md#revertAuth) | **POST** /v2/payments/preauthorize/revert | Revert a payment authorization 
 *PaymentApi* | [**capturePaymentAuth**](docs/PaymentApi.md#capturePaymentAuth) | **POST** /v2/payments/capture | Capture a payment authorization                                                                                                                                  
 *PaymentApi* | [**createQRCode**](docs/PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code
@@ -108,3 +113,7 @@ Class | Method | HTTP request | Description
  - [RefundState](docs/RefundState.md)
  - [ResultInfo](docs/ResultInfo.md)
  - [AccountLinkQRCode](docs/AccountLinkQRCode.md)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_large)

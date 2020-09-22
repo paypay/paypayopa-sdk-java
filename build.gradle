@@ -12,7 +12,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 group = 'jp.ne.paypay'
-version = '0.4.0'
+version = '0.5.0'
 
 
 
@@ -34,6 +34,11 @@ jacocoTestReport {
     reports {
         xml.enabled = true // coveralls plugin depends on xml format report
         html.enabled = true
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['jp/ne/paypay/model/**', 'jp/ne/paypay/example/**'])
+        }))
     }
 }
 
@@ -80,10 +85,10 @@ dependencies {
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
 
-    testCompile 'org.mockito:mockito-core:3.5.7'
+    testCompile 'org.mockito:mockito-core:3.5.11'
 
-    testCompile("org.junit.jupiter:junit-jupiter-engine:5.6.2")
-    testCompile("org.junit.platform:junit-platform-runner:1.6.2")
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    testCompile("org.junit.platform:junit-platform-runner:1.7.0")
 }
 pmd{
     consoleOutput = true

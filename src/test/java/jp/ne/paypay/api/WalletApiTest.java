@@ -3,11 +3,14 @@ package jp.ne.paypay.api;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
+import jp.ne.paypay.model.BalanceData;
 import jp.ne.paypay.model.ProductType;
 import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.WalletBalance;
+import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -50,13 +53,34 @@ public class WalletApiTest {
 
         ProductType productType = null;
         WalletBalance walletBalance = new WalletBalance();
-
+        Assertions.assertNotNull(api.getApiClient());
         walletBalance.setResultInfo(resultInfo);
-
+        BalanceData balanceData = new BalanceData();
+        balanceData.setHasEnoughBalance(true);
+        walletBalance.setData(balanceData);
         ApiResponse<WalletBalance> walletBalanceApiResponse = new ApiResponse<>(00001, null, walletBalance);
         Mockito.when(api.checkWalletBalanceWithHttpInfo(userAuthorizationId, amount, currency, productType)).thenReturn(walletBalanceApiResponse);
         WalletBalance response = api.checkWalletBalance(userAuthorizationId, amount, currency, productType);
         Assertions.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+    @Test
+    @DisplayName("Wallet Balance API for invalid params test")
+    public void checkWalletBalanceInvalidParamsTest() throws ApiException {
+
+        String userAuthorizationId = "user-authorization-id";
+
+        Integer amount = 10;
+
+        String currency = "JPY";
+
+        ProductType productType = null;
+        WalletBalance walletBalance = new WalletBalance();
+        Assertions.assertNotNull(api.getApiClient());
+        walletBalance.setResultInfo(resultInfo);
+
+        Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(null, amount, currency, productType));
+        Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(userAuthorizationId, null, currency, productType));
+        Assert.assertThrows(ApiException.class, () -> api.checkWalletBalance(userAuthorizationId, amount, null, productType));
     }
 
 }
