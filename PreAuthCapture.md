@@ -36,11 +36,11 @@ gradle install
 <dependency>
     <groupId>jp.ne.paypay</groupId>
     <artifactId>paypayopa</artifactId>
-    <version>0.5.0</version>
+    <version>0.6.0</version>
     <scope>compile</scope>
 </dependency>
 #Gradle: Add this dependency to your project's build file:
-compile "jp.ne.paypay:paypayopa:0.5.0"
+compile "jp.ne.paypay:paypayopa:0.6.0"
 ```
 ### Build your Client
 Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#tag/Api-Authentication) if you want to know more about the authentication. 
@@ -121,7 +121,7 @@ payment.setMerchantPaymentId("merchant_payment_id");
 payment.setUserAuthorizationId("user_authorization_id");
 payment.setRequestedAt(Instant.now().getEpochSecond());
 payment.setOrderDescription("Mune's Favourite Cake");
-String agreeSimilarTransaction = "true";
+String agreeSimilarTransaction = "false";
 
 // Calling the method to create a payment
 PaymentApi apiInstance = new PaymentApi(apiClient);
