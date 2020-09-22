@@ -42,8 +42,6 @@ public class ApiClientTest {
 
     @Mock
     private Call call;
-    @Mock
-    private OkHttpClient httpClient;
 
     @BeforeEach
     void  init(){
