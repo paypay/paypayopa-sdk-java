@@ -404,7 +404,7 @@ public class QRCode {
   }
   
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -443,18 +443,6 @@ public class QRCode {
             + ", authorizationExpiry=" + authorizationExpiry + ", redirectUrl='" + redirectUrl + '\''
             + ", redirectType=" + redirectType + ", userAgent='" + userAgent + '\'' + '}';
   }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-
   
 }
 
