@@ -5,7 +5,6 @@ import jp.ne.paypay.ApiException;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.api.PaymentApi;
 import jp.ne.paypay.api.PendingPaymentApi;
-import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
 import jp.ne.paypay.model.Refund;
