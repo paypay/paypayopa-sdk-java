@@ -237,9 +237,9 @@ public class PaymentApiExample {
     PaymentDetails result = null;
     try {
       if(authorization){
-        result = apiInstance.createPaymentAuthorization(payment, "true");
+        result = apiInstance.createPaymentAuthorization(payment, "false");
       }else{
-        result = apiInstance.createPayment(payment, "true");
+        result = apiInstance.createPayment(payment, "false");
       }
 
       System.out.println("\nAPI RESPONSE\n------------------\n");

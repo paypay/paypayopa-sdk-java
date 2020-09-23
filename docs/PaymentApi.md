@@ -127,7 +127,7 @@ Payment payment = new Payment();
       merchantOrderItems.add(merchantOrderItem);
       payment.setOrderItems(merchantOrderItems);
 
-boolean agreeSimilarTransaction = true; // Boolean | (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
+String agreeSimilarTransaction = "false"; // (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
 
 try {
     PaymentDetails result = apiInstance.createPayment(payment, agreeSimilarTransaction);
@@ -178,7 +178,7 @@ Payment payment = new Payment();
       merchantOrderItems.add(merchantOrderItem);
       payment.setOrderItems(merchantOrderItems);
 
-boolean agreeSimilarTransaction = true; // Boolean | (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
+String agreeSimilarTransaction = "false";  //(Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
 
 try {
     PaymentDetails result = apiInstance.createPaymentAuthorization(payment, agreeSimilarTransaction);
@@ -244,7 +244,7 @@ https://www.paypay.ne.jp/opa/doc/v1.0/continuous_payments#operation/createPaymen
 
 <a name="revertAuth"></a>
 # **revertAuth**
-> PaymentDetails revertAuth(body, agreeSimilarTransaction)
+> PaymentDetails revertAuth(body)
 
 Revert a payment authorization
 

@@ -5,6 +5,7 @@ import jp.ne.paypay.ApiException;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.api.PaymentApi;
 import jp.ne.paypay.api.PendingPaymentApi;
+import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
 import jp.ne.paypay.model.Refund;
@@ -27,7 +28,7 @@ public class PendingPaymentApiExample extends PaymentApiExample {
 
     PaymentDetails paymentDetails = pendingPayment(pendingPaymentApi, userAuthorizationId, 2);
     //Uncomment below line and comment above line and replace merchantPaymentId to check refund payment
-    //PaymentDetails paymentDetails = getPendingPaymentDetails(pendingPaymentApi, "db81feeb-6993-48fc-9b34-a742a8f8935e");
+    //PaymentDetails paymentDetails = getPendingPaymentDetails(pendingPaymentApi, "merchantPaymentId");
 
     if(paymentDetails != null && paymentDetails.getData() != null){
       String merchantPaymentId = paymentDetails.getData().getMerchantPaymentId();
