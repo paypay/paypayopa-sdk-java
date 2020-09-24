@@ -17,7 +17,7 @@ Following diagram defines the flow for PreAuth & Capture.
 
 We recommend that the merchant implements a Polling of the Get payment Details API with a 4-5 second interval in order to know the status of the transaction.
 
-## Lets get Started
+## Let's get Started
 Once you have understood the payment flow, before we start the integration make sure you have:
 
 Before integrating with the SDK, run through this checklist:
