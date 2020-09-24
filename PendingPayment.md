@@ -1,15 +1,15 @@
-# PreAuth Capture
-Allow a merchant to block money in the user's wallet and capture later.
+# Pending Payment
+Sends a push notification requesting payment to a specific user for whom the merchant already has a user UserAuthorizationId.
 
 # Integration
 
 ## Overview
 PayPay's Payment SDK is the simplest way to achieve a smooth, quick integration. With PayPay's Payment SDK, you can build a custom Payment checkout process to suit your needs and fit within your branding guidelines.
 
-# When to use PreAuth and Capture
-PreAuth & Capture flow is recommended normally in the following scenarios
-- Merchant need to block money at the time of creating an order and take the money at the time of fulfilling the order
-- It is used in On demand taxis, On demand services, Ecommerce websites, etc
+# When to use Pending Payment
+Pending Payment flow is recommended normally in the following scenarios
+- Merchant wants to provide user an option to receive their order but pay for them after a time period
+- Merchant wants to simplify the checkout process without payment procedures
 
 ## Understanding the Payment Flow
 Following diagram defines the flow for PreAuth & Capture.
@@ -25,7 +25,7 @@ Before integrating with the SDK, run through this checklist:
 - Get the API key and secret from the Developer Panel. 
 - Use the sandbox API Keys to test out the integration
 
-## Integrating PreAuth & Capture
+## Integrating Pending Payment
 
 ### Installation
 
@@ -73,7 +73,7 @@ In order to acquire an authorization you need to create a JWT Token -
 PaymentApi apiInstance = new PaymentApi(apiClient);
 AccountLinkQRCode accountLinkQRCode = new AccountLinkQRCode();
 List<AuthorizationScope> scopes = new ArrayList<>();
-	scopes.add(AuthorizationScope.PREAUTH_CAPTURE_NATIVE);
+	scopes.add(AuthorizationScope.PENDING_PAYMENTS);
 	accountLinkQRCode.setScopes(scopes);
 	accountLinkQRCode.setNonce(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
 	accountLinkQRCode.setDeviceId("device_id");
@@ -97,42 +97,38 @@ Once the user has granted authorization, we will return the UserAuthorizationID 
   JwtResponseDto jwtResponseDto = JwtUtil.validateJWT(jwtToken, apiSecretKey);
  
 ```
-### Create a Payment Authorization
-In order to create a payment authorization, you will need to send a request to us with the following parameters:
+### Create a Pending Payment
+In order to create a pending payment, you will need to send a request to us with the following parameters:
 
 | Field  | Required  |Type   | Description  |  
 |---|---|---|---|
 |merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
 |userAuthorizationId   |  Yes |string <= 64 characters  |The PayPay user reference id returned by the user authorization flow   |
-| amount  |Yes   |integer <= 11 characters  |Amount the user has to Pay   |
-|requestedAt   |  Yes |integer  |Epoch timestamp in seconds|
+|amount  |Yes   |integer <= 11 characters  |Amount the user has to Pay   |
 |orderDescription   |No   |string <= 255 characters|Description of the Order |
 
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/createAuth)
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#operation/createPayment)
 
 ```java
-//Creating the payload to create a Payment Authorization, additional parameters can be added basis the API Documentation
+//Creating the payload to create a Pending Payment, additional parameters can be added basis the API Documentation
 
 Payment payment = new Payment();
 payment.setAmount(new MoneyAmount().amount(amount).currency(MoneyAmount.CurrencyEnum.JPY));
 payment.setMerchantPaymentId("merchant_payment_id");
 payment.setUserAuthorizationId("user_authorization_id");
-payment.setRequestedAt(Instant.now().getEpochSecond());
 payment.setOrderDescription("Mune's Favourite Cake");
-String agreeSimilarTransaction = "false";
 
 // Calling the method to create a payment
-PaymentApi apiInstance = new PaymentApi(apiClient);
-PaymentDetails response = apiInstance.createPaymentAuthorization(payment, agreeSimilarTransaction);
+PendingPaymentApi apiInstance = new PendingPaymentApi(apiClient);
+PaymentDetails response = apiInstance.createPendingPayment(payment);
 // Printing if the method call is SUCCESS, this does not mean the payment is a success
 System.out.println(response.getResultInfo().getCode());
-//Printing if the status is "AUTHORIZED"
-System.out.println(response.getData().getStatus());
+
 ```
-Did you get **SUCCESS** in the print statement above and status is 'AUTHORIZED', if yes then the API execution has happened correctly.
+Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
 ### Get Payment Details
-Now that you have created a payment authorization, the next  step is to implement polling to get Payment Details. We recommend a 4-5 second interval between requests. Following are the important parameters that you can provide for this method:
+Now that you have created a pending payment, the next  step is to implement polling to get Payment Details. We recommend a 4-5 second interval between requests. Following are the important parameters that you can provide for this method:
 
 | Field  | Required  |Type   | Description  |  
 |---|---|---|---|
@@ -140,84 +136,23 @@ Now that you have created a payment authorization, the next  step is to implemen
 ```java
 
 // Calling the method to get payment details
-PaymentApi apiInstance = new PaymentApi(apiClient);
+PendingPaymentApi apiInstance = new PendingPaymentApi(apiClient);
 PaymentDetails response = apiInstance.getPaymentDetails("merchantPaymentId");
 // Printing if the method call was SUCCESS, this does not mean the payment was a success
 System.out.println(response.getResultInfo().getCode());
-// Printing if the transaction status for the code has COMPLETED/ AUTHORIZED
+// Printing if the transaction status for the code is CREATED
 System.out.println(response.getData().getStatus());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
-On successful payment authorization, the status will be AUTHORIZED.
-Once the payment is captured, the status will be COMPLETED.
+On successful creation of pending payment, the status will be CREATED.
+If the pending order is cancelled, the status will be CANCELED.
+Once the user completes the payment, the status will be COMPLETED.
 
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/getPaymentDetails)
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#operation/getPaymentDetails)
 
-### Capture a payment authorization
-So you are implementing a PreAuth and Capture, and hence want to capture the payment later. If you want to increase the amount, we will send a notification to the user asking for consent.
-In this case, please ensure you have created payment authorization. Following are the important parameters that you can provide for this method:
-
-| Field  | Required  |Type   | Description  |  
-|---|---|---|---|
-|merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
-|merchantCaptureId   |  Yes |string <= 64 characters  |The unique capture transaction id provided by merchant  |
-| amount  |Yes   |integer <= 11 characters  |Amount to be captured   |
-| requestedAt  |Yes   |integer |Epoch timestamp in seconds   |
-|orderDescription   |Yes   |string <= 255 characters|Description of the Capture for the user|
-
-```java
-
-// Creating the payload to capture a Payment Authorization, additional parameters can be added basis the API Documentation
-CaptureObject captureObject = new CaptureObject();
-      captureObject.setMerchantCaptureId("merchant_capture_id");
-      captureObject.setMerchantPaymentId("merchant_payment_id");
-      captureObject.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
-      captureObject.setOrderDescription("Order Shipped, Cake with toppings");
-      captureObject.setRequestedAt(Instant.now().getEpochSecond());
-
-// Calling the method to Capture a Payment Authorization
-PaymentApi apiInstance = new PaymentApi(apiClient);
-PaymentDetails response = apiInstance.capturePaymentAuth(captureObject);
-// Printing if the method call was SUCCESS
-System.out.println(response.getResultInfo().getCode());
-```
-Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
-
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/capturePaymentAuth).
-
-### Revert a payment authorization
-So the user has cancelled the order while the payment status was still AUTHORIZED, please use the revert payment authorization method to refund back to the user. Following are the important parameters that you can provide for this method:
-
-| Field  | Required  |Type   | Description  |  
-|---|---|---|---|
-|merchantRevertId   |  Yes |string <= 64 characters  |The unique revert transaction id provided by merchant   |
-|paymentId   |  Yes |string <= 64 characters  |The payment transaction id provided by PayPay |
-|requestedAt  |Yes   |integer |Epoch timestamp in seconds   |
-|reason   |No   |string <= 255 characters|Reason for reverting the payment authorization|
-
-```java
-// Creating the payload to revert a Payment Authorization, additional parameters can be added basis the API Documentation
-PaymentStateRevert payment = new PaymentStateRevert();
-      payment.setPaymentId("paypay_payment_id");
-      payment.merchantRevertId("merchant_revert_id");
-      payment.setRequestedAt(Instant.now().getEpochSecond());
-      payment.setReason("reason for revert");
-
-// Calling the method to Revert a Payment Authorization
-PaymentApi apiInstance = new PaymentApi(apiClient);
-RevertAuthResponse response = apiInstance.revertAuth(payment);
-// Printing if the method call was SUCCESS
-System.out.println(response.getResultInfo().getCode());
-```
-Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
-
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/revertAuth).
 
 ### Cancel a payment
-So you want to cancel a Payment. In most cases this should not be needed for payment happening in this flow, however following can be a case when this might be needed.
-- Polling for Get Payment Details timeout, and you are uncertain of the status
-
-Note: The Cancel API can be used until 00:14:59 AM the day after the Payment has happened. For 00:15 AM or later, please call the refund API to refund the payment.
+This is used when you want to delete the pending order
 
 Following are the important parameters that you can provide for this method:
 
@@ -225,16 +160,15 @@ Following are the important parameters that you can provide for this method:
 |---|---|---|---|
 |merchantPaymentId   |  Yes |string <= 64 characters  |The unique payment transaction id provided by merchant   |
 ```java
-// Calling the method to cancel a Payment
-PaymentApi apiInstance = new PaymentApi(apiClient);
-NotDataResponse response = apiInstance.cancelPayment("merchantPaymentId");
+// Calling the method to cancel a pending order
+PendingPaymentApi apiInstance = new PendingPaymentApi(apiClient);
+NotDataResponse response = apiInstance.cancelPendingOrder("merchantPaymentId");
 // Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
-
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/cancelPayment)
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#operation/cancelPendingOrder)
 
 ### Refund a payment
 So the user has decided to return the goods they have purchased and needs to be given a refund. Following are the important parameters that you can provide for this method:
@@ -252,11 +186,10 @@ Refund refund = new Refund();
       refund.setAmount(new MoneyAmount().amount(1).currency(MoneyAmount.CurrencyEnum.JPY));
       refund.setMerchantRefundId("merchant_refund_id");
       refund.setPaymentId("paypay_payment_id");
-      refund.setRequestedAt(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
       refund.setReason("reason for refund");
 
 // Calling the method to refund a Payment
-PaymentApi apiInstance = new PaymentApi(apiClient);
+PendingPaymentApi apiInstance = new PendingPaymentApi(apiClient);
 RefundDetails response = apiInstance.refundPayment(refund);
 // Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
@@ -264,7 +197,7 @@ System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/refundPayment). **Please note that currently we only support 1 refund per order.**
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#operation/refundPayment). **Please note that currently we only support 1 refund per order.**
 
 ### Fetch refund status and details
 So you want to confirm the status of the refund, maybe because the request for the refund timed out when you were processing the same. Following are the important parameters that you can provide for this method:
@@ -275,14 +208,14 @@ So you want to confirm the status of the refund, maybe because the request for t
 
 ```java
 // Calling the method to get Refund Details
-PaymentApi apiInstance = new PaymentApi(apiClient);
+PendingPaymentApi apiInstance = new PendingPaymentApi(apiClient);
 RefundDetails response = apiInstance.getRefundDetails("merchantRefundId");
 // Printing if the method call was SUCCESS
 System.out.println(response.getResultInfo().getCode());
 ```
 Did you get **SUCCESS** in the print statement above, if yes then the API execution has happened correctly.
 
-For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/getRefundDetails).
+For details of all the request and response parameters , check our [API Documentation guide](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#operation/getRefundDetails).
 
 
 ### Error Handling
@@ -356,92 +289,52 @@ There are two ways to react with this situation:
 |200|	08100001|	SUCCESS|	Success|
 |202|	08100001|	REQUEST_ACCEPTED|	Request accepted|
 |400|	08100006|	INVALID_REQUEST_PARAMS|	Invalid request params|
-|401|	08100023|	OP_OUT_OF_SCOPE|	The operation is not permitted|
 |400|	08100024|	MISSING_REQUEST_PARAMS|	|
+|401|	08100023|	OP_OUT_OF_SCOPE|	The operation is not permitted|
 |401|	08100016|	UNAUTHORIZED|	Unauthorized request|
+|401|	        |	INVALID_USER_AUTHORIZATION_ID|	The specified user authorization ID is invalid|
+|401|	        |	EXPIRED_USER_AUTHORIZATION_ID|	The user authorization ID expired|
 |404|	08100007|	OPA_CLIENT_NOT_FOUND|	OPA Client not found|
 |429|	08100998|	RATE_LIMIT|	Too many requests|
 |500|	08100026|	SERVICE_ERROR|	|
 |500|	08101000|	INTERNAL_SERVER_ERROR|	Something went wrong on PayPay service side|
 |503|	08100999|	MAINTENANCE_MODE|	Sorry, we are down for scheduled maintenance|
 
+**Create a pending payment**
+
+|Status	|CodeId	|Code	|Message|
+|---|---|---|---|
+|201|	|	SUCCESS|	Success|
+|400|	|	DUPLICATE_REQUEST_ORDER|	Request order with same payment ID exists|
+|400|	|	SUSPECTED_DUPLICATE_ORDER|	The same order is created multiple times|
 
 **Get payment details**
 
 |Status	|CodeId	|Code	|Message|
 |---|---|---|---|
-|400|	01652075|	DYNAMIC_QR_PAYMENT_NOT_FOUND|	Dynamic QR payment not found|
-|400|	01650000|	DYNAMIC_QR_BAD_REQUEST|	Dynamic QR bad request error|
+|400|	|	INVALID_PARAMS|	The set parameter is invalid|
+|400|	|	REQUEST_ORDER_NOT_FOUND|	Request order not found|
 
 
-**Cancel a Payment**
+**Cancel a Pending Order**
 
 |Status	|CodeId	|Code	|Message|
 |---|---|---|---|
-|400	|00200044	|ORDER_NOT_REVERSIBLE|	Order cannot be reversed|
-|500	|00200034	|INTERNAL_SERVER_ERROR|	Request timed out|
+|404	|	|REQUEST_ORDER_NOT_FOUND|	Request order not in valid state|
+|409	|	|INVALID_REQUEST_ORDER_STATE|	Request timed out|
 
 **Refund a payment**
 
 |Status	|CodeId	|Code	|Message|
 |---|---|---|---|
-|400	|00200004	|INVALID_PARAMS	|Invalid parameters received|
-|400	|00200013	|UNACCEPTABLE_OP	|Order cannot be refunded|
-|400	|00200014	|UNACCEPTABLE_OP	|Multiple refund not allowed|
-|400	|00200015	|INVALID_PARAMS	|Invalid refund amount|
-|400	|01103027	|CANCELED_USER	|Canceled user|
-|404	|00200001	|RESOURCE_NOT_FOUND	|Order not found|
-|500	|00200002	|TRANSACTION_FAILED	|Transaction failed|
-|500	|00200003	|TRANSACTION_FAILED	|Transaction failed|
-|500	|00800017	|TRANSACTION_FAILED	|Balance exceeded|
-|500	|00200034	|INTERNAL_SERVER_ERROR	|Request timed out|
+|400	|	|INVALID_PARAMS	|The set parameter is invalid|
+|401	|	|USER_STATE_IS_NOT_ACTIVE	|The request cannot be accepted because the user status is Inactive|
+|404	|	|REQUEST_ORDER_NOT_FOUND	|Request order not found|
+|409	|	|INVALID_REQUEST_ORDER_STATE	|Request order not in valid state|
 
 **Fetch refund status and details**
 
 |Status	|CodeId	|Code	|Message|
 |---|---|---|---|
-|404	|00200018|	NO_SUCH_REFUND_ORDER	|Refund not found|
-|500	|00200034|	INTERNAL_SERVER_ERROR	|Request timed out|
-
-**Create a payment authorization**
-
-|Status	|CodeId	|Code	|Message|
-|---|---|---|---|
-|400	|01103027	|CANCELED_USER	|Canceled user|
-|400	|00200004|INVALID_PARAMS	|Invalid parameters received|
-|400	|	|NO_SUFFICIENT_FUND	|The user's balance is insufficient to make payment.|
-|400	|	|UNSUPPORTED_PAYMENT_METHOD	|Payment method is not supported|
-|400	|00400060	|PRE_AUTH_CAPTURE_UNSUPPORTED_MERCHANT	|Merchant do not support Pre-Auth-Capture|
-|400	|00400061	|PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE	|Provided Expiry Date is above the allowed limit of Max allowed expiry days|
-|400	|	|SUSPECTED_DUPLICATE_PAYMENT	|If a merchant tries collect same amount money from same user again within 5 minutes, the request would be rejected with this very error code. This design is mainly to prevent the duplicated payments which are usually caused by design flaws in client code. However, sometimes, the merchant would intentionally collect mutiple same amount payments from a single user. In such case, the client need to send a specific parameter in order to bypass the duplication check. This is detailed in the payment creation api spec.|
-|400	|	|UNACCEPTABLE_OP	|The requested operation is not able to be processed due to the current condition. E.g. the transaction limit exceeded|
-|401	|	|USER_STATE_IS_NOT_ACTIVE	|Inactive user|
-|401	|	|INVALID_USER_AUTHORIZATION_ID	|If the user authorization id is expired or revoked by the use. The client need to go through the authorization flow again to get the user authorization id|
-|401	|	|EXPIRED_USER_AUTHORIZATION_ID	|The user authorization ID expired.|
-|404	|	|NO_VALID_PAYMENT_METHOD	|No available payment method.|
-|404	|	|PAYMENT_METHOD_NOT_FOUND	|Payment method not found|
-|500	|	|TRANSACTION_FAILED	|This code means the transaciton is failed in PayPay side. You can create new transaction for the same purpose with reasonable backoff time|
-
-**Capture a payment authorization**
-
-|Status	|CodeId	|Code	|Message|
-|---|---|---|---|
-|202	|08300103	|USER_CONFIRMATION_REQUIRED	|User confirmation required as requested amount is above allowed limit|
-|400	|00400035	|UNACCEPTABLE_OP	|Total transaction limit exceeds merchant limit|
-|400	|00200039	|ALREADY_CAPTURED	|Cannot capture already captured acquiring order|
-|400	|01103027	|CANCELED_USER	|Canceled user|
-|400	|00400062	|HIGHER_CAPTURE_NOT_PERMITTED	|Merchant not allowed to capture higher amount|
-|400	|00200043	|ORDER_EXPIRED	|Order cannot be captured or updated as it has already expired|
-|400	|00200035	|ORDER_NOT_CAPTURABLE	|Order is not capturable|
-|400	|00200038	|REAUTHORIZATION_IN_PROGRESS	|Order is being reauthorized|
-|400	|00400064	|TOO_CLOSE_TO_EXPIRY	|Order cannot be reauthorized as request is too close to expiry time|
-
-**Revert a payment authorization**
-
-|Status	|CodeId	|Code	|Message|
-|---|---|---|---|
-|400	|00200042|ORDER_NOT_CANCELABLE	|Order is not cancelable|
-
-
-
-
+|404	||	NO_SUCH_REFUND_ORDER	|Refund not found|
+|400	||	INVALID_PARAMS	|The set parameter is invalid|
