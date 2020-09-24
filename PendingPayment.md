@@ -6,10 +6,10 @@ Sends a push notification requesting payment to a specific user for whom the mer
 ## Overview
 PayPay's Payment SDK is the simplest way to achieve a smooth, quick integration. With PayPay's Payment SDK, you can build a custom Payment checkout process to suit your needs and fit within your branding guidelines.
 
-# When to use PreAuth and Capture
+# When to use Pending Payment
 Pending Payment flow is recommended normally in the following scenarios
-- Merchant needs to request payment from the user
-- --add any other scenarios--
+- Merchant wants to provide user an option to receive their order but pay for them after a time period
+- Merchant wants to simplify the checkout process without payment procedures
 
 ## Understanding the Payment Flow
 Following diagram defines the flow for PreAuth & Capture.
@@ -17,11 +17,11 @@ Following diagram defines the flow for PreAuth & Capture.
 
 We recommend that the merchant implements a Polling of the Get payment Details API with a 4-5 second interval in order to know the status of the transaction.
 
-## Lets get Started
+## Let's get Started
 Once you have understood the payment flow, before we start the integration make sure you have:
 
 Before integrating with the SDK, run through this checklist:
-- [Registered](https://stg-www.paypay-corp.co.jp/dev-panel/account/signup) for a PayPay developer/merchant Account
+- [Registered](https://developer.paypay.ne.jp/account/signup) for a PayPay developer/merchant Account
 - Get the API key and secret from the Developer Panel. 
 - Use the sandbox API Keys to test out the integration
 
