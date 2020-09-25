@@ -1,4 +1,5 @@
 # Pending Payment
+Gives merchants another payment option for the users to pay for their order after a time period and makes the checkout process simple.
 Sends a push notification requesting payment to a specific user for whom the merchant already has a user UserAuthorizationId.
 
 # Integration
@@ -8,7 +9,7 @@ PayPay's Payment SDK is the simplest way to achieve a smooth, quick integration.
 
 # When to use Pending Payment
 Pending Payment flow is recommended normally in the following scenarios
-- Merchant wants to provide user an option to receive their order but pay for them after a time period
+- Merchant wants to provide user an option to process their order but pay for them after a time period
 - Merchant wants to simplify the checkout process without payment procedures
 
 ## Understanding the Payment Flow
@@ -43,7 +44,7 @@ gradle install
 compile "jp.ne.paypay:paypayopa:0.6.0"
 ```
 ### Build your Client
-Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#tag/Api-Authentication) if you want to know more about the authentication. 
+Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#tag/Api-Authentication) if you want to know more about the authentication. 
 ```java
     ApiClient apiClient = new Configuration().getDefaultApiClient();
     apiClient.setProductionMode(false); //true for production and false for sandbox. Default is sandbox
