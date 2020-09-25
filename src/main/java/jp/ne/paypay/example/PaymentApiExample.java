@@ -31,7 +31,7 @@ import java.util.UUID;
 public class PaymentApiExample {
 
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws ApiException{
     ApiClient apiClient = new Configuration().getDefaultApiClient();
     apiClient.setProductionMode(false);
     apiClient.setApiKey("API_KEY");

@@ -3,7 +3,6 @@ package jp.ne.paypay.api;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -39,7 +38,7 @@ import java.util.Map;
 
 public class ApiClientTest {
 
-    ApiClient apiClient = new ApiClient();
+    private ApiClient apiClient = new ApiClient();
 
     @Mock
     private Call call;
@@ -49,7 +48,7 @@ public class ApiClientTest {
         MockitoAnnotations.openMocks(this);
     }
     @Test
-    public void configTest(){
+    public void configTest() throws ApiException{
         Configuration configuration = new Configuration();
         apiClient.setProductionMode(false);
         apiClient.setApiKey("api-key");
@@ -122,7 +121,6 @@ public class ApiClientTest {
         String selectHeaderAccept = apiClient.selectHeaderAccept(accepts);
         Assert.assertEquals(selectHeaderAccept, "application/json");
         selectHeaderAccept = apiClient.selectHeaderAccept(new String[1]);
-        System.out.println(selectHeaderAccept);
         Assert.assertEquals("null", selectHeaderAccept);
         accepts[0] = "application/text";
         selectHeaderAccept = apiClient.selectHeaderAccept(accepts);
@@ -135,7 +133,6 @@ public class ApiClientTest {
         String headerContentType = apiClient.selectHeaderContentType(accepts);
         Assert.assertEquals(headerContentType, "application/json");
         headerContentType = apiClient.selectHeaderContentType(new String[0]);
-        System.out.println(headerContentType);
         Assert.assertEquals("application/json;charset=UTF-8", headerContentType);
         accepts[0] = "application/text";
         headerContentType = apiClient.selectHeaderContentType(accepts);

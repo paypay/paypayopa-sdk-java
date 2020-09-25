@@ -188,19 +188,19 @@ public class ApiClient {
     }
 
     /**
-     * Helper method to set API key for the first HTTP Hmac authentication.
+     * Helper method to set API key for the first HTTP HMAC authentication.
      *
      * @param apiKey apiKey
      * @throws RuntimeException If HMAC authentication not configured
      */
-    public void setApiKey(String apiKey) {
+    public void setApiKey(String apiKey) throws ApiException {
         for (Authentication auth : authentications.values()) {
             if (auth instanceof HmacAuth) {
                 ((HmacAuth) auth).setApiKey(apiKey);
                 return;
             }
         }
-        throw new RuntimeException("HMAC authentication not configured: API key");
+        throw new ApiException("HMAC authentication not configured: API key");
     }
 
     /**
@@ -229,14 +229,14 @@ public class ApiClient {
      * @param apiSecret apiSecret
      * @throws RuntimeException If HMAC authentication not configured
      */
-    public void setApiSecretKey(String apiSecret) {
+    public void setApiSecretKey(String apiSecret) throws ApiException {
         for (Authentication auth : authentications.values()) {
             if (auth instanceof HmacAuth) {
                 ((HmacAuth) auth).setApiSecretKey(apiSecret);
                 return;
             }
         }
-        throw new RuntimeException("HMAC authentication not configured: API Secret key");
+        throw new ApiException("HMAC authentication not configured: API Secret key");
     }
 
     /**
@@ -718,7 +718,7 @@ public class ApiClient {
      * @throws ApiException If fail to serialize the request body object
      */
     public Request buildRequest(String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, Object> formParams, String[] authNames) throws ApiException {
-        updateParamsForAuth(authNames, queryParams, headerParams);
+            updateParamsForAuth(authNames, queryParams, headerParams);
 
         final String url = buildUrl(path, queryParams, collectionQueryParams);
         final Request.Builder reqBuilder = new Request.Builder().url(url);
@@ -822,10 +822,10 @@ public class ApiClient {
      * @param queryParams  List of query parameters
      * @param headerParams  Map of header parameters
      */
-    public void updateParamsForAuth(String[] authNames, List<Pair> queryParams, Map<String, String> headerParams) {
+    public void updateParamsForAuth(String[] authNames, List<Pair> queryParams, Map<String, String> headerParams) throws ApiException {
         for (String authName : authNames) {
             Authentication auth = authentications.get(authName);
-            if (auth == null) throw new RuntimeException("Authentication undefined: " + authName);
+            if (auth == null) throw new ApiException("Authentication undefined: " + authName);
             auth.applyToParams(queryParams, headerParams);
         }
     }
