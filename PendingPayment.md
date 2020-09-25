@@ -12,7 +12,7 @@ Pending Payment flow is recommended normally in the following scenarios
 - Merchant wants to simplify the checkout process without payment procedures
 
 ## Understanding the Payment Flow
-Following diagram defines the flow for PreAuth & Capture.
+Following diagram defines the flow for Pending Payment.
 -- provide image explaining the flow
 
 We recommend that the merchant implements a Polling of the Get payment Details API with a 4-5 second interval in order to know the status of the transaction.
