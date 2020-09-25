@@ -23,11 +23,10 @@ public class WalletApiTest {
     @Mock
     private final WalletApi api = Mockito.spy(new WalletApi());
     private ResultInfo resultInfo;
-    private ApiClient apiClient;
 
     @BeforeEach
     public void setUp(){
-        apiClient = Mockito.mock(ApiClient.class);
+        ApiClient apiClient = Mockito.mock(ApiClient.class);
         api.setApiClient(apiClient);
         resultInfo = new ResultInfo();
         resultInfo.setMessage("SUCCESS");
