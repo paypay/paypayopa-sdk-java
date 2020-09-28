@@ -191,7 +191,7 @@ public class ApiClient {
      * Helper method to set API key for the first HTTP HMAC authentication.
      *
      * @param apiKey apiKey
-     * @throws RuntimeException If HMAC authentication not configured
+     * @throws ApiException If HMAC authentication not configured
      */
     public void setApiKey(String apiKey) throws ApiException {
         for (Authentication auth : authentications.values()) {
@@ -227,7 +227,7 @@ public class ApiClient {
      * Helper method to set API secret key for the first HTTP Hmac authentication.
      *
      * @param apiSecret apiSecret
-     * @throws RuntimeException If HMAC authentication not configured
+     * @throws ApiException If HMAC authentication not configured
      */
     public void setApiSecretKey(String apiSecret) throws ApiException {
         for (Authentication auth : authentications.values()) {
@@ -821,6 +821,7 @@ public class ApiClient {
      * @param authNames The authentications to apply
      * @param queryParams  List of query parameters
      * @param headerParams  Map of header parameters
+     * @throws ApiException If Authentication is undefined
      */
     public void updateParamsForAuth(String[] authNames, List<Pair> queryParams, Map<String, String> headerParams) throws ApiException {
         for (String authName : authNames) {
