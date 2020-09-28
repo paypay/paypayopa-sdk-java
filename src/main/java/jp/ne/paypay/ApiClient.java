@@ -53,7 +53,7 @@ public class ApiClient {
         httpClient = new OkHttpClient();
         json = new JSON();
         // Set default User-Agent.
-        setUserAgent("PayPay-SDK/0.6.0/java");
+        setUserAgent("PayPay-SDK/0.7.0/java");
         authentications = new HashMap<>();
         authentications.put("HmacAuth", new HmacAuth());
         authentications = Collections.unmodifiableMap(authentications);
@@ -802,7 +802,7 @@ public class ApiClient {
      * Set header parameters to the request builder, including default headers.
      *
      * @param headerParams Header parameters in the form of Map
-     * @param reqBuilder Reqeust.Builder
+     * @param reqBuilder Request Builder
      */
     public void processHeaderParams(Map<String, String> headerParams, Request.Builder reqBuilder) {
         for (Entry<String, String> param : headerParams.entrySet()) {
