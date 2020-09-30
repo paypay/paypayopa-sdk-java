@@ -9,7 +9,7 @@
 [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/64c7339473ea7711415c/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-java/maintainability)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_shield)
-![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/paypay/paypayopa-sdk-java)
+[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/paypay/paypayopa-sdk-java)](https://snyk.io/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/701cdfe4502d48f7bb4063a94592b7ac)](https://app.codacy.com/gh/paypay/paypayopa-sdk-java?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-java&utm_campaign=Badge_Grade_Dashboard)
 [![BCH compliance](https://bettercodehub.com/edge/badge/paypay/paypayopa-sdk-java?branch=master)](https://bettercodehub.com/)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4306/badge)](https://bestpractices.coreinfrastructure.org/projects/4306)
