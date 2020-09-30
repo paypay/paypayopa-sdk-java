@@ -12,6 +12,7 @@
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/paypay/paypayopa-sdk-java)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/701cdfe4502d48f7bb4063a94592b7ac)](https://app.codacy.com/gh/paypay/paypayopa-sdk-java?utm_source=github.com&utm_medium=referral&utm_content=paypay/paypayopa-sdk-java&utm_campaign=Badge_Grade_Dashboard)
 [![BCH compliance](https://bettercodehub.com/edge/badge/paypay/paypayopa-sdk-java?branch=master)](https://bettercodehub.com/)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4306/badge)](https://bestpractices.coreinfrastructure.org/projects/4306)
 
 Java SDK for interacting with PayPay APIs
 
