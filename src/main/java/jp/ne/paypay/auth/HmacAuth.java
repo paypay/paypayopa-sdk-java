@@ -69,9 +69,19 @@ public class HmacAuth implements Authentication {
             localContentType = this.contentType;
         }
         String  DELIMITER = "\n";
-        return (this.requestUrl + DELIMITER + this.httpMethod + DELIMITER + nonce + DELIMITER + epoch + DELIMITER
+        return (formatRequestUrl(this.requestUrl) + DELIMITER + this.httpMethod + DELIMITER + nonce + DELIMITER + epoch + DELIMITER
                 + localContentType + DELIMITER + hash)
                 .getBytes(StandardCharsets.UTF_8);
+    }
+    private String formatRequestUrl(String requestUrl){
+        try{
+            if(requestUrl.contains("?")){
+                requestUrl =  requestUrl.substring(0, requestUrl.indexOf("?"));
+            }
+        }catch (Exception e){
+            System.out.println("Exception while formatting request url for HMAC Auth");
+        }
+        return requestUrl;
     }
     @Override
     public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams) {
@@ -84,7 +94,6 @@ public class HmacAuth implements Authentication {
         }catch (Exception e){
             System.err.println("Error in getting Authorization: "+e);
         }
-
     }
 
     public String getApiKey() {
