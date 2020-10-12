@@ -20,23 +20,20 @@ public class UserApiExample {
 
     UserApi userApi = new UserApi(apiClient);
 
-    getUserAuthorizationStatus(userAuthorizationId, userApi);
+    getOrUnlinkUser(userAuthorizationId, userApi, false);
     //Replace the "userAuthorizationId" with the actual one. Please note that this will Unlink the user from the client
-    unlinkUser("userAuthorizationId", userApi);
+    getOrUnlinkUser("userAuthorizationId", userApi, true);
   }
 
-  private static void getUserAuthorizationStatus(String userAuthorizationId, UserApi userApi) {
+  private static void getOrUnlinkUser(String userAuthorizationId, UserApi userApi, boolean unlinkUser) {
     try{
-      UserAuthorizationStatus userAuthorizationStatus = userApi.getUserAuthorizationStatus(userAuthorizationId);
-      System.out.println(userAuthorizationStatus);
-    }catch (ApiException e){
-      System.out.println(e.getResponseBody());
-    }
-  }
-  private static void unlinkUser(String userAuthorizationId, UserApi userApi) {
-    try{
-      NotDataResponse notDataResponse = userApi.unlinkUser(userAuthorizationId);
-      System.out.println(notDataResponse);
+      if(unlinkUser){
+        NotDataResponse notDataResponse = userApi.unlinkUser(userAuthorizationId);
+        System.out.println(notDataResponse);
+      }else{
+        UserAuthorizationStatus userAuthorizationStatus = userApi.getUserAuthorizationStatus(userAuthorizationId);
+        System.out.println(userAuthorizationStatus);
+      }
     }catch (ApiException e){
       System.out.println(e.getResponseBody());
     }
