@@ -76,7 +76,7 @@ public class HmacAuth implements Authentication {
     private String formatRequestUrl(String requestUrl){
         try{
             if(requestUrl.contains("?")){
-                requestUrl =  requestUrl.substring(0, requestUrl.indexOf("?"));
+                return requestUrl.substring(0, requestUrl.indexOf("?"));
             }
         }catch (Exception e){
             System.out.println("Exception while formatting request url for HMAC Auth");

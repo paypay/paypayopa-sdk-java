@@ -31,7 +31,6 @@ public class UserApiExample {
       System.out.println(userAuthorizationStatus);
     }catch (ApiException e){
       System.out.println(e.getResponseBody());
-      System.out.println(e.getResponseHeaders());
     }
   }
   private static void unlinkUser(String userAuthorizationId, UserApi userApi) {
@@ -40,7 +39,6 @@ public class UserApiExample {
       System.out.println(notDataResponse);
     }catch (ApiException e){
       System.out.println(e.getResponseBody());
-      System.out.println(e.getResponseHeaders());
     }
   }
 }
