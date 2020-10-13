@@ -16,7 +16,7 @@ gradle install
     <scope>compile</scope>
 </dependency>
 #Gradle: Add this dependency to your project's build file:
-compile "jp.ne.paypay:paypayopa:0.7.0"
+compile "jp.ne.paypay:paypayopa:0.7.1"
 ```
 ### Build your Client
 Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/pending_payments#tag/Api-Authentication) if you want to know more about the authentication. 
