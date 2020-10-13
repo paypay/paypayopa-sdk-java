@@ -12,7 +12,7 @@ gradle install
 <dependency>
     <groupId>jp.ne.paypay</groupId>
     <artifactId>paypayopa</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.1</version>
     <scope>compile</scope>
 </dependency>
 #Gradle: Add this dependency to your project's build file:
