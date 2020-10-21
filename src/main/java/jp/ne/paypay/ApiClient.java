@@ -53,7 +53,7 @@ public class ApiClient {
         httpClient = new OkHttpClient();
         json = new JSON();
         // Set default User-Agent.
-        setUserAgent("PayPay-SDK/0.7.1/java");
+        setUserAgent("PayPay-SDK/0.8.0/java");
         authentications = new HashMap<>();
         authentications.put("HmacAuth", new HmacAuth());
         authentications = Collections.unmodifiableMap(authentications);
