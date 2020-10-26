@@ -69,4 +69,9 @@ public class ApiUtil {
         return apiClient.buildCall(url, "POST", localVarQueryParams, localVarCollectionQueryParams,
                 body, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
+
+    public static String buildResolveUrl(String apiName, String code, String codeId){
+        String resolveUrl = ApiConstants.RESOLVE_BASE_URL+"?api-name=%s&code=%s&code-id=%s";
+        return String.format(resolveUrl, apiName, code, codeId);
+    }
 }

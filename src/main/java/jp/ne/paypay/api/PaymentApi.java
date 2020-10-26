@@ -74,7 +74,7 @@ public class PaymentApi {
         Call call = cancelPaymentValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<NotDataResponse>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CANCEL_PAYMENT);
     }
 
     /**
@@ -105,7 +105,7 @@ public class PaymentApi {
         Call call = capturePaymentAuthCall(body);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CAPTURE_PAYMENT);
     }
 
     private Call capturePaymentAuthCall(Object body) throws ApiException {
@@ -147,7 +147,7 @@ public class PaymentApi {
         Call call = createPaymentValidateBeforeCall(body, agreeSimilarTransaction);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CREATE_PAYMENT);
     }
 
     /**
@@ -194,7 +194,7 @@ public class PaymentApi {
         Call call = createQRCodeValidateBeforeCall(body);
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CREATE_QRCODE);
     }
 
     private Call deleteQRCodeValidateBeforeCall(String codeId) throws ApiException {
@@ -227,7 +227,7 @@ public class PaymentApi {
         Call call = deleteQRCodeValidateBeforeCall(codeId);
         Type localVarReturnType = new TypeToken<NotDataResponse>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.DELETE_QRCODE);
     }
 
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
@@ -260,7 +260,7 @@ public class PaymentApi {
         Call call = getPaymentDetailsValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.GET_PAYMENT);
     }
 
 
@@ -295,7 +295,7 @@ public class PaymentApi {
         Call call = getCodesPaymentDetailsValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.GET_QR_PAYMENT);
     }
 
 
@@ -330,7 +330,7 @@ public class PaymentApi {
         Call call = getRefundDetailsValidateBeforeCall(merchantRefundId);
         Type localVarReturnType = new TypeToken<RefundDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.GET_REFUND);
     }
 
     private Call refundPaymentValidateBeforeCall(Object body) throws ApiException {
@@ -363,7 +363,7 @@ public class PaymentApi {
         Call call = refundPaymentValidateBeforeCall(body);
         Type localVarReturnType = new TypeToken<RefundDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.REFUND_PAYMENT);
     }
 
     private Call revertAuthValidateBeforeCall(Object body) throws ApiException {
@@ -395,7 +395,7 @@ public class PaymentApi {
         Call call = revertAuthValidateBeforeCall(body);
         Type localVarReturnType = new TypeToken<RevertAuthResponse>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.REVERT_AUTHORIZE);
     }
 
     /**
@@ -424,7 +424,7 @@ public class PaymentApi {
         Call call = createAccountLinkQrCodeCall(body);
         Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CREATE_QR_SESSION);
     }
 
     private Call createAccountLinkQrCodeCall(Object body) throws ApiException {
@@ -460,7 +460,7 @@ public class PaymentApi {
         Call call =  ApiUtil.postCallObject(apiClient, "/v2/payments/preauthorize", body, agreeSimilarTransaction);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.PREAUTHORIZE_PAYMENT);
     }
 
 
@@ -490,7 +490,7 @@ public class PaymentApi {
         Call call = createContinuousPaymentCall(body);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CREATE_CONTINUOUS_PAYMENT);
     }
 
     private Call createContinuousPaymentCall(Object body) throws ApiException {

@@ -1,5 +1,6 @@
 package jp.ne.paypay;
 
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
@@ -8,8 +9,10 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.http.HttpMethod;
+import jp.ne.paypay.api.ApiUtil;
 import jp.ne.paypay.auth.Authentication;
 import jp.ne.paypay.auth.HmacAuth;
+import jp.ne.paypay.model.NotDataResponse;
 import okio.BufferedSink;
 import okio.Okio;
 import org.apache.commons.lang3.StringUtils;
@@ -611,7 +614,7 @@ public class ApiClient {
     }
 
     /**
-     * {@link #execute(Call, Type)}
+     * {@link #execute(Call, Type, String)}
      *
      * @param <T> Type
      * @param call An instance of the Call object
@@ -619,7 +622,7 @@ public class ApiClient {
      * @return ApiResponse object
      */
     public <T> ApiResponse<T> execute(Call call) throws ApiException {
-        return execute(call, null);
+        return execute(call, null, null);
     }
 
     /**
@@ -633,10 +636,10 @@ public class ApiClient {
      *   when returnType is null.
      * @throws ApiException If fail to execute the call
      */
-    public <T> ApiResponse<T> execute(Call call, Type returnType) throws ApiException {
+    public <T> ApiResponse<T> execute(Call call, Type returnType, String apiName) throws ApiException {
         try {
             Response response = call.execute();
-            T data = handleResponse(response, returnType);
+            T data = handleResponse(response, returnType, apiName);
             return new ApiResponse<T>(response.code(), response.headers().toMultimap(), data);
         } catch (IOException e) {
             throw new ApiException(e);
@@ -653,7 +656,7 @@ public class ApiClient {
      *   fail to deserialize the response body
      * @return Type
      */
-    public <T> T handleResponse(Response response, Type returnType) throws ApiException {
+    public <T> T handleResponse(Response response, Type returnType, String apiName) throws ApiException {
         if (response.isSuccessful()) {
             if (returnType == null || response.code() == 204) {
                 // returning null if the returnType is not defined,
@@ -678,7 +681,14 @@ public class ApiClient {
                     throw new ApiException(response.message(), e, response.code(), response.headers().toMultimap());
                 }
             }
-            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody);
+            NotDataResponse responseBody = json.deserialize(respBody, new TypeToken<NotDataResponse>() {
+            }.getType());
+            String resolveUrl = null;
+            if(StringUtils.isNotEmpty(apiName) && responseBody.getResultInfo() != null){
+                resolveUrl = ApiUtil.buildResolveUrl(apiName, responseBody.getResultInfo().getCode(), responseBody.getResultInfo().getCodeId());
+            }
+            System.out.println("resolveUrl: "+resolveUrl);
+            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody, resolveUrl);
         }
     }
 

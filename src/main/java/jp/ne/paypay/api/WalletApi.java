@@ -139,6 +139,6 @@ public class WalletApi {
             String currency, ProductType productType) throws ApiException {
         Call call = checkWalletBalanceValidateBeforeCall(userAuthorizationId, amount, currency, productType);
         Type localVarReturnType = new TypeToken<WalletBalance>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ResolveApiName.CHECK_BALANCE);
     }
 }
