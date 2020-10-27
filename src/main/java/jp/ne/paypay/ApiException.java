@@ -26,20 +26,8 @@ public class ApiException extends Exception {
         this.responseBody = responseBody;
     }
 
-    public ApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders, String responseBody, String resolveUrl) {
-        super(message, throwable);
-        this.code = code;
-        this.responseHeaders = responseHeaders;
-        this.responseBody = responseBody;
-        this.resolveUrl = resolveUrl;
-    }
-
     public ApiException(String message, int code, Map<String, List<String>> responseHeaders, String responseBody) {
         this(message, (Throwable) null, code, responseHeaders, responseBody);
-    }
-
-    public ApiException(String message, int code, Map<String, List<String>> responseHeaders, String responseBody, String resolveUrl) {
-        this(message, (Throwable) null, code, responseHeaders, responseBody, resolveUrl);
     }
 
     public ApiException(String message, Throwable throwable, int code, Map<String, List<String>> responseHeaders) {
@@ -95,5 +83,15 @@ public class ApiException extends Exception {
      */
     public String getResolveUrl() {
         return resolveUrl;
+    }
+
+    /**
+     * Set the Resolve Url.
+     *
+     * @return ApiException with resolve url set
+     */
+    public ApiException setResolveUrl(String resolveUrl) {
+        this.resolveUrl = resolveUrl;
+        return this;
     }
 }

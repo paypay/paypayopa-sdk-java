@@ -682,7 +682,7 @@ public class ApiClient {
                 }
             }
             String resolveUrl = getResolveUrl(apiName, respBody);
-            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody, resolveUrl);
+            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody).setResolveUrl(resolveUrl);
         }
     }
 
