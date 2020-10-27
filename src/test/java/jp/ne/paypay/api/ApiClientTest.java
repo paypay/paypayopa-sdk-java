@@ -16,6 +16,7 @@ import jp.ne.paypay.JSON;
 import jp.ne.paypay.Pair;
 import jp.ne.paypay.auth.Authentication;
 import jp.ne.paypay.auth.HmacAuth;
+import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.ResultInfo;
@@ -30,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ import java.util.Map;
 
 public class ApiClientTest {
 
-    private ApiClient apiClient = new ApiClient();
+    private final ApiClient apiClient = new ApiClient();
 
     @Mock
     private Call call;
@@ -90,7 +92,7 @@ public class ApiClientTest {
         params.add("Name");
         String parameterToString = apiClient.parameterToString(params);
         Assert.assertEquals(parameterToString, "Id,Name");
-        Date date  = new GregorianCalendar(2020, 2, 5).getTime();
+        Date date  = new GregorianCalendar(2020, Calendar.FEBRUARY, 5).getTime();
         parameterToString = apiClient.parameterToString(date);
         Assert.assertTrue(parameterToString.startsWith("2020-"));
     }
@@ -110,9 +112,9 @@ public class ApiClientTest {
     @Test
     public void isJsonMimeTest(){
         boolean isJsonMime = apiClient.isJsonMime("application/json");
-        Assert.assertEquals(isJsonMime, true);
+        Assert.assertTrue(isJsonMime);
         isJsonMime = apiClient.isJsonMime("application/text");
-        Assert.assertEquals(isJsonMime, false);
+        Assert.assertFalse(isJsonMime);
     }
 
     @Test
@@ -214,27 +216,41 @@ public class ApiClientTest {
 
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
         }.getType();
-        Object result = apiClient.handleResponse(response, localVarReturnType);
+
+        Object result = apiClient.handleResponse(response, localVarReturnType, "v2_createPayment");
         Assert.assertTrue(result instanceof QRCodeDetails);
 
-         result = apiClient.handleResponse(response, null);
+         result = apiClient.handleResponse(response, null, null);
         Assert.assertFalse(result instanceof QRCodeDetails);
 
         localVarReturnType = new TypeToken<File>() {
         }.getType();
-        result = apiClient.handleResponse(response, localVarReturnType);
+        result = apiClient.handleResponse(response, localVarReturnType, null);
         Assert.assertTrue(result instanceof File);
 
         Mockito.when(call.execute()).thenReturn(response);
-        ApiResponse<Object> apiResponse = apiClient.execute(call, localVarReturnType);
+        ApiResponse<Object> apiResponse = apiClient.execute(call, localVarReturnType, null);
         Assert.assertEquals(200, apiResponse.getStatusCode());
         Mockito.when(call.execute()).thenThrow(IOException.class);
         Assert.assertThrows(ApiException.class, ()->apiClient.execute(call, new TypeToken<File>() {
-        }.getType()));
+        }.getType(), ""));
+        resultInfo = new ResultInfo();
+        resultInfo.setMessage("You are not authorized");
+        resultInfo.setCode("UNAUTHORIZED");
+        resultInfo.setCodeId("802001");
+        NotDataResponse notDataResponse = new NotDataResponse();
+        notDataResponse.setResultInfo(resultInfo);
+        builder.code(401);
+        builder.body(ResponseBody.create(MediaType.parse("application/json"), json.serialize(notDataResponse)));
+        response = builder.build();
+        Response finalResponse = response;
+        Type finalLocalVarReturnType = localVarReturnType;
+        Assert.assertThrows(ApiException.class, ()->apiClient.handleResponse(finalResponse, finalLocalVarReturnType, "v2_createPayment"));
+
     }
 
     @Test
-    public void handleUnsuccessfulResponseTest() throws ApiException, IOException {
+    public void handleUnsuccessfulResponseTest() {
         Request.Builder requestBuild = new Request.Builder();
         requestBuild.url("http://paypay.ne.jp/v2/qrcode");
         requestBuild.header("content-type", "application/json");
@@ -259,8 +275,8 @@ public class ApiClientTest {
 
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
         }.getType();
-        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(response, localVarReturnType));
-        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(response, null));
+        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(response, localVarReturnType, null));
+        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(response, null, null));
     }
 
     @Test

@@ -686,8 +686,9 @@ public class ApiClient {
             String resolveUrl = null;
             if(StringUtils.isNotEmpty(apiName) && responseBody.getResultInfo() != null){
                 resolveUrl = ApiUtil.buildResolveUrl(apiName, responseBody.getResultInfo().getCode(), responseBody.getResultInfo().getCodeId());
+                System.out.println("This link helps you to troubleshoot the issue: "+resolveUrl);
             }
-            System.out.println("resolveUrl: "+resolveUrl);
+
             throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody, resolveUrl);
         }
     }
