@@ -69,7 +69,7 @@ public class PendingPaymentApi {
         Call call = createPendingPaymentCall(payment);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.CREATE_REQUEST_ORDER);
     }
 
     private Call createPendingPaymentCall(Payment payment) throws ApiException {
@@ -101,7 +101,7 @@ public class PendingPaymentApi {
         Call call = getPaymentDetailsValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<PaymentDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_REQUEST_ORDER);
     }
 
     private Call getPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
@@ -134,7 +134,7 @@ public class PendingPaymentApi {
         Call call = cancelPendingOrderValidateBeforeCall(merchantPaymentId);
         Type localVarReturnType = new TypeToken<NotDataResponse>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.CANCEL_REQUEST_ORDER);
     }
 
     private Call cancelPendingOrderValidateBeforeCall(String merchantPaymentId) throws ApiException {
@@ -166,7 +166,7 @@ public class PendingPaymentApi {
         Call call = refundPaymentCall(refund);
         Type localVarReturnType = new TypeToken<RefundDetails>() {
         }.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.REFUND_REQUEST_ORDER);
     }
 
     /**

@@ -7,6 +7,7 @@ public class ApiException extends Exception {
     private int code = 0;
     private Map<String, List<String>> responseHeaders = null;
     private String responseBody = null;
+    private String resolveUrl;
 
     public ApiException() {}
 
@@ -73,5 +74,24 @@ public class ApiException extends Exception {
      */
     public String getResponseBody() {
         return responseBody;
+    }
+
+    /**
+     * Get the Resolve Url.
+     *
+     * @return Resolve Url in the form of string
+     */
+    public String getResolveUrl() {
+        return resolveUrl;
+    }
+
+    /**
+     * Set the Resolve Url.
+     *
+     * @return ApiException with resolve url set
+     */
+    public ApiException setResolveUrl(String resolveUrl) {
+        this.resolveUrl = resolveUrl;
+        return this;
     }
 }

@@ -63,7 +63,7 @@ public class UserApi {
     protected ApiResponse<MaskedUserProfileResponse> getMaskedUserProfileWithHttpInfo(String userAuthorizationId) throws ApiException {
         Call call = getMaskedUserProfileValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<MaskedUserProfileResponse>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_SECURE_USER_PROFILE);
     }
 
     
@@ -96,7 +96,7 @@ public class UserApi {
     protected ApiResponse<UserAuthorizationStatus> getUserAuthorizationStatusWithHttpInfo(String userAuthorizationId) throws ApiException {
         Call call = getUserAuthorizationStatusValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<UserAuthorizationStatus>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_USER_AUTH_STATUS);
     }
 
     
@@ -129,6 +129,6 @@ public class UserApi {
     protected ApiResponse<NotDataResponse> unlinkUserWithHttpInfo(String userAuthorizationId) throws ApiException {
         Call call = unlinkUserValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<NotDataResponse>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.UNLINK_USER);
     }
 }

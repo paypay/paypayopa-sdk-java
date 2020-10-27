@@ -9,5 +9,6 @@ public class ApiConstants {
     public static final String CODE_ID = "codeId";
     public static final String HMAC_AUTH = "HmacAuth";
     public static final String CONTENT_TYPE = "Content-Type";
-    public static final  String USER_AUTHORIZATION_ID = "userAuthorizationId";
+    public static final String USER_AUTHORIZATION_ID = "userAuthorizationId";
+    public static final String RESOLVE_BASE_URL = "https://developer.paypay.ne.jp/develop/resolve";
 }
