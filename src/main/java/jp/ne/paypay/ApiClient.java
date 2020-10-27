@@ -631,6 +631,7 @@ public class ApiClient {
      * @param returnType The return type used to deserialize HTTP response body
      * @param <T> The return type corresponding to (same with) returnType
      * @param call Call
+     * @param apiName The API Name for resolve url
      * @return ApiResponse object containing response status, headers and
      *   data, which is a Java object deserialized from response body and would be null
      *   when returnType is null.
@@ -651,6 +652,7 @@ public class ApiClient {
      *
      * @param <T> Type
      * @param response Response
+     * @param apiName The API Name for resolve url
      * @param returnType Return type
      * @throws ApiException If the response has a unsuccessful status code or
      *   fail to deserialize the response body
