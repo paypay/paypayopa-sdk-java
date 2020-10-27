@@ -1,6 +1,6 @@
 package jp.ne.paypay.api;
 
-public class ResolveApiName {
+public class ApiNameConstants {
     //API NAMES FOR RESOLVE URL
     public static final String CANCEL_PAYMENT = "v2_cancelPayment";
     public static final String CAPTURE_PAYMENT = "v2_captureAuthorizedOrder";

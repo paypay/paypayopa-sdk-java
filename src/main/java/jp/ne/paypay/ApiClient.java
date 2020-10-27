@@ -681,16 +681,20 @@ public class ApiClient {
                     throw new ApiException(response.message(), e, response.code(), response.headers().toMultimap());
                 }
             }
-            NotDataResponse responseBody = json.deserialize(respBody, new TypeToken<NotDataResponse>() {
-            }.getType());
-            String resolveUrl = null;
-            if(StringUtils.isNotEmpty(apiName) && responseBody.getResultInfo() != null){
-                resolveUrl = ApiUtil.buildResolveUrl(apiName, responseBody.getResultInfo().getCode(), responseBody.getResultInfo().getCodeId());
-                System.out.println("This link helps you to troubleshoot the issue: "+resolveUrl);
-            }
-
+            String resolveUrl = getResolveUrl(apiName, respBody);
             throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody, resolveUrl);
         }
+    }
+
+    private String getResolveUrl(String apiName, String respBody) {
+        NotDataResponse responseBody = json.deserialize(respBody, new TypeToken<NotDataResponse>() {
+        }.getType());
+        String resolveUrl = null;
+        if(StringUtils.isNotEmpty(apiName) && responseBody.getResultInfo() != null){
+            resolveUrl = ApiUtil.buildResolveUrl(apiName, responseBody.getResultInfo().getCode(), responseBody.getResultInfo().getCodeId());
+            System.out.println("This link helps you to troubleshoot the issue: "+resolveUrl);
+        }
+        return resolveUrl;
     }
 
     /**
