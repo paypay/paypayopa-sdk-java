@@ -5,9 +5,9 @@ import com.squareup.okhttp.Response;
 import java.lang.reflect.Type;
 
 public class ResponseParameters {
-    Response response;
-    Type returnType;
-    String apiName;
+    private Response response;
+    private Type returnType;
+    private String apiName;
 
     public Response getResponse() {
         return response;

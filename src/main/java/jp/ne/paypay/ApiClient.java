@@ -645,8 +645,7 @@ public class ApiClient {
                     throw new ApiException(response.message(), e, response.code(), response.headers().toMultimap());
                 }
             }
-            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody)
-                    .setResolveUrl(getResolveUrl(params.getApiName(), respBody));
+            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody).setResolveUrl(getResolveUrl(params.getApiName(), respBody));
         }
     }
 
