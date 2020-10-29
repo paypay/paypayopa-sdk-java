@@ -9,10 +9,12 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.http.HttpMethod;
+import jp.ne.paypay.api.ApiConstants;
 import jp.ne.paypay.api.ApiUtil;
 import jp.ne.paypay.auth.Authentication;
 import jp.ne.paypay.auth.HmacAuth;
 import jp.ne.paypay.model.NotDataResponse;
+import jp.ne.paypay.model.ResponseParameters;
 import okio.BufferedSink;
 import okio.Okio;
 import org.apache.commons.lang3.StringUtils;
@@ -38,11 +40,10 @@ import java.util.regex.Pattern;
 
 public class ApiClient {
 
-    private String basePath = "https://stg-api.sandbox.paypay.ne.jp";
-    private String basePathProd = "https://api.paypay.ne.jp";
-    private String basePathSandbox = "https://stg-api.sandbox.paypay.ne.jp";
+    private String basePath = ApiConstants.DEFAULT_BASE_PATH;
+    private String basePathProd = ApiConstants.PROD_BASE_PATH;
+    private String basePathSandbox = ApiConstants.SANDBOX_BASE_PATH;
     private Map<String, String> defaultHeaderMap = new HashMap<>();
-    private String tempFolderPath = null;
     private Map<String, Authentication> authentications;
     private OkHttpClient httpClient;
     private JSON json;
@@ -56,9 +57,9 @@ public class ApiClient {
         httpClient = new OkHttpClient();
         json = new JSON();
         // Set default User-Agent.
-        setUserAgent("PayPay-SDK/0.8.0/java");
+        setUserAgent(ApiConstants.USER_AGENT);
         authentications = new HashMap<>();
-        authentications.put("HmacAuth", new HmacAuth());
+        authentications.put(ApiConstants.HMAC_AUTH, new HmacAuth());
         authentications = Collections.unmodifiableMap(authentications);
     }
 
@@ -262,30 +263,6 @@ public class ApiClient {
      */
     public ApiClient addDefaultHeader(String key, String value) {
         defaultHeaderMap.put(key, value);
-        return this;
-    }
-
-
-    /**
-     * The path of temporary folder used to store downloaded files from endpoints
-     * with file response. The default value is <code>null</code>, i.e. using
-     * the system's default tempopary folder.
-     *
-     * @see <a href="https://docs.oracle.com/javase/7/docs/api/java/io/File.html#createTempFile">createTempFile</a>
-     * @return Temporary folder path
-     */
-    public String getTempFolderPath() {
-        return tempFolderPath;
-    }
-
-    /**
-     * Set the tempoaray folder path (for downloading files)
-     *
-     * @param tempFolderPath Temporary folder path
-     * @return ApiClient
-     */
-    public ApiClient setTempFolderPath(String tempFolderPath) {
-        this.tempFolderPath = tempFolderPath;
         return this;
     }
 
@@ -606,23 +583,7 @@ public class ApiClient {
             if (prefix.length() < 3)
                 prefix = "download-";
         }
-
-        if (tempFolderPath == null)
-            return File.createTempFile(prefix, suffix);
-        else
-            return File.createTempFile(prefix, suffix, new File(tempFolderPath));
-    }
-
-    /**
-     * {@link #execute(Call, Type, String)}
-     *
-     * @param <T> Type
-     * @param call An instance of the Call object
-     * @throws ApiException If fail to execute the call
-     * @return ApiResponse object
-     */
-    public <T> ApiResponse<T> execute(Call call) throws ApiException {
-        return execute(call, null, null);
+        return File.createTempFile(prefix, suffix);
     }
 
     /**
@@ -640,7 +601,9 @@ public class ApiClient {
     public <T> ApiResponse<T> execute(Call call, Type returnType, String apiName) throws ApiException {
         try {
             Response response = call.execute();
-            T data = handleResponse(response, returnType, apiName);
+            ResponseParameters responseParameters = new ResponseParameters()
+                    .setResponse(response).setApiName(apiName).setReturnType(returnType);
+            T data = handleResponse(responseParameters);
             return new ApiResponse<T>(response.code(), response.headers().toMultimap(), data);
         } catch (IOException e) {
             throw new ApiException(e);
@@ -651,16 +614,15 @@ public class ApiClient {
      * Handle the given response, return the deserialized object when the response is successful.
      *
      * @param <T> Type
-     * @param response Response
-     * @param apiName The API Name for resolve url
-     * @param returnType Return type
+     * @param params ResponseParameters
      * @throws ApiException If the response has a unsuccessful status code or
      *   fail to deserialize the response body
      * @return Type
      */
-    public <T> T handleResponse(Response response, Type returnType, String apiName) throws ApiException {
+    public <T> T handleResponse(ResponseParameters params) throws ApiException {
+        Response response = params.getResponse();
         if (response.isSuccessful()) {
-            if (returnType == null || response.code() == 204) {
+            if (params.getReturnType() == null || response.code() == 204) {
                 // returning null if the returnType is not defined,
                 // or the status code is 204 (No Content)
                 if (response.body() != null) {
@@ -672,7 +634,7 @@ public class ApiClient {
                 }
                 return null;
             } else {
-                return deserialize(response, returnType);
+                return deserialize(response, params.getReturnType());
             }
         } else {
             String respBody = null;
@@ -683,8 +645,7 @@ public class ApiClient {
                     throw new ApiException(response.message(), e, response.code(), response.headers().toMultimap());
                 }
             }
-            String resolveUrl = getResolveUrl(apiName, respBody);
-            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody).setResolveUrl(resolveUrl);
+            throw new ApiException(response.message(), response.code(), response.headers().toMultimap(), respBody).setResolveUrl(getResolveUrl(params.getApiName(), respBody));
         }
     }
 

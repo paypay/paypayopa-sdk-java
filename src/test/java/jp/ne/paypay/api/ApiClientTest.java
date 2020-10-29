@@ -19,6 +19,7 @@ import jp.ne.paypay.auth.HmacAuth;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
+import jp.ne.paypay.model.ResponseParameters;
 import jp.ne.paypay.model.ResultInfo;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -216,16 +217,16 @@ public class ApiClientTest {
 
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
         }.getType();
-
-        Object result = apiClient.handleResponse(response, localVarReturnType, "v2_createPayment");
+        ResponseParameters responseParameters = new ResponseParameters().setResponse(response).setReturnType(localVarReturnType).setApiName("v2_createPayment");
+        Object result = apiClient.handleResponse(responseParameters );
         Assert.assertTrue(result instanceof QRCodeDetails);
-
-         result = apiClient.handleResponse(response, null, null);
+        responseParameters.setReturnType(null).setApiName(null);
+        result = apiClient.handleResponse(new ResponseParameters().setResponse(response));
         Assert.assertFalse(result instanceof QRCodeDetails);
 
         localVarReturnType = new TypeToken<File>() {
         }.getType();
-        result = apiClient.handleResponse(response, localVarReturnType, null);
+        result = apiClient.handleResponse(responseParameters.setReturnType(localVarReturnType));
         Assert.assertTrue(result instanceof File);
 
         Mockito.when(call.execute()).thenReturn(response);
@@ -243,9 +244,8 @@ public class ApiClientTest {
         builder.code(401);
         builder.body(ResponseBody.create(MediaType.parse("application/json"), json.serialize(notDataResponse)));
         response = builder.build();
-        Response finalResponse = response;
-        Type finalLocalVarReturnType = localVarReturnType;
-        Assert.assertThrows(ApiException.class, ()->apiClient.handleResponse(finalResponse, finalLocalVarReturnType, "v2_createPayment"));
+        responseParameters.setResponse(response).setReturnType(localVarReturnType).setApiName("v2_createPayment");
+        Assert.assertThrows(ApiException.class, ()->apiClient.handleResponse(responseParameters));
 
     }
 
@@ -275,8 +275,8 @@ public class ApiClientTest {
 
         Type localVarReturnType = new TypeToken<QRCodeDetails>() {
         }.getType();
-        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(response, localVarReturnType, null));
-        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(response, null, null));
+        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(new ResponseParameters().setResponse(response).setReturnType(localVarReturnType)));
+        Assert.assertThrows(ApiException.class, () -> apiClient.handleResponse(new ResponseParameters().setResponse(response)));
     }
 
     @Test
