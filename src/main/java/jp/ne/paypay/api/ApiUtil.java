@@ -71,7 +71,7 @@ public class ApiUtil {
     }
 
     public static String buildResolveUrl(String apiName, String code, String codeId){
-        String resolveUrl = ApiConstants.RESOLVE_BASE_URL+"?api-name=%s&code=%s&code-id=%s";
+        String resolveUrl = ApiConstants.RESOLVE_BASE_URL+"?api_name=%s&code=%s&code_id=%s";
         return String.format(resolveUrl, apiName, code, codeId);
     }
 }
