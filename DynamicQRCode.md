@@ -27,7 +27,7 @@ Before integrating with the SDK, run through this checklist:
 Add this dependency to your project's build file:
 
 ```groovy
-compile "jp.ne.paypay:paypayopa:0.8.0"
+compile "jp.ne.paypay:paypayopa:0.9.0"
 ```
 ### Build your Client
 Build your client by adding your API Key and Secret like defined below. We enable API Authentication using HMAC, however the SDK will take care of the authentication by itself. [Click here](https://www.paypay.ne.jp/opa/doc/v1.0/dynamicqrcode#tag/Api-Authentication) if you want to know more about the authentication. 
