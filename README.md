@@ -47,7 +47,7 @@ Building the API client library requires Gradle to be installed.
 Add this dependency to your project's build.gradle file:
 
 ```groovy
-compile "jp.ne.paypay:paypayopa:0.8.0"
+compile "jp.ne.paypay:paypayopa:0.9.0"
 ```
 
 ## Getting Started
