@@ -15,5 +15,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Coverall test report
-        run: ./gradlew jacocoTestReport coveralls
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
