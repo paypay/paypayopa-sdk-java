@@ -17,3 +17,6 @@ jobs:
 
       - name: Before Script
         run: source ./src/beforeScript.sh
+
+      - name: After successful
+        run: source ./src/afterSuccess.sh
