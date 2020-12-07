@@ -15,7 +15,5 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Before Script
+        run: source ./src/beforeScript.sh
