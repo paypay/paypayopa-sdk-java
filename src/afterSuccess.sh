@@ -1,1 +1,1 @@
-./gradlew jacocoTestReport coveralls
+bash <(curl -s https://copilot.blackducksoftware.com/ci/travis/scripts/upload)
