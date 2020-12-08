@@ -1,0 +1,36 @@
+name: Java SDK CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CC_TEST_REPORTER_ID: 7603e87a55419aadb1e918a8c959fac1b43d45ef92be67a8e595015f2ff92882
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up openjdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: register repo token
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: |
+          echo repo_token: ${COVERALLS_REPO_TOKEN} > ./.coveralls.yml
+      - name: Build with Gradle
+        run: ./gradlew build jacocoTestReport
+
+      - name: Before script
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./gradlew coveralls
+      - name: Upload to CoPilot
+        run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
