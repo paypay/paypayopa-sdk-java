@@ -18,9 +18,6 @@ jobs:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         run: |
           echo repo_token: ${COVERALLS_REPO_TOKEN} > ./.coveralls.yml
-      - name: Build with Gradle
-        run: ./gradlew build jacocoTestReport
-
       - name: Before script
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
@@ -31,6 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ./gradlew coveralls
+          ./gradlew jacocoTestReport coveralls
       - name: Upload to CoPilot
         run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
