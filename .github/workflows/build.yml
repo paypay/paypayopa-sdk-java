@@ -18,5 +18,5 @@ jobs:
       - name: Before Script
         run: source ./src/beforeScript.sh
 
-      - name: After successful
+      - name: After Successful
         run: ./gradlew jacocoTestReport coveralls
