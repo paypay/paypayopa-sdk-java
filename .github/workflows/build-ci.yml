@@ -29,7 +29,11 @@ jobs:
         run: |
           ./gradlew clean build jacocoTestReport
           ./gradlew coveralls
-          ./cc-test-reporter after-build --exit-code 0
 
       - name: Upload to CoPilot
         run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
+
+      - name: After build script CodeClimate
+        run: |
+          JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
+          ./cc-test-reporter upload-coverage
