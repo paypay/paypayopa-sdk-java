@@ -29,8 +29,7 @@ jobs:
         run: |
           ./gradlew clean build jacocoTestReport
           ./gradlew coveralls
+          ./cc-test-reporter after-build --exit-code 0
+
       - name: Upload to CoPilot
         run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
-
-      - name: After build
-        run: ./cc-test-reporter after-build --exit-code 0
