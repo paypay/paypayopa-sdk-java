@@ -87,7 +87,7 @@ public class ApiException extends Exception {
 
     /**
      * Set the Resolve Url.
-     *
+     * @param  resolveUrl Resolve url
      * @return ApiException with resolve url set
      */
     public ApiException setResolveUrl(String resolveUrl) {
