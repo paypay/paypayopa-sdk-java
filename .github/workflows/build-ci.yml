@@ -19,7 +19,7 @@ jobs:
           echo repo_token: ${COVERALLS_REPO_TOKEN} > ./.coveralls.yml
       - name: Before script
         run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-0.8.0-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
 
