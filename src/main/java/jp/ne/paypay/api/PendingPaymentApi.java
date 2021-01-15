@@ -151,53 +151,7 @@ public class PendingPaymentApi {
      */
     public RefundDetails refundPayment(Refund refund) throws ApiException {
         ApiUtil.validateObject(validator, refund);
-        ApiResponse<RefundDetails> resp = refundPaymentWithHttpInfo(refund);
-        return resp.getData();
-    }
-
-    /**
-     * Refund a payment
-     *
-     * @param refund Refund
-     * @return ApiResponse&lt;PaymentDetails&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     */
-    protected ApiResponse<RefundDetails> refundPaymentWithHttpInfo(Refund refund) throws ApiException {
-        Call call = refundPaymentCall(refund);
-        Type localVarReturnType = new TypeToken<RefundDetails>() {
-        }.getType();
-        return apiClient.execute(call, localVarReturnType, ApiNameConstants.REFUND_REQUEST_ORDER);
-    }
-
-    /**
-     * Build call for refundPayment
-     *
-     * @param refund Refund
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request payment object
-     */
-    private Call refundPaymentCall(Refund refund) throws ApiException {
-
-        String localVarPath = "/v1/requestOrder/refunds";
-        List<Pair> localVarQueryParams = new ArrayList<>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
-        Map<String, String> localVarHeaderParams = new HashMap<>();
-        Map<String, Object> localVarFormParams = new HashMap<>();
-
-        final String[] localVarAccepts = {
-                ApiConstants.APPLICATION_JSON
-        };
-        final String localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) localVarHeaderParams.put(ApiConstants.ACCEPT, localVarAccept);
-
-        final String[] localVarContentTypes = {
-
-        };
-        final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-        localVarHeaderParams.put(ApiConstants.CONTENT_TYPE, localVarContentType);
-        String[] localVarAuthNames = new String[]{ApiConstants.HMAC_AUTH};
-        apiClient.setReadTimeout(30);
-        return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, refund, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+        return paymentApi.refundPayment(refund);
     }
 
     /**

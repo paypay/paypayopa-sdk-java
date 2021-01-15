@@ -160,7 +160,7 @@ public class PendingPaymentApiTest {
         refund.setStatus(RefundState.StatusEnum.CREATED);
         refundDetails.setData(refund);
         ApiResponse<RefundDetails> paymentDetailsApiResponse = new ApiResponse<>(00001, null, refundDetails);
-        Mockito.when(api.refundPaymentWithHttpInfo(refund)).thenReturn(paymentDetailsApiResponse);
+        Mockito.when(paymentApi.refundPaymentWithHttpInfo(refund)).thenReturn(paymentDetailsApiResponse);
         Assert.assertNotNull(refund.toString());
         RefundDetails response = api.refundPayment(refund);
         Assert.assertNotNull(response.toString());
