@@ -190,6 +190,11 @@ public class ApiClientTest {
         result = apiClient.deserialize(null, localVarReturnType);
         Assert.assertNull(result);
 
+        builder.header("content-disposition","filename=test.json");
+        response=builder.build();
+        result = apiClient.deserialize(response, localVarReturnType);
+        Assert.assertNotNull(result);
+        Assert.assertTrue(result.toString().endsWith(".json"));
     }
 
     @Test
@@ -245,8 +250,12 @@ public class ApiClientTest {
         builder.body(ResponseBody.create(MediaType.parse("application/json"), json.serialize(notDataResponse)));
         response = builder.build();
         responseParameters.setResponse(response).setReturnType(localVarReturnType).setApiName("v2_createPayment");
-        Assert.assertThrows(ApiException.class, ()->apiClient.handleResponse(responseParameters));
-
+        try{
+            apiClient.handleResponse(responseParameters);
+        }catch(ApiException e){
+            Assert.assertEquals(e.getResolveUrl(),"https://developer.paypay.ne.jp/develop/resolve?api_name=v2_createPayment&code=UNAUTHORIZED&code_id=802001");
+            Assert.assertTrue(e.getResponseBody().contains("UNAUTHORIZED"));
+        }
     }
 
     @Test
