@@ -390,14 +390,13 @@ public class QRCode {
       return false;
     }
     QRCode qrCode = (QRCode) o;
-    return Objects.equals(this.merchantPaymentId, qrCode.merchantPaymentId) &&
-        Objects.equals(this.amount, qrCode.amount) && Objects.equals(this.orderDescription, qrCode.orderDescription) &&
-        Objects.equals(this.orderItems, qrCode.orderItems) && Objects.equals(this.metadata, qrCode.metadata) &&
-        Objects.equals(this.codeType, qrCode.codeType) && Objects.equals(this.storeInfo, qrCode.storeInfo) &&
-        Objects.equals(this.storeId, qrCode.storeId) && Objects.equals(this.terminalId, qrCode.terminalId) &&
-        Objects.equals(this.requestedAt, qrCode.requestedAt) && Objects.equals(this.isAuthorization, qrCode.isAuthorization) &&
-        Objects.equals(this.authorizationExpiry, qrCode.authorizationExpiry) && Objects.equals(this.redirectUrl, qrCode.redirectUrl) &&
-        Objects.equals(this.redirectType, qrCode.redirectType);
+    return Objects.equals(this.authorizationExpiry, qrCode.authorizationExpiry) && Objects.equals(this.redirectUrl, qrCode.redirectUrl) &&
+           Objects.equals(this.merchantPaymentId, qrCode.merchantPaymentId) && Objects.equals(this.storeId, qrCode.storeId) && Objects.equals(this.terminalId, qrCode.terminalId) &&
+           Objects.equals(this.amount, qrCode.amount) && Objects.equals(this.orderDescription, qrCode.orderDescription) &&
+           Objects.equals(this.orderItems, qrCode.orderItems) && Objects.equals(this.metadata, qrCode.metadata) &&
+           Objects.equals(this.codeType, qrCode.codeType) && Objects.equals(this.storeInfo, qrCode.storeInfo) && Objects.equals(this.redirectType, qrCode.redirectType) &&
+           Objects.equals(this.requestedAt, qrCode.requestedAt) && Objects.equals(this.isAuthorization, qrCode.isAuthorization);
+
   }
 
   @Override
