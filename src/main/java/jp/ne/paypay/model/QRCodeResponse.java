@@ -462,16 +462,12 @@ public class QRCodeResponse {
       return false;
     }
     QRCodeResponse qrCodeResponse = (QRCodeResponse) o;
-    return Objects.equals(this.codeId, qrCodeResponse.codeId) &&
-            Objects.equals(this.url, qrCodeResponse.url) && Objects.equals(this.deeplink, qrCodeResponse.deeplink) &&
-            Objects.equals(this.expiryDate, qrCodeResponse.expiryDate) && Objects.equals(this.merchantPaymentId, qrCodeResponse.merchantPaymentId) &&
-            Objects.equals(this.amount, qrCodeResponse.amount) && Objects.equals(this.orderDescription, qrCodeResponse.orderDescription) &&
-            Objects.equals(this.orderItems, qrCodeResponse.orderItems) && Objects.equals(this.metadata, qrCodeResponse.metadata) &&
-            Objects.equals(this.codeType, qrCodeResponse.codeType) && Objects.equals(this.storeInfo, qrCodeResponse.storeInfo) &&
-            Objects.equals(this.storeId, qrCodeResponse.storeId) && Objects.equals(this.terminalId, qrCodeResponse.terminalId) && Objects.equals(this.requestedAt, qrCodeResponse.requestedAt) &&
-            Objects.equals(this.redirectUrl, qrCodeResponse.redirectUrl) && Objects.equals(this.redirectType, qrCodeResponse.redirectType) &&
-            Objects.equals(this.isAuthorization, qrCodeResponse.isAuthorization) && Objects.equals(this.authorizationExpiry, qrCodeResponse.authorizationExpiry);
-
+    return Objects.equals(this.codeId, qrCodeResponse.codeId) && Objects.equals(this.url, qrCodeResponse.url) && Objects.equals(this.deeplink, qrCodeResponse.deeplink) &&
+            Objects.equals(this.expiryDate, qrCodeResponse.expiryDate) && Objects.equals(this.merchantPaymentId, qrCodeResponse.merchantPaymentId) && Objects.equals(this.amount, qrCodeResponse.amount) &&
+            Objects.equals(this.orderDescription, qrCodeResponse.orderDescription) && Objects.equals(this.orderItems, qrCodeResponse.orderItems) && Objects.equals(this.metadata, qrCodeResponse.metadata) &&
+            Objects.equals(this.codeType, qrCodeResponse.codeType) && Objects.equals(this.storeInfo, qrCodeResponse.storeInfo) && Objects.equals(this.storeId, qrCodeResponse.storeId) &&
+            Objects.equals(this.terminalId, qrCodeResponse.terminalId) && Objects.equals(this.requestedAt, qrCodeResponse.requestedAt) && Objects.equals(this.redirectUrl, qrCodeResponse.redirectUrl) &&
+            Objects.equals(this.redirectType, qrCodeResponse.redirectType) && Objects.equals(this.isAuthorization, qrCodeResponse.isAuthorization) && Objects.equals(this.authorizationExpiry, qrCodeResponse.authorizationExpiry);
   }
 
   @Override
@@ -482,25 +478,15 @@ public class QRCodeResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class QRCodeResponse {\n");
-    
-    sb.append("    codeId: ").append(toIndentedString(codeId)).append("\n");
-    sb.append("    url: ").append(toIndentedString(url)).append("\n");
-    sb.append("    deeplink: ").append(toIndentedString(deeplink)).append("\n");
-    sb.append("    expiryDate: ").append(toIndentedString(expiryDate)).append("\n");
+    sb.append("class QRCodeResponse {\n").append("    codeId: ").append(toIndentedString(codeId)).append("\n").append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("    deeplink: ").append(toIndentedString(deeplink)).append("\n").append("    expiryDate: ").append(toIndentedString(expiryDate)).append("\n");
     sb.append("    merchantPaymentId: ").append(toIndentedString(merchantPaymentId)).append("\n");
-    sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
-    sb.append("    orderDescription: ").append(toIndentedString(orderDescription)).append("\n");
-    sb.append("    orderItems: ").append(toIndentedString(orderItems)).append("\n");
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    codeType: ").append(toIndentedString(codeType)).append("\n");
-    sb.append("    storeInfo: ").append(toIndentedString(storeInfo)).append("\n");
-    sb.append("    storeId: ").append(toIndentedString(storeId)).append("\n");
-    sb.append("    terminalId: ").append(toIndentedString(terminalId)).append("\n");
-    sb.append("    requestedAt: ").append(toIndentedString(requestedAt)).append("\n");
-    sb.append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
-    sb.append("    redirectType: ").append(toIndentedString(redirectType)).append("\n");
-    sb.append("    isAuthorization: ").append(toIndentedString(isAuthorization)).append("\n");
+    sb.append("    amount: ").append(toIndentedString(amount)).append("\n").append("    orderDescription: ").append(toIndentedString(orderDescription)).append("\n");
+    sb.append("    orderItems: ").append(toIndentedString(orderItems)).append("\n").append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    codeType: ").append(toIndentedString(codeType)).append("\n").append("    storeInfo: ").append(toIndentedString(storeInfo)).append("\n");
+    sb.append("    storeId: ").append(toIndentedString(storeId)).append("\n").append("    terminalId: ").append(toIndentedString(terminalId)).append("\n");
+    sb.append("    requestedAt: ").append(toIndentedString(requestedAt)).append("\n").append("    redirectUrl: ").append(toIndentedString(redirectUrl)).append("\n");
+    sb.append("    redirectType: ").append(toIndentedString(redirectType)).append("\n").append("    isAuthorization: ").append(toIndentedString(isAuthorization)).append("\n");
     sb.append("    authorizationExpiry: ").append(toIndentedString(authorizationExpiry)).append("\n");
     sb.append("}");
     return sb.toString();
