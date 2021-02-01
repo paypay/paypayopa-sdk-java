@@ -462,17 +462,12 @@ public class QRCodeResponse {
       return false;
     }
     QRCodeResponse qrCodeResponse = (QRCodeResponse) o;
-    return Objects.equals(this.codeId, qrCodeResponse.codeId) && Objects.equals(this.url, qrCodeResponse.url) && Objects.equals(this.deeplink, qrCodeResponse.deeplink) &&
-            Objects.equals(this.expiryDate, qrCodeResponse.expiryDate) && Objects.equals(this.merchantPaymentId, qrCodeResponse.merchantPaymentId) && Objects.equals(this.amount, qrCodeResponse.amount) &&
-            Objects.equals(this.orderDescription, qrCodeResponse.orderDescription) && Objects.equals(this.orderItems, qrCodeResponse.orderItems) && Objects.equals(this.metadata, qrCodeResponse.metadata) &&
-            Objects.equals(this.codeType, qrCodeResponse.codeType) && Objects.equals(this.storeInfo, qrCodeResponse.storeInfo) && Objects.equals(this.storeId, qrCodeResponse.storeId) &&
-            Objects.equals(this.terminalId, qrCodeResponse.terminalId) && Objects.equals(this.requestedAt, qrCodeResponse.requestedAt) && Objects.equals(this.redirectUrl, qrCodeResponse.redirectUrl) &&
-            Objects.equals(this.redirectType, qrCodeResponse.redirectType) && Objects.equals(this.isAuthorization, qrCodeResponse.isAuthorization) && Objects.equals(this.authorizationExpiry, qrCodeResponse.authorizationExpiry);
+    return Objects.equals(this.codeId, qrCodeResponse.codeId) && Objects.equals(this.merchantPaymentId, qrCodeResponse.merchantPaymentId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(codeId, url, deeplink, expiryDate, merchantPaymentId, amount, orderDescription, orderItems, metadata, codeType, storeInfo, storeId, terminalId, requestedAt, redirectUrl, redirectType, isAuthorization, authorizationExpiry);
+    return Objects.hash(codeId, merchantPaymentId);
   }
   
   @Override
