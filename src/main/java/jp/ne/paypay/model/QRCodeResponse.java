@@ -120,12 +120,6 @@ public class QRCodeResponse {
   @SerializedName("authorizationExpiry")
   private Integer authorizationExpiry = null;
   
-  @SerializedName("amountescription")
-  private String amountDescription = null;
-  
-  @SerializedName("userAgent")
-  private String userAgent = null;
-  
   public QRCodeResponse codeId(String codeId) {
     this.codeId = codeId;
     return this;
@@ -459,42 +453,6 @@ public class QRCodeResponse {
     this.authorizationExpiry = authorizationExpiry;
   }
   
-  public QRCodeResponse amountDescription(String amountDescription) {
-    this.amountDescription = amountDescription;
-    return this;
-  }
-
-  
-  /**
-  * Description of the order
-  * @return amountescription
-  **/
-  @ApiModelProperty(value = "Description of the order")
-  public String getAmountDescription() {
-    return amountDescription;
-  }
-  public void setAmountDescription(String amountDescription) {
-    this.amountDescription = amountDescription;
-  }
-  
-  public QRCodeResponse userAgent(String userAgent) {
-    this.userAgent = userAgent;
-    return this;
-  }
-
-  
-  /**
-  * The User agent of the web browser.
-  * @return userAgent
-  **/
-  @ApiModelProperty(value = "The User agent of the web browser.")
-  public String getUserAgent() {
-    return userAgent;
-  }
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
-  }
-  
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -521,14 +479,12 @@ public class QRCodeResponse {
         Objects.equals(this.redirectUrl, qrCodeResponse.redirectUrl) &&
         Objects.equals(this.redirectType, qrCodeResponse.redirectType) &&
         Objects.equals(this.isAuthorization, qrCodeResponse.isAuthorization) &&
-        Objects.equals(this.authorizationExpiry, qrCodeResponse.authorizationExpiry) &&
-        Objects.equals(this.amountDescription, qrCodeResponse.amountDescription) &&
-        Objects.equals(this.userAgent, qrCodeResponse.userAgent);
+        Objects.equals(this.authorizationExpiry, qrCodeResponse.authorizationExpiry);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(codeId, url, deeplink, expiryDate, merchantPaymentId, amount, orderDescription, orderItems, metadata, codeType, storeInfo, storeId, terminalId, requestedAt, redirectUrl, redirectType, isAuthorization, authorizationExpiry, amountDescription, userAgent);
+    return Objects.hash(codeId, url, deeplink, expiryDate, merchantPaymentId, amount, orderDescription, orderItems, metadata, codeType, storeInfo, storeId, terminalId, requestedAt, redirectUrl, redirectType, isAuthorization, authorizationExpiry);
   }
   
   @Override
@@ -554,8 +510,6 @@ public class QRCodeResponse {
     sb.append("    redirectType: ").append(toIndentedString(redirectType)).append("\n");
     sb.append("    isAuthorization: ").append(toIndentedString(isAuthorization)).append("\n");
     sb.append("    authorizationExpiry: ").append(toIndentedString(authorizationExpiry)).append("\n");
-    sb.append("    amountDescription: ").append(toIndentedString(amountDescription)).append("\n");
-    sb.append("    userAgent: ").append(toIndentedString(userAgent)).append("\n");
     sb.append("}");
     return sb.toString();
   }
