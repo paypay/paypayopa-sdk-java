@@ -478,7 +478,7 @@ public class QRCodeResponse {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class QRCodeResponse {\n").append("    codeId: ").append(toIndentedString(codeId)).append("\n").append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("QRCodeResponse {\n").append("    codeId: ").append(toIndentedString(codeId)).append("\n").append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    deeplink: ").append(toIndentedString(deeplink)).append("\n").append("    expiryDate: ").append(toIndentedString(expiryDate)).append("\n");
     sb.append("    merchantPaymentId: ").append(toIndentedString(merchantPaymentId)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n").append("    orderDescription: ").append(toIndentedString(orderDescription)).append("\n");
