@@ -39,7 +39,7 @@ public class Cashback extends CashbackState {
   private Object metadata = null;
   
   @SerializedName("expiryDate")
-  private Integer expiryDate = null;
+  private String expiryDate = null;
 
   @SerializedName("walletType")
   private WalletType walletType = null;
@@ -98,11 +98,11 @@ public class Cashback extends CashbackState {
     return this;
   }
 
-  public Integer getExpiryDate() {
+  public String getExpiryDate() {
     return expiryDate;
   }
 
-  public Cashback setExpiryDate(Integer expiryDate) {
+  public Cashback setExpiryDate(String expiryDate) {
     this.expiryDate = expiryDate;
     return this;
   }

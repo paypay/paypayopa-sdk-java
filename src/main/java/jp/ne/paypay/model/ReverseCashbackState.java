@@ -18,7 +18,7 @@ public class ReverseCashbackState {
   private Integer acceptedAt = null;
 
   @SerializedName("merchantAlias")
-  private Integer merchantAlias = null;
+  private String merchantAlias = null;
 
   public String getCashbackReversalId() {
     return cashbackReversalId;
@@ -47,11 +47,11 @@ public class ReverseCashbackState {
     return this;
   }
 
-  public Integer getMerchantAlias() {
+  public String getMerchantAlias() {
     return merchantAlias;
   }
 
-  public ReverseCashbackState setMerchantAlias(Integer merchantAlias) {
+  public ReverseCashbackState setMerchantAlias(String merchantAlias) {
     this.merchantAlias = merchantAlias;
     return this;
   }

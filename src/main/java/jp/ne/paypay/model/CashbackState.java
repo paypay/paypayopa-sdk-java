@@ -23,7 +23,7 @@ public class CashbackState {
   private Integer acceptedAt = null;
 
   @SerializedName("merchantAlias")
-  private Integer merchantAlias = null;
+  private String merchantAlias = null;
 
   public String getCashbackId() {
     return cashbackId;
@@ -52,11 +52,11 @@ public class CashbackState {
     return this;
   }
 
-  public Integer getMerchantAlias() {
+  public String getMerchantAlias() {
     return merchantAlias;
   }
 
-  public CashbackState setMerchantAlias(Integer merchantAlias) {
+  public CashbackState setMerchantAlias(String merchantAlias) {
     this.merchantAlias = merchantAlias;
     return this;
   }
@@ -65,7 +65,6 @@ public class CashbackState {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class CashbackState {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    cashbackId: ").append(toIndentedString(cashbackId)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    acceptedAt: ").append(toIndentedString(acceptedAt)).append("\n");
