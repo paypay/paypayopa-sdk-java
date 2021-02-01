@@ -5,18 +5,16 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
-import java.io.IOException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * QRCode
@@ -120,9 +118,6 @@ public class QRCode {
   
   @SerializedName("redirectType")
   private RedirectTypeEnum redirectType = null;
-  
-  @SerializedName("userAgent")
-  private String userAgent = null;
   
   public QRCode merchantPaymentId(String merchantPaymentId) {
     this.merchantPaymentId = merchantPaymentId;
@@ -384,24 +379,7 @@ public class QRCode {
   public void setRedirectType(RedirectTypeEnum redirectType) {
     this.redirectType = redirectType;
   }
-  
-  public QRCode userAgent(String userAgent) {
-    this.userAgent = userAgent;
-    return this;
-  }
 
-  
-  /**
-  * The User agent of the web browser. When this parameter is provided, on mobile devices PayPay tries to open the browser that the merchant website is using. This can be found by using the javascript function navigator.userAgent
-  * @return userAgent
-  **/
-  @ApiModelProperty(value = "The User agent of the web browser. When this parameter is provided, on mobile devices PayPay tries to open the browser that the merchant website is using. This can be found by using the javascript function navigator.userAgent")
-  public String getUserAgent() {
-    return userAgent;
-  }
-  public void setUserAgent(String userAgent) {
-    this.userAgent = userAgent;
-  }
   
   @Override
   public boolean equals(Object o) {
@@ -413,25 +391,18 @@ public class QRCode {
     }
     QRCode qrCode = (QRCode) o;
     return Objects.equals(this.merchantPaymentId, qrCode.merchantPaymentId) &&
-        Objects.equals(this.amount, qrCode.amount) &&
-        Objects.equals(this.orderDescription, qrCode.orderDescription) &&
-        Objects.equals(this.orderItems, qrCode.orderItems) &&
-        Objects.equals(this.metadata, qrCode.metadata) &&
-        Objects.equals(this.codeType, qrCode.codeType) &&
-        Objects.equals(this.storeInfo, qrCode.storeInfo) &&
-        Objects.equals(this.storeId, qrCode.storeId) &&
-        Objects.equals(this.terminalId, qrCode.terminalId) &&
-        Objects.equals(this.requestedAt, qrCode.requestedAt) &&
-        Objects.equals(this.isAuthorization, qrCode.isAuthorization) &&
-        Objects.equals(this.authorizationExpiry, qrCode.authorizationExpiry) &&
-        Objects.equals(this.redirectUrl, qrCode.redirectUrl) &&
-        Objects.equals(this.redirectType, qrCode.redirectType) &&
-        Objects.equals(this.userAgent, qrCode.userAgent);
+        Objects.equals(this.amount, qrCode.amount) && Objects.equals(this.orderDescription, qrCode.orderDescription) &&
+        Objects.equals(this.orderItems, qrCode.orderItems) && Objects.equals(this.metadata, qrCode.metadata) &&
+        Objects.equals(this.codeType, qrCode.codeType) && Objects.equals(this.storeInfo, qrCode.storeInfo) &&
+        Objects.equals(this.storeId, qrCode.storeId) && Objects.equals(this.terminalId, qrCode.terminalId) &&
+        Objects.equals(this.requestedAt, qrCode.requestedAt) && Objects.equals(this.isAuthorization, qrCode.isAuthorization) &&
+        Objects.equals(this.authorizationExpiry, qrCode.authorizationExpiry) && Objects.equals(this.redirectUrl, qrCode.redirectUrl) &&
+        Objects.equals(this.redirectType, qrCode.redirectType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantPaymentId, amount, orderDescription, orderItems, metadata, codeType, storeInfo, storeId, terminalId, requestedAt, isAuthorization, authorizationExpiry, redirectUrl, redirectType, userAgent);
+    return Objects.hash(merchantPaymentId, amount, orderDescription, orderItems, metadata, codeType, storeInfo, storeId, terminalId, requestedAt, isAuthorization, authorizationExpiry, redirectUrl, redirectType);
   }
 
   @Override
@@ -441,7 +412,7 @@ public class QRCode {
             + codeType + '\'' + ", storeInfo='" + storeInfo + '\'' + ", storeId='" + storeId + '\'' + ", terminalId='"
             + terminalId + '\'' + ", requestedAt=" + requestedAt + ", isAuthorization=" + isAuthorization
             + ", authorizationExpiry=" + authorizationExpiry + ", redirectUrl='" + redirectUrl + '\''
-            + ", redirectType=" + redirectType + ", userAgent='" + userAgent + '\'' + '}';
+            + ", redirectType=" + redirectType  + '}';
   }
   
 }
