@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **resultInfo** | [**ResultInfo**](ResultInfo.md) |  | 
-**data** | [**ReverseCashback**](Cashback.md) |  | 
+**data** | [**ReverseCashback**](ReverseCashback.md) |  | 
 
 
 

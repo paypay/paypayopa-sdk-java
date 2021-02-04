@@ -94,10 +94,10 @@ Title | Method | HTTP request | Description
 *PendingPaymentApi* | [**cancelPendingOrder**](docs/PendingPaymentApi.md#cancelPendingOrder) | **DELETE** /v1/requestOrder/{merchantPaymentId} | This api is used delete the pending order
 *PendingPaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId}| Get refund details.
 *PendingPaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment.
-*CashbackApi* | [**giveCashback**](docs/cashbackApi.md#giveCashback) | **POST** /v2/cashback | Transfer money from merchants campaign wallet to user wallet
-*CashbackApi* | [**getCashback**](docs/cashbackApi.md#getCashback) | **GET** /v2/cashback/{merchantCashbackId} | Check the cashback details of the cashback given
-*CashbackApi* | [**reverseCashback**](docs/cashbackApi.md#reverseCashback) | **POST** /v2/cashback_reversal | Transfer money back from user wallet to merchants campaign wallet.
-*CashbackApi* | [**getReverseCashback**](docs/cashbackApi.md#getReverseCashback) | **GET** /v2/cashback_reversal/{merchantCashbackReversalId}/{merchantCashbackId} | Check the cashback reversal details of the cashback reversed 
+*CashbackApi* | [**giveCashback**](docs/CashbackApi.md#giveCashback) | **POST** /v2/cashback | Transfer money from merchants campaign wallet to user wallet
+*CashbackApi* | [**getCashback**](docs/CashbackApi.md#getCashback) | **GET** /v2/cashback/{merchantCashbackId} | Check the cashback details of the cashback given
+*CashbackApi* | [**reverseCashback**](docs/CashbackApi.md#reverseCashback) | **POST** /v2/cashback_reversal | Transfer money back from user wallet to merchants campaign wallet.
+*CashbackApi* | [**getReverseCashback**](docs/CashbackApi.md#getReverseCashback) | **GET** /v2/cashback_reversal/{merchantCashbackReversalId}/{merchantCashbackId} | Check the cashback reversal details of the cashback reversed 
 
 ## Documentation for Models
  - [Capture](docs/Capture.md)
