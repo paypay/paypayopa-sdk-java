@@ -264,7 +264,6 @@ public class PaymentApiTest {
         qrCodeDetails.setResultInfo(resultInfo);
         QRCodeResponse qrCodeResponse = new QRCodeResponse();
         qrCodeResponse.amount(new MoneyAmount().amount(10).currency(MoneyAmount.CurrencyEnum.JPY));
-        qrCodeResponse.setAmountDescription("Amount description");
         qrCodeResponse.setMerchantPaymentId(UUID.randomUUID().toString());
         qrCodeResponse.setCodeType(codeType);
         qrCodeResponse.setStoreId(RandomStringUtils.randomAlphabetic(8));
@@ -294,7 +293,6 @@ public class PaymentApiTest {
         Assert.assertEquals(response.getData().getRedirectType(), QRCodeResponse.RedirectTypeEnum.WEB_LINK);
         Assert.assertNotNull(response.getData());
         Assert.assertNotNull(response.getData().getMerchantPaymentId());
-        Assert.assertNotNull(response.getData().getAmountDescription());
         Assert.assertNotNull(response.getData().getOrderItems());
         Assert.assertNotNull(response.getData().getRequestedAt());
         Assert.assertNotNull(response.getData().getTerminalId());
