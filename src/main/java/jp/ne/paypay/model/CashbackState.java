@@ -2,11 +2,6 @@ package jp.ne.paypay.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.Instant;
-
 /**
  * CashbackState
  */
