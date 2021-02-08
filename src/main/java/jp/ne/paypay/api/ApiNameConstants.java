@@ -17,10 +17,13 @@ public class ApiNameConstants {
     public static final String CREATE_REQUEST_ORDER = "v1_createRequestOrder";
     public static final String GET_REQUEST_ORDER = "v1_getRequestOrder";
     public static final String CANCEL_REQUEST_ORDER = "v1_cancelRequestOrder";
-    public static final String REFUND_REQUEST_ORDER = "v1_createRequestOrderRefund";
     public static final String GET_SECURE_USER_PROFILE = "v2_getSecureUserProfile";
     public static final String CHECK_BALANCE = "v2_checkWalletBalance";
     public static final String GET_USER_AUTH_STATUS = "v2_userAuthStatus";
     public static final String UNLINK_USER = "v2_unlinkUser";
     public static final String CREATE_QR_SESSION = "v1_qrSession";
+    public static final String CREATE_CASHBACK_REQUEST = "v2_createCashBackRequest";
+    public static final String GET_CASHBACK_DETAILS = "v2_getCashbackDetails";
+    public static final String CREATE_REVERSE_CASHBACK_REQUEST = "v2_createReverseCashBackRequest";
+    public static final String GET_REVERSED_CASHBACK_DETAILS = "v2_getReversedCashBackDetails";
 }

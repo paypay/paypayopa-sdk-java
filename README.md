@@ -89,6 +89,15 @@ Title | Method | HTTP request | Description
 *UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
 *UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
 *UserApi* | [**unlinkUser**](docs/UserApi.md#unlinkUser) | **DELETE** /v2/user/authorizations/{userAuthorizationId} | Unlink user
+*PendingPaymentApi* | [**createPendingPayment**](docs/PendingPaymentApi.md#createPendingPayment) | **POST** /v1/requestOrder | Sends a push notification to the user requesting payment.
+*PendingPaymentApi* | [**getPaymentDetails**](docs/PendingPaymentApi.md#getPaymentDetails) | **GET** /v1/requestOrder/{merchantPaymentId} | Get payment details.
+*PendingPaymentApi* | [**cancelPendingOrder**](docs/PendingPaymentApi.md#cancelPendingOrder) | **DELETE** /v1/requestOrder/{merchantPaymentId} | This api is used delete the pending order
+*PendingPaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId}| Get refund details.
+*PendingPaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment.
+*CashbackApi* | [**giveCashback**](docs/CashbackApi.md#giveCashback) | **POST** /v2/cashback | Transfer money from merchants campaign wallet to user wallet
+*CashbackApi* | [**getCashback**](docs/CashbackApi.md#getCashback) | **GET** /v2/cashback/{merchantCashbackId} | Check the cashback details of the cashback given
+*CashbackApi* | [**reverseCashback**](docs/CashbackApi.md#reverseCashback) | **POST** /v2/cashback_reversal | Transfer money back from user wallet to merchants campaign wallet.
+*CashbackApi* | [**getReverseCashback**](docs/CashbackApi.md#getReverseCashback) | **GET** /v2/cashback_reversal/{merchantCashbackReversalId}/{merchantCashbackId} | Check the cashback reversal details of the cashback reversed 
 
 ## Documentation for Models
  - [Capture](docs/Capture.md)
@@ -104,10 +113,6 @@ Title | Method | HTTP request | Description
  - [NotDataResponse](docs/NotDataResponse.md)
  - [Payment](docs/Payment.md)
  - [PaymentDetails](docs/PaymentDetails.md)
- - [PaymentMethodDetails](docs/PaymentMethodDetails.md)
- - [PaymentMethodListDetails](docs/PaymentMethodListDetails.md)
- - [PaymentOrder](docs/PaymentOrder.md)
- - [PaymentOrderDetails](docs/PaymentOrderDetails.md)
  - [PaymentState](docs/PaymentState.md)
  - [PaymentStateCaptures](docs/PaymentStateCaptures.md)
  - [PaymentStateRefunds](docs/PaymentStateRefunds.md)
@@ -116,11 +121,15 @@ Title | Method | HTTP request | Description
  - [QRCode](docs/QRCode.md)
  - [QRCodeResponse](docs/QRCodeResponse.md)
  - [Refund](docs/Refund.md)
- - [RefundOrder](docs/RefundOrder.md)
  - [RefundState](docs/RefundState.md)
  - [ResultInfo](docs/ResultInfo.md)
  - [AccountLinkQRCode](docs/AccountLinkQRCode.md)
-
+ - [Cashback](docs/Cashback.md)
+ - [ReverseCashback](docs/ReverseCashback.md)
+ - [CashbackDetails](docs/CashbackDetails.md)
+ - [ReverseCashbackDetails](docs/ReverseCashbackDetails.md)
+ 
+ 
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpaypay%2Fpaypayopa-sdk-java?ref=badge_large)
