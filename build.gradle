@@ -82,7 +82,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.11'
     // validation
     compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: '6.1.7.Final'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.1.Final'
     compile group: 'org.hibernate', name: 'hibernate-validator-annotation-processor', version: '6.1.7.Final'
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
