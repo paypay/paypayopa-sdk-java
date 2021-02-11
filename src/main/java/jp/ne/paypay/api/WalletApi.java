@@ -10,7 +10,7 @@ import jp.ne.paypay.Pair;
 import jp.ne.paypay.model.ProductType;
 import jp.ne.paypay.model.WalletBalance;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;

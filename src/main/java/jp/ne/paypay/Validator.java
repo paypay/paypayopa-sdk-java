@@ -1,15 +1,15 @@
 package jp.ne.paypay;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidatorFactory;
 import java.util.Set;
 
 public class Validator {
-    private static javax.validation.Validator validator = null;
+    private static jakarta.validation.Validator validator = null;
     private static Validator validatorInstance = null;
 
-    private javax.validation.Validator getValidator() {
+    private jakarta.validation.Validator getValidator() {
         if (validator == null) {
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             validator = factory.getValidator();
