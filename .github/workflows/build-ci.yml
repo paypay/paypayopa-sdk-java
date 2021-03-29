@@ -30,11 +30,11 @@ jobs:
           ./gradlew clean build jacocoTestReport
           ./gradlew coveralls
 
-      - name: Upload to CoPilot
-        if: github.event_name == 'push' || github.event_name == 'pull_request'
-        run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
-
       - name: After build script CodeClimate
         run: |
           JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
           ./cc-test-reporter upload-coverage
+
+      - name: Upload to CoPilot
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload --detect.report.timeout=900)
