@@ -37,4 +37,4 @@ jobs:
 
       - name: Upload to CoPilot
         if: github.event_name == 'push' || github.event_name == 'pull_request'
-        run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
+        run: java  -jar "https://sig-repo.synopsys.com/bds-integrations-release/com/synopsys/integration/synopsys-detect/6.7.0/synopsys-detect-6.7.0.jar"  --detect.output.path=.copilot --detect.bom.aggregate.name=copilot_bom_bdio --detect.tools=DETECTOR,DOCKER --blackduck.offline.mode=true --detect.bdio.output.path=.copilot --detect.bom.aggregate.remediation.mode=DIRECT --detect.report.timeout=2700
