@@ -23,8 +23,8 @@ With PayPay's OPA SDK, you can build a custom Payment checkout process to suit y
 
 ## Prerequisites
 Before integrating with the SDK, run through this checklist:
-- [*] Understand the payment flow
-- [*] Sign up for a PayPay developer/merchant Account
+- [*] Understand the payment flow.
+- [*] Sign up for a PayPay developer/merchant Account.
 - [*] Generate the API keys from the Developer Panel. Use the sandbox API Keys to test out the integration
 
 ## HMAC Signature Verification
