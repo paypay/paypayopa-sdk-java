@@ -38,7 +38,7 @@ elif [ "$GITHUB_EVENT_NAME" = "push" ] && [ "${GITHUB_REF:0:11}" != "refs/heads/
 fi
 
 # Setup dynamic values determined by application
-DYNAMIC_DETECT_VERSION="6.7.0"
+DYNAMIC_DETECT_VERSION="6.8.0"
 DYNAMIC_UPLOAD_ENDPOINT="https://copilot.blackducksoftware.com/import"
 DYNAMIC_DETECT_SCRIPT="https://detect.synopsys.com/detect.sh"
 DYNAMIC_DETECT_ARGUMENTS="--detect.output.path=.copilot --detect.bom.aggregate.name=copilot_bom_bdio --detect.tools=DETECTOR,DOCKER --blackduck.offline.mode=true --detect.bdio.output.path=.copilot --detect.bom.aggregate.remediation.mode=DIRECT --detect.report.timeout=2700"
