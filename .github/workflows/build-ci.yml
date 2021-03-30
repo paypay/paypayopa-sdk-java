@@ -36,5 +36,5 @@ jobs:
           ./cc-test-reporter upload-coverage
 
       - name: Upload to CoPilot
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
         run: bash < copilotbash
