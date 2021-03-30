@@ -40,7 +40,7 @@ fi
 # Setup dynamic values determined by application
 
 
-="6.8.0"
+DYNAMIC_DETECT_VERSION="6.6.0"
 DYNAMIC_UPLOAD_ENDPOINT="https://copilot.blackducksoftware.com/import"
 DYNAMIC_DETECT_SCRIPT="https://detect.synopsys.com/detect.sh"
 DYNAMIC_DETECT_ARGUMENTS="--detect.output.path=.copilot --detect.bom.aggregate.name=copilot_bom_bdio --detect.tools=DETECTOR,DOCKER --blackduck.offline.mode=true --detect.bdio.output.path=.copilot --detect.bom.aggregate.remediation.mode=DIRECT --detect.timeout=2700 --detect.cleanup=false --detect.wait.for.results=true"
