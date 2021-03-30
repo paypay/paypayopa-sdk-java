@@ -1,0 +1,94 @@
+#!/bin/bash
+urlencode() {
+    # urlencode <string>
+    old_lc_collate=$LC_COLLATE
+    LC_COLLATE=C
+    
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:i:1}"
+        case $c in
+            [a-zA-Z0-9~_-]) printf "$c" ;;
+            *) printf '%%%02X' "'$c" ;;
+        esac
+    done
+    
+    LC_COLLATE=$old_lc_collate
+}
+
+# GITHUB_ environment variables used here are documented at https://help.github.com/en/articles/virtual-environments-for-github-actions#environment-variables
+
+# Check that the workflow being called is supported, and gracefully exit if not
+if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+    PR_ACTION="$(jq -r .action $GITHUB_EVENT_PATH)"
+fi
+
+if [ "$GITHUB_EVENT_NAME" != "push" ] && [ "$GITHUB_EVENT_NAME" != "pull_request" ]; then
+    echo "Dependency analysis only supported for 'push' and 'pull_request' events, skipping ($GITHUB_EVENT_NAME)"
+    
+    exit 0
+elif [ "$GITHUB_EVENT_NAME" = "pull_request" ] && [ "$PR_ACTION" != "opened" ] && [ "$PR_ACTION" != "reopened" ] && [ "$PR_ACTION" != "edited" ] && [ "$PR_ACTION" != "synchronize" ]; then
+    echo "Dependency analysis only supported for 'pull_request' actions of 'opened', 'reopened', 'edited', and 'synchronize', skipping ($PR_ACTION)"
+    
+    exit 0
+elif [ "$GITHUB_EVENT_NAME" = "push" ] && [ "${GITHUB_REF:0:11}" != "refs/heads/" ]; then
+    echo "Dependency analysis only supported for 'push' events for branches, skipping ($GITHUB_REF)"
+    
+    exit 0
+fi
+
+# Setup dynamic values determined by application
+DYNAMIC_DETECT_VERSION="6.7.0"
+DYNAMIC_UPLOAD_ENDPOINT="https://copilot-test.blackducksoftware.com/import"
+DYNAMIC_DETECT_SCRIPT="https://detect.synopsys.com/detect.sh"
+DYNAMIC_DETECT_ARGUMENTS="--detect.output.path=.copilot --detect.bom.aggregate.name=copilot_bom_bdio --detect.tools=DETECTOR,DOCKER --blackduck.offline.mode=true --detect.bdio.output.path=.copilot --detect.bom.aggregate.remediation.mode=DIRECT"
+
+# Setup standardized environment
+COPILOT_DETECT_VERSION=${COPILOT_DETECT_VERSION:-$DYNAMIC_DETECT_VERSION}
+COPILOT_DETECT_OPTIONS=${COPILOT_DETECT_OPTIONS:-}
+
+COPILOT_PROVIDER=${COPILOT_PROVIDER:-github}
+COPILOT_REPO_SLUG=$(urlencode $GITHUB_REPOSITORY)
+
+# Setup branch and pull request data, whose source is dependent on the workflow event
+if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+    # This reads the pull request name (number) and base (target) branch name from the webhook data. The 'base.ref' property is not actually a GitHub ref (starting with 'refs/heads/', like below), but a stripped branch name, according to GitHub doc
+    PR_BRANCH="$(jq -r .pull_request.base.ref $GITHUB_EVENT_PATH)"
+    PR_NUMBER="$(jq -r .number $GITHUB_EVENT_PATH)"
+    
+    COPILOT_BRANCH=$(urlencode $PR_BRANCH)
+    COPILOT_PULL_REQUEST=$(urlencode $PR_NUMBER)
+else
+    # This sub-stringing removes 'refs/heads/' from the branch name, as a value without that is not available in the push event
+    PUSH_BRANCH=${GITHUB_REF:11}
+    
+    COPILOT_BRANCH=$(urlencode $PUSH_BRANCH)
+    COPILOT_PULL_REQUEST=false
+fi
+
+COPILOT_BUILD_DATA=githubactions:$(urlencode $GITHUB_SHA)
+
+COPILOT_URL="$DYNAMIC_UPLOAD_ENDPOINT?provider=$COPILOT_PROVIDER&repository=$COPILOT_REPO_SLUG&branch=$COPILOT_BRANCH&pull_request=$COPILOT_PULL_REQUEST"
+COPILOT_REPORT_LOCATION=./.copilot/copilot_bom_bdio.jsonld
+
+# Generate report with Hub Detect
+echo "Generating CoPilot report"
+
+export DETECT_LATEST_RELEASE_VERSION=$COPILOT_DETECT_VERSION
+bash <(curl -s $DYNAMIC_DETECT_SCRIPT) $DYNAMIC_DETECT_ARGUMENTS $COPILOT_DETECT_OPTIONS
+
+if [ ! -f "$COPILOT_REPORT_LOCATION" ]; then
+    echo "Report not generated at $COPILOT_REPORT_LOCATION"
+    exit 1
+fi
+
+# Log that the script download is complete and proceeding
+echo "Uploading report at $1"
+
+# Log the curl version used
+curl --version
+
+curl -g -v -f -X POST -d @$COPILOT_REPORT_LOCATION -H 'Content-Type:application/ld+json' -H "CoPilot-Build-Data:$COPILOT_BUILD_DATA" "$COPILOT_URL"
+
+# Exit with the curl command's output status
+exit $?
