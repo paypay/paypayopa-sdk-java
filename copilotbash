@@ -41,7 +41,7 @@ fi
 DYNAMIC_DETECT_VERSION="6.7.0"
 DYNAMIC_UPLOAD_ENDPOINT="https://copilot.blackducksoftware.com/import"
 DYNAMIC_DETECT_SCRIPT="https://detect.synopsys.com/detect.sh"
-DYNAMIC_DETECT_ARGUMENTS="--detect.output.path=.copilot --detect.bom.aggregate.name=copilot_bom_bdio --detect.tools=DETECTOR,DOCKER --blackduck.offline.mode=true --detect.bdio.output.path=.copilot --detect.bom.aggregate.remediation.mode=DIRECT"
+DYNAMIC_DETECT_ARGUMENTS="--detect.output.path=.copilot --detect.bom.aggregate.name=copilot_bom_bdio --detect.tools=DETECTOR,DOCKER --blackduck.offline.mode=true --detect.bdio.output.path=.copilot --detect.bom.aggregate.remediation.mode=DIRECT --detect.report.timeout=2700"
 
 # Setup standardized environment
 COPILOT_DETECT_VERSION=${COPILOT_DETECT_VERSION:-$DYNAMIC_DETECT_VERSION}
