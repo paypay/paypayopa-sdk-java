@@ -1,0 +1,17 @@
+name: Java SDK CI
+
+on: [push,pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up openjdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Upload to CoPilot
+        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        run: bash < copilotbash
