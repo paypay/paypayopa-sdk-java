@@ -5,6 +5,7 @@ public class ApiConstants {
     public static final String DEFAULT_BASE_PATH = "https://stg-api.sandbox.paypay.ne.jp";
     public static final String PROD_BASE_PATH = "https://api.paypay.ne.jp";
     public static final String SANDBOX_BASE_PATH = "https://stg-api.sandbox.paypay.ne.jp";
+    public static final String PERF_BASE_PATH = "https://perf-api.paypay.ne.jp";
     public static final String APPLICATION_JSON = "application/json";
     public static final String ACCEPT = "Accept";
     public static final String MERCHANT_PAYMENT_ID = "merchantPaymentId";
