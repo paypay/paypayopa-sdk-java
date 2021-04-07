@@ -87,6 +87,18 @@ public class ApiClientTest {
     }
 
     @Test
+    public void parameterToStringTest(){
+        List<String> params = new ArrayList<>();
+        params.add("Id");
+        params.add("Name");
+        String parameterToString = apiClient.parameterToString(params);
+        Assert.assertEquals(parameterToString, "Id,Name");
+        Date date  = new GregorianCalendar(2020, Calendar.FEBRUARY, 5).getTime();
+        parameterToString = apiClient.parameterToString(date);
+        Assert.assertTrue(parameterToString.startsWith("2020-"));
+    }
+
+    @Test
     public void perfModeTest(){
         apiClient.setPerfMode(true);
         Assert.assertEquals(apiClient.getBasePath(), ApiConstants.PERF_BASE_PATH);
