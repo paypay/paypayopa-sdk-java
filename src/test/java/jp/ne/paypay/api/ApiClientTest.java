@@ -97,6 +97,14 @@ public class ApiClientTest {
         parameterToString = apiClient.parameterToString(date);
         Assert.assertTrue(parameterToString.startsWith("2020-"));
     }
+
+    @Test
+    public void perfModeTest(){
+        apiClient.setPerfMode(true);
+        Assert.assertEquals(apiClient.getBasePath(), ApiConstants.PERF_BASE_PATH);
+        Assert.assertTrue(apiClient.isPerfMode());
+    }
+
     @Test
     public void parameterToPairTest(){
         List<Pair> pairs = apiClient.parameterToPair("name", "paypay");

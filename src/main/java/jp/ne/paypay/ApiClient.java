@@ -43,12 +43,14 @@ public class ApiClient {
     private String basePath = ApiConstants.DEFAULT_BASE_PATH;
     private String basePathProd = ApiConstants.PROD_BASE_PATH;
     private String basePathSandbox = ApiConstants.SANDBOX_BASE_PATH;
+    private String basePathPerf = ApiConstants.PERF_BASE_PATH;
     private Map<String, String> defaultHeaderMap = new HashMap<>();
     private Map<String, Authentication> authentications;
     private OkHttpClient httpClient;
     private JSON json;
     private String assumeMerchant;
     private boolean productionMode;
+    private boolean perfMode;
 
     /*
      * Constructor for ApiClient
@@ -65,6 +67,9 @@ public class ApiClient {
 
     public boolean isProductionMode() {
         return productionMode;
+    }
+    public boolean isPerfMode() {
+        return perfMode;
     }
 
     public String getBasePathProd() {
@@ -116,6 +121,13 @@ public class ApiClient {
             this.basePath = basePathSandbox;
         }
 
+        return this;
+    }
+    public ApiClient setPerfMode(boolean perfMode) {
+        this.perfMode = perfMode;
+        if(perfMode){
+            this.basePath = basePathPerf;
+        }
         return this;
     }
 
