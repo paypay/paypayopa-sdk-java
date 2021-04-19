@@ -16,5 +16,5 @@ public class ApiConstants {
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String USER_AUTHORIZATION_ID = "userAuthorizationId";
     public static final String RESOLVE_BASE_URL = "https://developer.paypay.ne.jp/develop/resolve";
-    public static final String USER_AGENT = "PayPay-SDK/1.0.1/java";
+    public static final String USER_AGENT = "PayPay-SDK/1.0.3/java";
 }
