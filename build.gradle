@@ -87,7 +87,7 @@ dependencies {
     compile group: 'org.glassfish', name: 'jakarta.el', version: '4.0.1'
 
     testCompile 'org.mockito:mockito-core:3.10.0'
-    testCompile("org.junit.jupiter:junit-jupiter-engine:5.7.2")
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     testCompile("org.junit.platform:junit-platform-runner:1.7.2")
 }
 pmd{
