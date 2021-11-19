@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * MaskedUserProfileResponse
  */
-
+// do not merge
 public class MaskedUserProfileResponse {
 
   @SerializedName("resultInfo")
