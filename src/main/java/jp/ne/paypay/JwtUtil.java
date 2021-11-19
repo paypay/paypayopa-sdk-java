@@ -42,7 +42,7 @@ public class JwtUtil {
                     .withClaim("phoneNumber", jwtRequestDto.getPhoneNumber())
                     .sign(Algorithm.HMAC256(Base64.getDecoder().decode(apiKeySecret)));
         }catch (Exception e){
-            throw new JwtException("Error in creating JWT Token: "+e.getMessage());
+            throw new JwtException("word change Error in creating JWT Token: "+e.getMessage());
         }
     }
 
