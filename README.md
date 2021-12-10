@@ -4,7 +4,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/jp.ne.paypay/paypayopa)](https://search.maven.org/artifact/jp.ne.paypay/paypayopa)
 [![javadoc](https://javadoc.io/badge2/jp.ne.paypay/paypayopa/javadoc.svg)](https://javadoc.io/doc/jp.ne.paypay/paypayopa)
 [![Build Status](https://travis-ci.org/paypay/paypayopa-sdk-java.svg?branch=master)](https://travis-ci.org/paypay/paypayopa-sdk-java)
-[![Coverage Status](https://coveralls.io/repos/github/paypay/paypayopa-sdk-java/badge.svg?branch=master)](https://coveralls.io/github/paypay/paypayopa-sdk-java?branch=master)
 [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/paypay/paypayopa-sdk-java.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/paypay/paypayopa-sdk-java/context:java)
 [![Black Duck Security Risk](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master/badge-risk.svg)](https://copilot.blackducksoftware.com/github/repos/paypay/paypayopa-sdk-java/branches/master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/64c7339473ea7711415c/maintainability)](https://codeclimate.com/github/paypay/paypayopa-sdk-java/maintainability)
