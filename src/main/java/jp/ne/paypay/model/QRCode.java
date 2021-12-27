@@ -387,7 +387,7 @@ public class QRCode {
    * The User agent of the web browser
    * @return userAgent
    **/
-  @ApiModelProperty(value = "User agenr of the web browser")
+  @ApiModelProperty(value = "User agent of the web browser")
   public String getUserAgent() {
     return userAgent;
   }
