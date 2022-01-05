@@ -119,7 +119,10 @@ public class QRCodeResponse {
   
   @SerializedName("authorizationExpiry")
   private Integer authorizationExpiry = null;
-  
+
+  @SerializedName("userAgent")
+  private String userAgent = null;
+
   public QRCodeResponse codeId(String codeId) {
     this.codeId = codeId;
     return this;
@@ -452,7 +455,19 @@ public class QRCodeResponse {
   public void setAuthorizationExpiry(Integer authorizationExpiry) {
     this.authorizationExpiry = authorizationExpiry;
   }
-  
+
+  /**
+   * The User agent of the web browser.
+   * @return userAgent
+   **/
+  @ApiModelProperty(value = "User agent of the web browser")
+  public String getUserAgent() {
+    return userAgent;
+  }
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

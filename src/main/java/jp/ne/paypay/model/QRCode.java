@@ -118,7 +118,10 @@ public class QRCode {
   
   @SerializedName("redirectType")
   private RedirectTypeEnum redirectType = null;
-  
+
+  @SerializedName("userAgent")
+  private String userAgent = null;
+
   public QRCode merchantPaymentId(String merchantPaymentId) {
     this.merchantPaymentId = merchantPaymentId;
     return this;
@@ -380,6 +383,18 @@ public class QRCode {
     this.redirectType = redirectType;
   }
 
+  /**
+   * The User agent of the web browser
+   * @return userAgent
+   **/
+  @ApiModelProperty(value = "User agent of the web browser")
+  public String getUserAgent() {
+    return userAgent;
+  }
+  public void setUserAgent(String userAgent) {
+    this.userAgent = userAgent;
+  }
+
   
   @Override
   public boolean equals(Object o) {
@@ -406,7 +421,7 @@ public class QRCode {
             + codeType + '\'' + ", storeInfo='" + storeInfo + '\'' + ", storeId='" + storeId + '\'' + ", terminalId='"
             + terminalId + '\'' + ", requestedAt=" + requestedAt + ", isAuthorization=" + isAuthorization
             + ", authorizationExpiry=" + authorizationExpiry + ", redirectUrl='" + redirectUrl + '\''
-            + ", redirectType=" + redirectType  + '}';
+            + ", redirectType=" + redirectType + ", userAgent=" + userAgent  + '}';
   }
   
 }
