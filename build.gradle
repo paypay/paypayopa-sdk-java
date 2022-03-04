@@ -80,7 +80,7 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.12.0'
     // validation
     compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '7.0.3.Final'
-    compile group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '7.0.2.Final'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '7.0.3.Final'
     compile group: 'jakarta.el', name: 'jakarta.el-api', version: '4.0.0'
     compile group: 'org.glassfish', name: 'jakarta.el', version: '4.0.2'
 
