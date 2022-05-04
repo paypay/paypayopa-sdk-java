@@ -2,7 +2,11 @@ package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Call;
-import jp.ne.paypay.*;
+import jp.ne.paypay.ApiClient;
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.ApiResponse;
+import jp.ne.paypay.Configuration;
+import jp.ne.paypay.Pair;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
