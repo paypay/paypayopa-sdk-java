@@ -8,6 +8,7 @@ import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.UserAuthorizationStatus;
 import jp.ne.paypay.model.UserCashbackSettingStatus;
+import jp.ne.paypay.model.UserCashbackUseStatus;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -119,5 +120,28 @@ public class UserApiTest {
 
         Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
-    
+
+    /**
+     * Set useCashback flag
+     *
+     * Set useCashback flag of specified user
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void updateUserCashbackStatusTest() throws ApiException {
+
+        UserCashbackUseStatus userCashbackUseStatus = new UserCashbackUseStatus();
+        userCashbackUseStatus.setUserAuthorizationId("userAuthorizationId");
+        userCashbackUseStatus.setUseCashback(true);
+
+        NotDataResponse notDataResponse = new NotDataResponse();
+        notDataResponse.setResultInfo(resultInfo);
+        ApiResponse<NotDataResponse> userCashbackUseStatusApiResponse = new ApiResponse<>(00001, null, notDataResponse);
+        Mockito.when(api.updateUserCashbackUseStatusWithHttpInfo(userCashbackUseStatus)).thenReturn(userCashbackUseStatusApiResponse);
+        NotDataResponse response = api.updateUserCashbackUseStatus(userCashbackUseStatus);
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
 }

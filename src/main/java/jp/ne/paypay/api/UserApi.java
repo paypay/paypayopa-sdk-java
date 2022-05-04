@@ -7,10 +7,12 @@ import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
 import jp.ne.paypay.Configuration;
 import jp.ne.paypay.Pair;
+import jp.ne.paypay.Validator;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
 import jp.ne.paypay.model.UserCashbackSettingStatus;
+import jp.ne.paypay.model.UserCashbackUseStatus;
 
 import java.lang.reflect.Type;
 
@@ -18,6 +20,8 @@ import java.lang.reflect.Type;
 
 public class UserApi {
     private ApiClient apiClient;
+
+    private final Validator validator = Validator.getInstance();
 
     public UserApi() {
         this(new Configuration().getDefaultApiClient());
@@ -164,4 +168,41 @@ public class UserApi {
         return ApiUtil.getCallObject(apiClient, "/v1/user/cashback_setting_state/{userAuthorizationId}", new Pair(ApiConstants.USER_AUTHORIZATION_ID,
                 userAuthorizationId), "GET");
     }
+
+    /**
+     * Set useCashback flag
+     * Set the useCashback flag of specified user.  **Timeout: 15s**
+     *
+     * @param body                    UserCashbackUseStatus
+     * @return NotDataResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public NotDataResponse updateUserCashbackUseStatus(UserCashbackUseStatus body) throws ApiException {
+        String message = validator.validate(body);
+        if (message != null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<NotDataResponse> resp = updateUserCashbackUseStatusWithHttpInfo(body);
+        return resp.getData();
+    }
+
+    /**
+     * Set useCashback flag
+     *      * Set the useCashback flag of specified user.  **Timeout: 15s**
+     *
+     * @param body                    UserCashbackUseStatus
+     * @return ApiResponse&lt;NotDataResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<NotDataResponse> updateUserCashbackUseStatusWithHttpInfo(Object body) throws ApiException {
+        Call call = updateUserCashbackUseStatusBeforeCall(body);
+        Type localVarReturnType = new TypeToken<NotDataResponse>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.UPDATE_USER_CASHBACK_USE_STATUS);
+    }
+
+    private Call updateUserCashbackUseStatusBeforeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/user/use_cashback", body, null);
+    }
+
 }
