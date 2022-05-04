@@ -28,4 +28,5 @@ public class ApiNameConstants {
     public static final String GET_REVERSED_CASHBACK_DETAILS = "v2_getReversedCashBackDetails";
     public static final String GET_USER_CASHBACK_SETTING_STATUS = "v1_userCashbackSettingStatus";
     public static final String UPDATE_USER_CASHBACK_USE_STATUS = "v1_updateUserCashbackUseStatus";
+    public static final String UPDATE_USER_CASHBACK_AUTO_INVESTMENT = "v1_updateUserCashbackAutoInvestment";
 }

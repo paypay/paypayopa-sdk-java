@@ -11,6 +11,7 @@ import jp.ne.paypay.Validator;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
+import jp.ne.paypay.model.UserCashbackAutoInvestment;
 import jp.ne.paypay.model.UserCashbackSettingStatus;
 import jp.ne.paypay.model.UserCashbackUseStatus;
 
@@ -188,7 +189,7 @@ public class UserApi {
 
     /**
      * Set useCashback flag
-     *      * Set the useCashback flag of specified user.  **Timeout: 15s**
+     * Set the useCashback flag of specified user.  **Timeout: 15s**
      *
      * @param body                    UserCashbackUseStatus
      * @return ApiResponse&lt;NotDataResponse&gt;
@@ -203,6 +204,42 @@ public class UserApi {
 
     private Call updateUserCashbackUseStatusBeforeCall(Object body) throws ApiException {
         return ApiUtil.postCallObject(apiClient, "/v1/user/use_cashback", body, null);
+    }
+
+    /**
+     * Set cashbackAutoInvestment flag
+     * Set cashbackAutoInvestment flag of specified user.  **Timeout: 15s**
+     *
+     * @param body                    UserCashbackAutoInvestment
+     * @return NotDataResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public NotDataResponse updateUserCashbackAutoInvestment(UserCashbackAutoInvestment body) throws ApiException {
+        String message = validator.validate(body);
+        if (message != null) {
+            throw new IllegalArgumentException(message);
+        }
+        ApiResponse<NotDataResponse> resp = updateUserCashbackAutoInvestmentWithHttpInfo(body);
+        return resp.getData();
+    }
+
+    /**
+     * Set cashbackAutoInvestment flag
+     * Set cashbackAutoInvestment flag of specified user.  **Timeout: 15s**
+     *
+     * @param body                    UserCashbackAutoInvestment
+     * @return ApiResponse&lt;NotDataResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<NotDataResponse> updateUserCashbackAutoInvestmentWithHttpInfo(Object body) throws ApiException {
+        Call call = updateUserCashbackAutoInvestmentBeforeCall(body);
+        Type localVarReturnType = new TypeToken<NotDataResponse>() {
+        }.getType();
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.UPDATE_USER_CASHBACK_AUTO_INVESTMENT);
+    }
+
+    private Call updateUserCashbackAutoInvestmentBeforeCall(Object body) throws ApiException {
+        return ApiUtil.postCallObject(apiClient, "/v1/user/cashback_auto_investment", body, null);
     }
 
 }
