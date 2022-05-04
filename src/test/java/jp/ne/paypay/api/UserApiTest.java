@@ -3,10 +3,7 @@ package jp.ne.paypay.api;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
-import jp.ne.paypay.model.MaskedUserProfileResponse;
-import jp.ne.paypay.model.NotDataResponse;
-import jp.ne.paypay.model.ResultInfo;
-import jp.ne.paypay.model.UserAuthorizationStatus;
+import jp.ne.paypay.model.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,6 +89,29 @@ public class UserApiTest {
         Mockito.when(api.unlinkUserWithHttpInfo(userAuthorizationId)).thenReturn(notDataResponseApiResponse);
         
         NotDataResponse response = api.unlinkUser(userAuthorizationId);
+
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+    /**
+     * Get user cashback setting status
+     *
+     * Get cashback setting state of specified user
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getUserCashbackSettingStatusTest() throws ApiException {
+
+        String userAuthorizationId = "userAuthorizationId";
+        UserCashbackSettingStatus userCashbackSettingStatus = new UserCashbackSettingStatus();
+        userCashbackSettingStatus.setResultInfo(resultInfo);
+        ApiResponse<UserCashbackSettingStatus> userCashbackSettingStatusApiResponse = new ApiResponse<>(00001, null, userCashbackSettingStatus);
+        Mockito.when(apiClient.escapeString(userAuthorizationId)).thenReturn(userAuthorizationId);
+        Mockito.when(api.getUserCashbackSettingStatusWithHttpInfo(userAuthorizationId)).thenReturn(userCashbackSettingStatusApiResponse);
+
+        UserCashbackSettingStatus response = api.getUserCashbackSettingStatus(userAuthorizationId);
 
         Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }

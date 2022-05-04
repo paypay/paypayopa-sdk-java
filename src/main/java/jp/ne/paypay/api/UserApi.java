@@ -2,14 +2,11 @@ package jp.ne.paypay.api;
 
 import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Call;
-import jp.ne.paypay.ApiClient;
-import jp.ne.paypay.ApiException;
-import jp.ne.paypay.ApiResponse;
-import jp.ne.paypay.Configuration;
-import jp.ne.paypay.Pair;
+import jp.ne.paypay.*;
 import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.UserAuthorizationStatus;
+import jp.ne.paypay.model.UserCashbackSettingStatus;
 
 import java.lang.reflect.Type;
 
@@ -130,5 +127,37 @@ public class UserApi {
         Call call = unlinkUserValidateBeforeCall(userAuthorizationId);
         Type localVarReturnType = new TypeToken<NotDataResponse>(){}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.UNLINK_USER);
+    }
+
+    /**
+     * Get user cashback setting status
+     * Get cashback setting state of specified user  **Timeout: 15s**
+     * @param userAuthorizationId  (required)
+     * @return UserCashbackSettingStatus
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+
+     */
+    public UserCashbackSettingStatus getUserCashbackSettingStatus(String userAuthorizationId) throws ApiException {
+        ApiResponse<UserCashbackSettingStatus> resp = getUserCashbackSettingStatusWithHttpInfo(userAuthorizationId);
+        return resp.getData();
+    }
+
+    /**
+     * Get user cashback setting status
+     * Get cashback setting state of specified user  **Timeout: 15s**
+     * @param userAuthorizationId  (required)
+     * @return ApiResponse&lt;UserCashbackSettingStatus&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+
+     */
+    protected ApiResponse<UserCashbackSettingStatus> getUserCashbackSettingStatusWithHttpInfo(String userAuthorizationId) throws ApiException {
+        Call call = getUserCashbackSettingStatusValidateBeforeCall(userAuthorizationId);
+        Type localVarReturnType = new TypeToken<UserCashbackSettingStatus>(){}.getType();
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_USER_CASHBACK_SETTING_STATUS);
+    }
+
+    private Call getUserCashbackSettingStatusValidateBeforeCall(String userAuthorizationId) throws ApiException {
+        return ApiUtil.getCallObject(apiClient, "/v1/user/cashback_setting_state/{userAuthorizationId}", new Pair(ApiConstants.USER_AUTHORIZATION_ID,
+                userAuthorizationId), "GET");
     }
 }
