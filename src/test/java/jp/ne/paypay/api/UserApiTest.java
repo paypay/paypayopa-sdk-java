@@ -130,7 +130,7 @@ public class UserApiTest {
      *          if the Api call fails
      */
     @Test
-    public void updateUserCashbackStatusTest() throws ApiException {
+    public void updateUserCashbackUseStatusTest() throws ApiException {
 
         UserCashbackUseStatus userCashbackUseStatus = new UserCashbackUseStatus();
         userCashbackUseStatus.setUserAuthorizationId("userAuthorizationId");
