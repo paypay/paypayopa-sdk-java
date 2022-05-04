@@ -85,7 +85,7 @@ public class WalletApi {
                 null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
     
-    private Call validateCheckWalletBalanceParamsBeforeCall(String endpoint, String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
+    private Call validateCheckWalletBalanceParamsBeforeCall(String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
         
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
@@ -102,10 +102,10 @@ public class WalletApi {
             throw new ApiException("Missing the required parameter 'currency' when calling checkWalletBalance(Async)");
         }
         
-        return walletBalanceCall(endpoint, userAuthorizationId, amount, currency, productType);
+        return walletBalanceCall("/v2/wallet/check_balance", userAuthorizationId, amount, currency, productType);
     }
 
-    private Call validateGetWalletBalanceParamsBeforeCall(String endpoint, String userAuthorizationId, String currency, ProductType productType) throws ApiException {
+    private Call validateGetWalletBalanceParamsBeforeCall(String userAuthorizationId, String currency, ProductType productType) throws ApiException {
 
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
@@ -117,7 +117,7 @@ public class WalletApi {
             throw new ApiException("Missing the required parameter 'currency' when calling checkWalletBalance(Async)");
         }
 
-        return walletBalanceCall(endpoint, userAuthorizationId, null, currency, productType);
+        return walletBalanceCall("/v6/wallet/balance", userAuthorizationId, null, currency, productType);
     }
 
     /**
@@ -147,7 +147,7 @@ public class WalletApi {
      */
     protected ApiResponse<WalletBalance> checkWalletBalanceWithHttpInfo(String userAuthorizationId, Integer amount,
             String currency, ProductType productType) throws ApiException {
-        Call call = validateCheckWalletBalanceParamsBeforeCall("/v2/wallet/check_balance", userAuthorizationId, amount, currency, productType);
+        Call call = validateCheckWalletBalanceParamsBeforeCall(userAuthorizationId, amount, currency, productType);
         Type localVarReturnType = new TypeToken<WalletBalance>(){}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CHECK_BALANCE);
     }
@@ -177,7 +177,7 @@ public class WalletApi {
      */
     protected ApiResponse<GetWalletBalance> getWalletBalanceWithHttpInfo(String userAuthorizationId,
             String currency, ProductType productType) throws ApiException {
-        Call call = validateGetWalletBalanceParamsBeforeCall("/v6/wallet/balance", userAuthorizationId, currency, productType);
+        Call call = validateGetWalletBalanceParamsBeforeCall(userAuthorizationId, currency, productType);
         Type localVarReturnType = new TypeToken<GetWalletBalance>(){}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_BALANCE);
     }
