@@ -73,7 +73,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
     compile 'com.google.code.gson:gson:2.9.0'
-    compile ('com.auth0:java-jwt:3.19.1'){
+    compile ('com.auth0:java-jwt:3.19.2'){
         exclude group: 'com.fasterxml.jackson.core', module: 'jackson-databind'
     }
     compile 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
