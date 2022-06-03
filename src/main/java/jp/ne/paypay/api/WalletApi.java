@@ -40,7 +40,7 @@ public class WalletApi {
 
     
     /**
-     * Build call for checkWalletBalance
+     * Build call for checkWalletBalance and getWalletBalance
      * @param userAuthorizationId  (required)
      * @param amount  (required)
      * @param currency  (required)

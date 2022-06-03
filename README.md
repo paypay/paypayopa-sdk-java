@@ -85,6 +85,7 @@ Title | Method | HTTP request | Description
 *PaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details (Pending Payment)
 *PaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v1/requestOrder/refunds | Refund a payment (Pending Payment)
 *WalletApi* | [**checkWalletBalance**](docs/WalletApi.md#checkWalletBalance) | **GET** /v2/wallet/check_balance | Check user wallet balance 
+*WalletApi* | [**getWalletBalance**](docs/WalletApi.md#getWalletBalance) | **GET** /v6/wallet/balance | Get user wallet balance along with preference
 *UserApi* | [**getMaskedUserProfile**](docs/UserApi.md#getMaskedUserProfile) | **GET** /v2/user/profile/secure?userAuthorizationId&#x3D;{userAuthorizationId} | Get masked user profile
 *UserApi* | [**getUserAuthorizationStatus**](docs/UserApi.md#getUserAuthorizationStatus) | **GET** /v2/user/authorizations?userAuthorizationId&#x3D;{userAuthorizationId} | Get user authorization status
 *UserApi* | [**unlinkUser**](docs/UserApi.md#unlinkUser) | **DELETE** /v2/user/authorizations/{userAuthorizationId} | Unlink user
@@ -127,6 +128,9 @@ Title | Method | HTTP request | Description
  - [ReverseCashback](docs/ReverseCashback.md)
  - [CashbackDetails](docs/CashbackDetails.md)
  - [ReverseCashbackDetails](docs/ReverseCashbackDetails.md)
+ - [GetWalletBalance](docs/GetWalletBalance.md)
+ - [Preference](docs/Preference.md)
+ - [GetBalanceData](docs/GetBalanceData.md)
  
  
 

@@ -120,7 +120,7 @@ public class WalletApiTest {
 
         walletBalance.setData(balanceData);
 
-        ApiResponse<GetWalletBalance> walletBalanceApiResponse = new ApiResponse<>(00001, null, walletBalance);
+        ApiResponse<GetWalletBalance> walletBalanceApiResponse = new ApiResponse<>(1, null, walletBalance);
         Mockito.when(api.getWalletBalanceWithHttpInfo(userAuthorizationId, currency, productType)).thenReturn(walletBalanceApiResponse);
         GetWalletBalance response = api.getWalletBalance(userAuthorizationId, currency, productType);
         Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
