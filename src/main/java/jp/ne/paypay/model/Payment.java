@@ -350,9 +350,4 @@ public class Payment extends PaymentState {
     }
     return o.toString().replace("\n", "\n    ");
   }
-
-  
 }
-
-
-
