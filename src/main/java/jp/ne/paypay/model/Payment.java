@@ -64,13 +64,20 @@ public class Payment extends PaymentState {
   
   @SerializedName("amountescription")
   private String amountDescription = null;
-  
+
+  @SerializedName("paymentMethodType")
+  private String paymentMethodType = null;
+
+  @SerializedName("paymentMethodId")
+  private String paymentMethodId = null;
+
+
   public Payment merchantPaymentId(String merchantPaymentId) {
     this.merchantPaymentId = merchantPaymentId;
     return this;
   }
 
-  
+
   /**
   * Get merchantPaymentId
   * @return merchantPaymentId
@@ -289,7 +296,31 @@ public class Payment extends PaymentState {
   public void setAmountDescription(String amountDescription) {
     this.amountDescription = amountDescription;
   }
-  
+
+
+  public String getPaymentMethodType() {
+    return paymentMethodType;
+  }
+
+  public String getPaymentMethodId() {
+    return paymentMethodId;
+  }
+
+  public void setPaymentMethod(PaymentMethod paymentMethod) {
+    this.paymentMethodType = paymentMethod.getPaymentMethodType();
+    this.paymentMethodId = paymentMethod.getPaymentMethodId();
+  }
+
+  /**
+   * Set WALLET as payment method.
+   * As of now, WALLET is the default payment method, and
+   * it is not required to send paymentMethodId if "WALLET" is passed as paymentMethodType.
+   */
+  public void setPaymentMethodAsWallet() {
+    this.paymentMethodType = "WALLET";
+    this.paymentMethodId = null;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -311,12 +342,16 @@ public class Payment extends PaymentState {
         Objects.equals(this.metadata, payment.metadata) &&
         Objects.equals(this.expiresAt, payment.expiresAt) &&
         Objects.equals(this.amountDescription, payment.amountDescription) &&
+        Objects.equals(this.paymentMethodType, payment.paymentMethodType) &&
+        Objects.equals(this.paymentMethodId, payment.paymentMethodId) &&
         super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(merchantPaymentId, userAuthorizationId, amount, requestedAt, storeId, terminalId, orderReceiptNumber, orderDescription, orderItems, metadata, expiresAt, amountDescription, super.hashCode());
+    return Objects.hash(merchantPaymentId, userAuthorizationId, amount, requestedAt,
+        storeId, terminalId, orderReceiptNumber, orderDescription, orderItems, metadata,
+        expiresAt, amountDescription, paymentMethodType, paymentMethodId,  super.hashCode());
   }
   
   @Override
@@ -336,6 +371,8 @@ public class Payment extends PaymentState {
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    amountDescription: ").append(toIndentedString(amountDescription)).append("\n");
+    sb.append("    paymentMethodType: ").append(toIndentedString(paymentMethodType)).append("\n");
+    sb.append("    paymentMethodId: ").append(toIndentedString(paymentMethodId)).append("\n");
     sb.append("}");
     return sb.toString();
   }
