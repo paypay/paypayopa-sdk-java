@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**createQRCode**](PaymentApi.md#createQRCode) | **POST** /v2/codes | Create a Code
 [**deleteQRCode**](PaymentApi.md#deleteQRCode) | **DELETE** /v2/codes/{codeId} | Delete a Code
 [**getPaymentDetails**](PaymentApi.md#getPaymentDetails) | **GET** /v2/payments/{merchantPaymentId} | Get payment details
+[**getPaymentMethods**](PaymentApi.md#getPaymentMethods) | **GET** /v4/paymentMethods | Get payment methods
 [**getCodesPaymentDetails**](PaymentApi.md#getCodesPaymentDetails) | **GET** /v2/codes/payments/{merchantPaymentId} | Get payment details for QR code
 [**getRefundDetails**](PaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details
 [**refundPayment**](PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
@@ -394,6 +395,42 @@ try {
  Please refer to the below document for more information :
 https://www.paypay.ne.jp/opa/doc/v1.0/direct_debit#operation/getPaymentDetails
 ```
+
+<a name="getPaymentMethods"></a>
+# **getPaymentMethods**
+> PaymentMethodsResponse getPaymentMethods(userAuthorizationId)
+
+Get payment methods
+
+Get payment methods.  **Timeout: 30s**
+
+### Example
+```java
+// Import classes:
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
+
+
+
+PaymentApi apiInstance = new PaymentApi(apiClient);
+
+String userAuthorizationId = "USER_AUTHORIZATION_ID"; // String
+ProductType productType = null; // Optional
+
+try {
+    PaymentMethodsResponse result = apiInstance.getPaymentMethods(userAuthorizationId, productType);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PaymentApi#getPaymentMethods");
+    System.out.println(e.getResponseBody());
+}
+```
+
+```
+ Please refer to the below document for more information :
+https://www.paypay.ne.jp/opa/doc/v1.0/direct_debit#tag/Payment/operation/GetPaymentMethods
+```
+
 <a name="getCodesPaymentDetails"></a>
 # **getCodesPaymentDetails**
 > PaymentDetails getCodesPaymentDetails(merchantPaymentId)
