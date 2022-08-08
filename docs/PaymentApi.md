@@ -432,7 +432,7 @@ try {
 }
 ```
 
-You can specify payment method by either `setPaymentMethod(method)` or `setPaymentMethodAsWallet()` at your payment flow.
+You can specify payment method by `setPaymentMethodType` and `setPaymentMethodId`.
 
 ```java
 
@@ -459,7 +459,11 @@ try {
     Optional<PaymentMethod> method = methods.stream()
         .filter(x -> "PAY_LATER_CC".equals(x.getPaymentMethodType()))
         .findFirst();
-    method.ifPresent(payment::setPaymentMethod);
+
+    if (method.isPresent()) {
+        payment.setPaymentMethodType(method.get().getPaymentMethodType());
+        payment.setPaymentMethodId(method.get().getPaymentMethodId());
+    }
 
     PaymentDetails result = apiInstance.createPayment(payment, agreeSimilarTransaction);
     System.out.println(result);

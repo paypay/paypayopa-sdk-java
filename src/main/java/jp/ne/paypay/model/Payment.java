@@ -297,28 +297,28 @@ public class Payment extends PaymentState {
     this.amountDescription = amountDescription;
   }
 
-
+  /**
+   * Type of the payment-method for this payment
+   * @return paymentMethodType
+   */
   public String getPaymentMethodType() {
     return paymentMethodType;
   }
 
+  public void setPaymentMethodType(String paymentMethodType) {
+    this.paymentMethodType = paymentMethodType;
+  }
+
+  /**
+   * Payment-method ID
+   * @return paymentMethodId
+   */
   public String getPaymentMethodId() {
     return paymentMethodId;
   }
 
-  public void setPaymentMethod(PaymentMethod paymentMethod) {
-    this.paymentMethodType = paymentMethod.getPaymentMethodType();
-    this.paymentMethodId = paymentMethod.getPaymentMethodId();
-  }
-
-  /**
-   * Set WALLET as payment method.
-   * As of now, WALLET is the default payment method, and
-   * it is not required to send paymentMethodId if "WALLET" is passed as paymentMethodType.
-   */
-  public void setPaymentMethodAsWallet() {
-    this.paymentMethodType = "WALLET";
-    this.paymentMethodId = null;
+  public void setPaymentMethodId(String paymentMethodId) {
+    this.paymentMethodId = paymentMethodId;
   }
 
   @Override
@@ -372,7 +372,6 @@ public class Payment extends PaymentState {
     sb.append("    expiresAt: ").append(toIndentedString(expiresAt)).append("\n");
     sb.append("    amountDescription: ").append(toIndentedString(amountDescription)).append("\n");
     sb.append("    paymentMethodType: ").append(toIndentedString(paymentMethodType)).append("\n");
-    sb.append("    paymentMethodId: ").append(toIndentedString(paymentMethodId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -119,7 +119,6 @@ public class PaymentMethod {
     StringBuilder sb = new StringBuilder();
     sb.append("class PaymentMethod {\n");
     sb.append("    paymentMethodType: ").append(toIndentedString(paymentMethodType)).append("\n");
-    sb.append("    id: ").append(toIndentedString(paymentMethodId)).append("\n");
     sb.append("    issuerName: ").append(toIndentedString(issuerName)).append("\n");
     sb.append("    accountNo: ").append(toIndentedString(accountNo)).append("\n");
     sb.append("    logoUrl: ").append(toIndentedString(logoUrl)).append("\n");
