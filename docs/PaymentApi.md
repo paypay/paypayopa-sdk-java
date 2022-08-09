@@ -101,6 +101,8 @@ Create a payment
 
 Create a direct debit payment and start the money transfer.  **Timeout: 30s** 
 
+NOTE: If you would like to specify payment method, see also [**getPaymentMethods**](PaymentApi.md#getPaymentMethods).
+
 ### Example
 ```java
 //Import classes:
@@ -152,6 +154,8 @@ Create a payment authorization
 
 Create a payment authorization to block the money.  **Timeout: 30s** 
 
+NOTE: If you would like to specify payment method, see also [**getPaymentMethods**](PaymentApi.md#getPaymentMethods).
+
 ### Example
 ```java
 //Import classes:
@@ -201,6 +205,8 @@ https://www.paypay.ne.jp/opa/doc/v1.0/preauth_capture#operation/createAuth
 
 Create a continuous payment
 Create a continuous payment and start the money transfer.  **Timeout: 30s** 
+
+NOTE: If you would like to specify payment method, see also [**getPaymentMethods**](PaymentApi.md#getPaymentMethods).
 
 ### Example
 ```java
@@ -424,6 +430,47 @@ try {
     System.err.println("Exception when calling PaymentApi#getPaymentMethods");
     System.out.println(e.getResponseBody());
 }
+```
+
+You can specify payment method by `setPaymentMethodType` and `setPaymentMethodId`.
+
+```java
+
+import jp.ne.paypay.ApiException;
+import jp.ne.paypay.api.PaymentApi;
+
+
+PaymentApi apiInstance = new PaymentApi(apiClient);
+
+String agreeSimilarTransaction = "false"; // (Optional) If the parameter is set to true, the payment duplication check will be bypassed. 
+String userAuthorizationId = "USER_AUTHORIZATION_ID"; // String
+ProductType productType = null; // Optional
+
+Payment payment = new Payment();
+// ... set various fields to build a request body
+
+
+try {
+    // Get availabkle payment methods
+    PaymentMethodsResponse paymentMethodsResponse = apiInstance.getPaymentMethods(userAuthorizationId, productType);
+    List<PaymentMethod> methods = paymentMethodsResponse.getData().getPaymentMethods();
+
+    // Set payment method if the response contains what you want for the payment
+    Optional<PaymentMethod> method = methods.stream()
+        .filter(x -> "PAY_LATER_CC".equals(x.getPaymentMethodType()))
+        .findFirst();
+
+    if (method.isPresent()) {
+        payment.setPaymentMethodType(method.get().getPaymentMethodType());
+        payment.setPaymentMethodId(method.get().getPaymentMethodId());
+    }
+
+    PaymentDetails result = apiInstance.createPayment(payment, agreeSimilarTransaction);
+    System.out.println(result);
+} catch (ApiException e) {
+    System.out.println(e.getResponseBody());
+}
+
 ```
 
 ```
