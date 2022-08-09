@@ -1,0 +1,42 @@
+{
+  "resultInfo": {
+    "code": "SUCCESS",
+    "message": "Success",
+    "codeId": "08100001"
+  },
+  "data": {
+    "walletInfo": {
+      "userAuthorizationId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "totalBalance": {
+        "amount": 0,
+        "currency": "JPY"
+      }
+    },
+    "paymentMethods": [
+      {
+        "paymentMethodType": "CREDIT_CARD",
+        "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "issuerName": "クレジットカード",
+        "accountNo": "****6666",
+        "logoUrl": null,
+        "disabled": false,
+        "underMaintenance": false,
+        "authenticated": true,
+        "limited": false,
+        "paymentMethodStatus": "ACTIVATED"
+      },
+      {
+        "paymentMethodType": "PAY_LATER_CC",
+        "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "issuerName": "PayPayあと払い",
+        "accountNo": null,
+        "logoUrl": "https://image.paypay.ne.jp/icon/payment_method_icons/paylater.png",
+        "disabled": false,
+        "underMaintenance": false,
+        "authenticated": null,
+        "limited": false,
+        "paymentMethodStatus": "ACTIVATED"
+      }
+    ]
+  }
+}

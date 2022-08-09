@@ -14,6 +14,8 @@ import jp.ne.paypay.model.LinkQRCodeResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
+import jp.ne.paypay.model.PaymentMethodsResponse;
+import jp.ne.paypay.model.ProductType;
 import jp.ne.paypay.model.QRCode;
 import jp.ne.paypay.model.QRCodeDetails;
 import jp.ne.paypay.model.Refund;
@@ -21,6 +23,10 @@ import jp.ne.paypay.model.RefundDetails;
 import jp.ne.paypay.model.RevertAuthResponse;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PaymentApi {
     private ApiClient apiClient;
@@ -72,8 +78,7 @@ public class PaymentApi {
      */
     protected ApiResponse<NotDataResponse> cancelPaymentWithHttpInfo(String merchantPaymentId) throws ApiException {
         Call call = cancelPaymentValidateBeforeCall(merchantPaymentId);
-        Type localVarReturnType = new TypeToken<NotDataResponse>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<NotDataResponse>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CANCEL_PAYMENT);
     }
 
@@ -103,8 +108,7 @@ public class PaymentApi {
      */
     protected ApiResponse<PaymentDetails> capturePaymentAuthWithHttpInfo(Object body) throws ApiException {
         Call call = capturePaymentAuthCall(body);
-        Type localVarReturnType = new TypeToken<PaymentDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CAPTURE_PAYMENT);
     }
 
@@ -145,8 +149,7 @@ public class PaymentApi {
      */
     protected ApiResponse<PaymentDetails> createPaymentWithHttpInfo(Object body, String agreeSimilarTransaction) throws ApiException {
         Call call = createPaymentValidateBeforeCall(body, agreeSimilarTransaction);
-        Type localVarReturnType = new TypeToken<PaymentDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CREATE_PAYMENT);
     }
 
@@ -192,8 +195,7 @@ public class PaymentApi {
      */
     protected ApiResponse<QRCodeDetails> createQRCodeWithHttpInfo(Object body) throws ApiException {
         Call call = createQRCodeValidateBeforeCall(body);
-        Type localVarReturnType = new TypeToken<QRCodeDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<QRCodeDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CREATE_QRCODE);
     }
 
@@ -225,8 +227,7 @@ public class PaymentApi {
      */
     protected ApiResponse<NotDataResponse> deleteQRCodeWithHttpInfo(String codeId) throws ApiException {
         Call call = deleteQRCodeValidateBeforeCall(codeId);
-        Type localVarReturnType = new TypeToken<NotDataResponse>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<NotDataResponse>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.DELETE_QRCODE);
     }
 
@@ -258,12 +259,64 @@ public class PaymentApi {
      */
     protected ApiResponse<PaymentDetails> getPaymentDetailsWithHttpInfo(String merchantPaymentId) throws ApiException {
         Call call = getPaymentDetailsValidateBeforeCall(merchantPaymentId);
-        Type localVarReturnType = new TypeToken<PaymentDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_PAYMENT);
     }
 
+    /**
+     * Validate request parameters and build http call
+     *
+     * @param userAuthorizationId (required)
+     * @param productType (optional)
+     * @return Call
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    private Call getPaymentMethodsValidateBeforeCall(String userAuthorizationId, ProductType productType) throws ApiException {
+        // verify the required parameter 'userAuthorizationId' is set
+        if (userAuthorizationId == null)
+            throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling getPaymentMethods");
 
+        List<Pair> localVarCollectionQueryParams = new ArrayList<>();
+        Map<String, String> localVarHeaderParams = new HashMap<>();
+        Map<String, Object> localVarFormParams = new HashMap<>();
+        String[] localVarAuthNames = new String[]{ApiConstants.HMAC_AUTH};
+
+        List<Pair> localVarQueryParams = new ArrayList<>(apiClient.parameterToPair("userAuthorizationId", userAuthorizationId));
+        if (productType != null)
+            localVarQueryParams.addAll(apiClient.parameterToPair("productType", productType));
+
+        return apiClient.buildCall("/v4/paymentMethods", "GET", localVarQueryParams, localVarCollectionQueryParams,
+            null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
+    }
+
+    /**
+     * Get payment methods
+     * Get payment methods.  **Timeout: 30s**
+     *
+     * @param userAuthorizationId (required)
+     * @param productType (optional)
+     * @return PaymentMethodsResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public PaymentMethodsResponse getPaymentMethods(String userAuthorizationId, ProductType productType) throws ApiException {
+        ApiResponse<PaymentMethodsResponse> resp = getPaymentMethodsWithHttpInfo(userAuthorizationId, productType);
+        return resp.getData();
+    }
+
+    /**
+     * Get payment methods
+     * Get payment methods.  **Timeout: 30s**
+     *
+     * @param userAuthorizationId (required)
+     * @param productType (optional)
+     * @return ApiResponse&lt;PaymentMethodsResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<PaymentMethodsResponse> getPaymentMethodsWithHttpInfo(String userAuthorizationId, ProductType productType) throws ApiException {
+        Call call = getPaymentMethodsValidateBeforeCall(userAuthorizationId, productType);
+        Type localVarReturnType = new TypeToken<PaymentMethodsResponse>() {}.getType();
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_PAYMENT_METHODS);
+    }
 
     private Call getCodesPaymentDetailsValidateBeforeCall(String merchantPaymentId) throws ApiException {
         return ApiUtil.getCallObject(apiClient, "/v2/codes/payments/{merchantPaymentId}", new Pair(ApiConstants.MERCHANT_PAYMENT_ID,
@@ -293,8 +346,7 @@ public class PaymentApi {
      */
     protected ApiResponse<PaymentDetails> getCodesPaymentDetailsWithHttpInfo(String merchantPaymentId) throws ApiException {
         Call call = getCodesPaymentDetailsValidateBeforeCall(merchantPaymentId);
-        Type localVarReturnType = new TypeToken<PaymentDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_QR_PAYMENT);
     }
 
@@ -328,8 +380,7 @@ public class PaymentApi {
      */
     protected ApiResponse<RefundDetails> getRefundDetailsWithHttpInfo(String merchantRefundId) throws ApiException {
         Call call = getRefundDetailsValidateBeforeCall(merchantRefundId);
-        Type localVarReturnType = new TypeToken<RefundDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<RefundDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_REFUND);
     }
 
@@ -361,8 +412,7 @@ public class PaymentApi {
      */
     protected ApiResponse<RefundDetails> refundPaymentWithHttpInfo(Object body) throws ApiException {
         Call call = refundPaymentValidateBeforeCall(body);
-        Type localVarReturnType = new TypeToken<RefundDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<RefundDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.REFUND_PAYMENT);
     }
 
@@ -393,8 +443,7 @@ public class PaymentApi {
      */
     protected ApiResponse<RevertAuthResponse> revertAuthWithHttpInfo(Object body) throws ApiException {
         Call call = revertAuthValidateBeforeCall(body);
-        Type localVarReturnType = new TypeToken<RevertAuthResponse>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<RevertAuthResponse>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.REVERT_AUTHORIZE);
     }
 
@@ -422,8 +471,7 @@ public class PaymentApi {
      */
     protected ApiResponse<LinkQRCodeResponse> createAccountLinkQRCodeWithHttpInfo(Object body) throws ApiException {
         Call call = createAccountLinkQrCodeCall(body);
-        Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<LinkQRCodeResponse>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CREATE_QR_SESSION);
     }
 
@@ -458,8 +506,7 @@ public class PaymentApi {
      */
     protected ApiResponse<PaymentDetails> createPaymentAuthorizationWithHttpInfo(Object body, String agreeSimilarTransaction) throws ApiException {
         Call call =  ApiUtil.postCallObject(apiClient, "/v2/payments/preauthorize", body, agreeSimilarTransaction);
-        Type localVarReturnType = new TypeToken<PaymentDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.PREAUTHORIZE_PAYMENT);
     }
 
@@ -488,8 +535,7 @@ public class PaymentApi {
      */
     protected ApiResponse<PaymentDetails> createContinuousPaymentWithHttpInfo(Object body) throws ApiException {
         Call call = createContinuousPaymentCall(body);
-        Type localVarReturnType = new TypeToken<PaymentDetails>() {
-        }.getType();
+        Type localVarReturnType = new TypeToken<PaymentDetails>() {}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CREATE_CONTINUOUS_PAYMENT);
     }
 
