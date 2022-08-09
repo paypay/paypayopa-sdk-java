@@ -81,6 +81,7 @@ Title | Method | HTTP request | Description
 *PaymentApi* | [**refundPayment**](docs/PaymentApi.md#refundPayment) | **POST** /v2/refunds | Refund a payment
 *PaymentApi* | [**createPendingPayment**](docs/PendingPaymentApi.md#createPendingPayment) | **POST** /v1/requestOrder | Create a pending payment
 *PaymentApi* | [**getPaymentDetails**](docs/PendingPaymentApi.md#getPaymentDetails) | **GET** /v1/requestOrder/{merchantPaymentId} | Get payment details (Pending Payment)
+*PaymentApi* | [**getPaymentMethods**](docs/PaymentApi.md#getPaymentMethods) | **GET** /v4/paymentMethods | Get payment methods
 *PaymentApi* | [**cancelPendingOrder**](docs/PendingPaymentApi.md#cancelPendingOrder) | **DELETE** /v1/requestOrder/{merchantPaymentId} | Cancel a Pending Order
 *PaymentApi* | [**getRefundDetails**](docs/PendingPaymentApi.md#getRefundDetails) | **GET** /v2/refunds/{merchantRefundId} | Get refund details (Pending Payment)
 *PaymentApi* | [**refundPayment**](docs/PendingPaymentApi.md#refundPayment) | **POST** /v1/requestOrder/refunds | Refund a payment (Pending Payment)

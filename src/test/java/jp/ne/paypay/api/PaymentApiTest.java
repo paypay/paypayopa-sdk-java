@@ -1,5 +1,6 @@
 package jp.ne.paypay.api;
 
+import com.google.gson.Gson;
 import jp.ne.paypay.ApiClient;
 import jp.ne.paypay.ApiException;
 import jp.ne.paypay.ApiResponse;
@@ -15,6 +16,8 @@ import jp.ne.paypay.model.MoneyAmount;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.Payment;
 import jp.ne.paypay.model.PaymentDetails;
+import jp.ne.paypay.model.PaymentMethod;
+import jp.ne.paypay.model.PaymentMethodsResponse;
 import jp.ne.paypay.model.PaymentState;
 import jp.ne.paypay.model.PaymentStateCaptures;
 import jp.ne.paypay.model.PaymentStateRevert;
@@ -29,12 +32,15 @@ import jp.ne.paypay.model.RevertAuthResponse;
 import jp.ne.paypay.model.RevertAuthResponseData;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -340,6 +346,45 @@ public class PaymentApiTest {
         PaymentDetails response = api.getPaymentDetails(merchantPaymentId);
 
         Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+    @Test
+    @DisplayName("getPaymentMethods should contain paymentMethods")
+    public void getPaymentMethodsTest() throws ApiException {
+        // Build mock response
+        String userAuthorizationId = "user-authorization-id";
+        Gson gson = new Gson();
+        String path = "/api_fixtures/v4_getPaymentMethods.json";
+        Reader reader = new InputStreamReader(getClass().getResourceAsStream(path));
+        PaymentMethodsResponse paymentMethodsResponse = gson.fromJson(reader, PaymentMethodsResponse.class);
+        ApiResponse<PaymentMethodsResponse> paymentMethodsApiResponse = new ApiResponse<>(00001, null, paymentMethodsResponse);
+        Mockito.when(api.getPaymentMethodsWithHttpInfo(userAuthorizationId, null)).thenReturn(paymentMethodsApiResponse);
+
+        // Call entrypoint method
+        PaymentMethodsResponse response = api.getPaymentMethods(userAuthorizationId, null);
+        PaymentMethod firstElementOfPaymentMethods = response.getData()
+            .getPaymentMethods()
+            .get(0);
+
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(response.getResultInfo().getCode(), "SUCCESS"),
+            () -> Assertions.assertNotNull(firstElementOfPaymentMethods.getPaymentMethodType(), "paymentMethodType should exist."),
+            () -> Assertions.assertNotNull(firstElementOfPaymentMethods.getPaymentMethodId(), "id should exist."),
+            () -> Assertions.assertNotNull(firstElementOfPaymentMethods.getIssuerName(), "issuerName should exist."),
+            () -> Assertions.assertNotNull(firstElementOfPaymentMethods.getDisabled()),
+            () -> Assertions.assertNotNull(firstElementOfPaymentMethods.getLimited()),
+            () -> Assertions.assertNotNull(firstElementOfPaymentMethods.getPaymentMethodStatus(), "paymentMethodStatus should exist.")
+        );
+    }
+
+    @Test
+    @DisplayName("getPaymentMethods requires userAuthorizationId parameter")
+    public void getPaymentMethodsTestErrorCase() throws ApiException {
+        String userAuthorizationId = null;
+
+        Assertions.assertThrows(ApiException.class, () -> {
+            api.getPaymentMethods(userAuthorizationId, null);
+        });
     }
 
     /**

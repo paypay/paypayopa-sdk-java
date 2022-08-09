@@ -8,6 +8,7 @@ public class ApiNameConstants {
     public static final String CREATE_QRCODE = "v2_createDynamicQRCode";
     public static final String DELETE_QRCODE = "v2_deleteDynamicQRCode";
     public static final String GET_PAYMENT = "v2_getPaymentDetail";
+    public static final String GET_PAYMENT_METHODS = "v4_getPaymentMethods";
     public static final String GET_QR_PAYMENT = "v2_getQRPaymentDetails";
     public static final String GET_REFUND = "v2_getRefundDetails";
     public static final String REFUND_PAYMENT = "v2_createRefundPayment";
