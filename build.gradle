@@ -81,7 +81,7 @@ dependencies {
     // validation
     compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '7.0.5.Final'
     compile group: 'org.hibernate.validator', name: 'hibernate-validator-annotation-processor', version: '7.0.5.Final'
-    compile group: 'jakarta.el', name: 'jakarta.el-api', version: '4.0.0'
+    compile group: 'jakarta.el', name: 'jakarta.el-api', version: '5.0.1'
     compile group: 'org.glassfish', name: 'jakarta.el', version: '4.0.2'
 
     testCompile 'org.mockito:mockito-core:4.4.0'
