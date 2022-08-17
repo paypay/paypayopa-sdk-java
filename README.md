@@ -47,10 +47,10 @@ Add this dependency to your project's build.gradle file:
 
 ```groovy
 dependencies {
-    compile "jp.ne.paypay:paypayopa:1.0.7"
+    compile "jp.ne.paypay:paypayopa:1.0.8"
 
     // For Gradle 7+, use implementation instead of compile since it's removed
-    implementation "jp.ne.paypay:paypayopa:1.0.7"
+    implementation "jp.ne.paypay:paypayopa:1.0.8"
 }
 ```
 
