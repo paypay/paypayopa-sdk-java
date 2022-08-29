@@ -7,6 +7,9 @@ import jp.ne.paypay.model.MaskedUserProfileResponse;
 import jp.ne.paypay.model.NotDataResponse;
 import jp.ne.paypay.model.ResultInfo;
 import jp.ne.paypay.model.UserAuthorizationStatus;
+import jp.ne.paypay.model.UserCashbackAutoInvestment;
+import jp.ne.paypay.model.UserCashbackSettingStatus;
+import jp.ne.paypay.model.UserCashbackUseStatus;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,5 +98,74 @@ public class UserApiTest {
 
         Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
     }
-    
+
+    /**
+     * Get user cashback setting status
+     *
+     * Get cashback setting state of specified user
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void getUserCashbackSettingStatusTest() throws ApiException {
+
+        String userAuthorizationId = "userAuthorizationId";
+        UserCashbackSettingStatus userCashbackSettingStatus = new UserCashbackSettingStatus();
+        userCashbackSettingStatus.setResultInfo(resultInfo);
+        ApiResponse<UserCashbackSettingStatus> userCashbackSettingStatusApiResponse = new ApiResponse<>(00001, null, userCashbackSettingStatus);
+        Mockito.when(apiClient.escapeString(userAuthorizationId)).thenReturn(userAuthorizationId);
+        Mockito.when(api.getUserCashbackSettingStatusWithHttpInfo(userAuthorizationId)).thenReturn(userCashbackSettingStatusApiResponse);
+
+        UserCashbackSettingStatus response = api.getUserCashbackSettingStatus(userAuthorizationId);
+
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+    /**
+     * Set useCashback flag
+     *
+     * Set useCashback flag of specified user
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void updateUserCashbackUseStatusTest() throws ApiException {
+
+        UserCashbackUseStatus userCashbackUseStatus = new UserCashbackUseStatus();
+        userCashbackUseStatus.setUserAuthorizationId("userAuthorizationId");
+        userCashbackUseStatus.setUseCashback(true);
+
+        NotDataResponse notDataResponse = new NotDataResponse();
+        notDataResponse.setResultInfo(resultInfo);
+        ApiResponse<NotDataResponse> userCashbackUseStatusApiResponse = new ApiResponse<>(00001, null, notDataResponse);
+        Mockito.when(api.updateUserCashbackUseStatusWithHttpInfo(userCashbackUseStatus)).thenReturn(userCashbackUseStatusApiResponse);
+        NotDataResponse response = api.updateUserCashbackUseStatus(userCashbackUseStatus);
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
+    /**
+     * Set cashbackAutoInvestment flag
+     *
+     * Set cashbackAutoInvestment flag of specified user
+     *
+     * @throws ApiException
+     *          if the Api call fails
+     */
+    @Test
+    public void updateUserCashbackAutoInvestmentTest() throws ApiException {
+
+        UserCashbackAutoInvestment userCashbackAutoInvestment = new UserCashbackAutoInvestment();
+        userCashbackAutoInvestment.setUserAuthorizationId("userAuthorizationId");
+        userCashbackAutoInvestment.setCashbackAutoInvestment(true);
+
+        NotDataResponse notDataResponse = new NotDataResponse();
+        notDataResponse.setResultInfo(resultInfo);
+        ApiResponse<NotDataResponse> userCashbackUseStatusApiResponse = new ApiResponse<>(00001, null, notDataResponse);
+        Mockito.when(api.updateUserCashbackAutoInvestmentWithHttpInfo(userCashbackAutoInvestment)).thenReturn(userCashbackUseStatusApiResponse);
+        NotDataResponse response = api.updateUserCashbackAutoInvestment(userCashbackAutoInvestment);
+        Assert.assertEquals(response.getResultInfo().getMessage(), "SUCCESS");
+    }
+
 }
