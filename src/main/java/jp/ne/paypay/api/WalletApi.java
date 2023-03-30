@@ -9,6 +9,7 @@ import jp.ne.paypay.Configuration;
 import jp.ne.paypay.Pair;
 import jp.ne.paypay.model.ProductType;
 import jp.ne.paypay.model.WalletBalance;
+import jp.ne.paypay.model.GetWalletBalance;
 
 import jakarta.validation.constraints.NotNull;
 import java.lang.reflect.Type;
@@ -39,7 +40,7 @@ public class WalletApi {
 
     
     /**
-     * Build call for checkWalletBalance
+     * Build call for checkWalletBalance and getWalletBalance
      * @param userAuthorizationId  (required)
      * @param amount  (required)
      * @param currency  (required)
@@ -48,10 +49,8 @@ public class WalletApi {
      * @throws ApiException If fail to serialize the request body object
         
      */
-    private Call checkWalletBalanceCall(String userAuthorizationId, Integer amount, String currency,
+    private Call walletBalanceCall(String endpoint, String userAuthorizationId, Integer amount, String currency,
             ProductType productType) throws ApiException {
-
-        String localVarPath = "/v2/wallet/check_balance";
 
         List<Pair> localVarQueryParams = new ArrayList<>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<>();
@@ -82,12 +81,11 @@ public class WalletApi {
 
         String[] localVarAuthNames = new String[] { "HmacAuth" };
         apiClient.setReadTimeout(15);
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams,
+        return apiClient.buildCall(endpoint, "GET", localVarQueryParams, localVarCollectionQueryParams,
                 null, localVarHeaderParams, localVarFormParams, localVarAuthNames);
     }
     
-    private Call checkWalletBalanceValidateBeforeCall(String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
-        
+    private Call validateCheckWalletBalanceParamsBeforeCall(String userAuthorizationId, Integer amount, String currency, ProductType productType) throws ApiException {
         
         // verify the required parameter 'userAuthorizationId' is set
         if (userAuthorizationId == null) {
@@ -104,20 +102,33 @@ public class WalletApi {
             throw new ApiException("Missing the required parameter 'currency' when calling checkWalletBalance(Async)");
         }
         
+        return walletBalanceCall("/v2/wallet/check_balance", userAuthorizationId, amount, currency, productType);
+    }
+
+    private Call validateGetWalletBalanceParamsBeforeCall(String userAuthorizationId, String currency, ProductType productType) throws ApiException {
+
+        // verify the required parameter 'userAuthorizationId' is set
+        if (userAuthorizationId == null) {
+            throw new ApiException("Missing the required parameter 'userAuthorizationId' when calling checkWalletBalance(Async)");
+        }
         
-        return checkWalletBalanceCall(userAuthorizationId, amount, currency, productType);
+        // verify the required parameter 'currency' is set
+        if (currency == null) {
+            throw new ApiException("Missing the required parameter 'currency' when calling checkWalletBalance(Async)");
+        }
+
+        return walletBalanceCall("/v6/wallet/balance", userAuthorizationId, null, currency, productType);
     }
 
     /**
      * Check user wallet balance
-     * Check if user has enough balance to make a payment  **Timeout: 15s** 
+     * Check if user has enough balance to make a payment  **Timeout: 15s**
      * @param userAuthorizationId  (required)
      * @param amount  (required)
      * @param currency  (required)
      * @param productType  (optional)
      * @return WalletBalance
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-        
      */
     public WalletBalance checkWalletBalance( String userAuthorizationId, Integer amount, String currency, @NotNull ProductType productType) throws ApiException {
         ApiResponse<WalletBalance> resp = checkWalletBalanceWithHttpInfo(userAuthorizationId, amount, currency, productType);
@@ -126,19 +137,48 @@ public class WalletApi {
 
     /**
      * Check user wallet balance
-     * Check if user has enough balance to make a payment  **Timeout: 15s** 
+     * Check if user has enough balance to make a payment  **Timeout: 15s**
      * @param userAuthorizationId  (required)
      * @param amount  (required)
      * @param currency  (required)
      * @param productType  (optional)
      * @return ApiResponse&lt;WalletBalance&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-        
      */
     protected ApiResponse<WalletBalance> checkWalletBalanceWithHttpInfo(String userAuthorizationId, Integer amount,
             String currency, ProductType productType) throws ApiException {
-        Call call = checkWalletBalanceValidateBeforeCall(userAuthorizationId, amount, currency, productType);
+        Call call = validateCheckWalletBalanceParamsBeforeCall(userAuthorizationId, amount, currency, productType);
         Type localVarReturnType = new TypeToken<WalletBalance>(){}.getType();
         return apiClient.execute(call, localVarReturnType, ApiNameConstants.CHECK_BALANCE);
+    }
+
+    /**
+     * Get user wallet balance
+     * Get the user's total balance and preference  **Timeout: 15s**
+     * @param userAuthorizationId  (required)
+     * @param currency  (required)
+     * @param productType  (optional)
+     * @return GetWalletBalance
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    public GetWalletBalance getWalletBalance(String userAuthorizationId, String currency, @NotNull ProductType productType) throws ApiException {
+        ApiResponse<GetWalletBalance> resp = getWalletBalanceWithHttpInfo(userAuthorizationId, currency, productType);
+        return resp.getData();
+    }
+
+    /**
+     * Get user wallet balance
+     * Get the user's total balance and preference  **Timeout: 15s**
+     * @param userAuthorizationId  (required)
+     * @param currency  (required)
+     * @param productType  (optional)
+     * @return ApiResponse&lt;GetWalletBalance&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     */
+    protected ApiResponse<GetWalletBalance> getWalletBalanceWithHttpInfo(String userAuthorizationId,
+            String currency, ProductType productType) throws ApiException {
+        Call call = validateGetWalletBalanceParamsBeforeCall(userAuthorizationId, currency, productType);
+        Type localVarReturnType = new TypeToken<GetWalletBalance>(){}.getType();
+        return apiClient.execute(call, localVarReturnType, ApiNameConstants.GET_BALANCE);
     }
 }
