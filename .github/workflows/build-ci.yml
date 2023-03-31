@@ -21,6 +21,17 @@ jobs:
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: go, javascript
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
       - name: Run coverage
         run: |
           ./gradlew clean build jacocoTestReport
