@@ -84,7 +84,7 @@ dependencies {
     compile group: 'jakarta.el', name: 'jakarta.el-api', version: '4.0.0'
     compile group: 'org.glassfish', name: 'jakarta.el', version: '4.0.2'
 
-    testCompile 'org.mockito:mockito-core:4.4.0'
+    testCompile 'org.mockito:mockito-core:5.3.0'
     testCompile("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     testCompile("org.junit.platform:junit-platform-runner:1.9.0")
 }
