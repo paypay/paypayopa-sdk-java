@@ -18,13 +18,15 @@ Java SDK for interacting with PayPay APIs
 This is the quickest way to integrate PayPay payment services. This is primarily meant for merchants who wish to perform interactions with PayPay API programmatically.
 With PayPay's OPA SDK, you can build a custom Payment checkout process to suit your unique business needs and branding guidelines.
 
+> **Note:** This SDK is provided to assist merchants in integrating with our APIs. While it remains available for use, ongoing maintenance is limited and updates may not be released regularly. Most new features and enhancements are introduced directly at the API level, and we recommend referring to the latest API documentation for the most up-to-date capabilities.
+
 ## Integrating with PayPay OPA
 
 ## Prerequisites
 Before integrating with the SDK, run through this checklist:
-- [*] Understand the payment flow
-- [*] Sign up for a PayPay developer/merchant Account
-- [*] Generate the API keys from the Developer Panel. Use the sandbox API Keys to test out the integration
+- [x] Understand the payment flow
+- [x] Sign up for a PayPay developer/merchant Account
+- [x] Generate the API keys from the Developer Panel. Use the sandbox API Keys to test out the integration
 
 ## HMAC Signature Verification
 Signature verification is a mandatory step to ensure that the callback is sent by PayPay and the payment is received from an authentic source.
@@ -33,11 +35,11 @@ The PayPay signature, returned to you by the Checkout form on successful payment
 
 Step 1: Hash the body and content-type with MD5 algorithm
 
-Note : If there is no request body, for instance, the HTTP GET method case, no need of generating MD5. Instead, hash value is set as "empty".
+Note: If there is no request body, for instance, the HTTP GET method case, no need of generating MD5. Instead, hash value is set as "empty".
 The value of authHeader is passed in HttpHeader.AUTHORIZATION. With the authHeader will decode back the data added and with the HTTP request object and based on data available for api-key in the system, 
 we will recreate the SHA256("key", requestParams) which gives macData. This macData is verified against the value passed in the header.
 
-Note: HMAC authorization will be done internally by the SDK, so client don't need to worry about it.
+Note: HMAC authorization will be done internally by the SDK, so clients don't need to worry about it.
 
 ## Requirements
 Building the API client library requires Gradle to be installed.
