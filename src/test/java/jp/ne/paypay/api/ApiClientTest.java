@@ -61,10 +61,10 @@ public class ApiClientTest {
         Assert.assertNotNull(configuration.getDefaultApiClient());
         Assert.assertNotNull(apiClient.getBasePath());
         Assert.assertFalse(apiClient.isProductionMode());
-        Assert.assertEquals(apiClient.getBasePathProd(), "https://api.paypay.ne.jp");
-        Assert.assertEquals(apiClient.getBasePathSandbox(), "https://stg-api.sandbox.paypay.ne.jp");
+        Assert.assertEquals(ApiConstants.PROD_BASE_PATH, apiClient.getBasePathProd());
+        Assert.assertEquals(ApiConstants.SANDBOX_BASE_PATH, apiClient.getBasePathSandbox());
         apiClient.setProductionMode(true);
-        Assert.assertEquals(apiClient.getBasePath(), "https://api.paypay.ne.jp");
+        Assert.assertEquals(ApiConstants.PROD_BASE_PATH, apiClient.getBasePath());
         apiClient.setBasePathProd("prodUrl");
         Assert.assertEquals(apiClient.getBasePathProd(), "prodUrl");
         apiClient.setBasePathSandbox("sandboxUrl");
