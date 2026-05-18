@@ -19,8 +19,10 @@ jobs:
       
       - name: Publish package
         run: |
-          echo "signing.keyId=${SIGNING_KEY_ID}" >> gradle.properties
-          echo "signing.password=${SIGNING_PASSWORD}" >> gradle.properties
+          echo "signing.gnupg.executable=gpg" >> gradle.properties
+          echo "signing.gnupg.useLegacyGpg=false" >> gradle.properties
+          echo "signing.gnupg.keyName=${SIGNING_KEY_ID}" >> gradle.properties
+          printf 'signing.gnupg.passphrase=%s\n' "${SIGNING_PASSWORD}" >> gradle.properties
           ./gradlew -Prelease uploadArchives
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}

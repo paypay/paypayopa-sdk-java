@@ -101,6 +101,7 @@ artifacts {
 //********* artifact signing *********
 if(isReleaseBuild) {
     signing {
+        useGpgCmd()
         sign configurations.archives
     }
 }
