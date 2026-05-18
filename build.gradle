@@ -141,9 +141,9 @@ uploadArchives {
                     }
                     developers {
                         developer {
-                            id 'javidlulu'
-                            name 'Jaavid Ahmed'
-                            email 't-jaavidahmed.looloo@paypay-corp.co.jp'
+                            id 'paypay-oss-team'
+                            name 'PayPay Open Source Team'
+                            email 'opensource-integrations@paypay-corp.co.jp'
                         }
                     }
                 }
