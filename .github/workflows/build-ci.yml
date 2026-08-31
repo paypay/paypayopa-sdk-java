@@ -3,7 +3,7 @@ name: PayPay Java SDK CI
 on: [push,pull_request]
 
 jobs:
-  build:
+  code-climate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,12 +25,44 @@ jobs:
         run: |
           ./gradlew clean build jacocoTestReport
 
-      - name: Upload to CoPilot
-        run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
-
       - name: Code Climate after-build
         env:
           CC_TEST_REPORTER_ID: 7498cf1d134247ce860e440046a15731b846c8e2b4d6a0111310f012d12e6fda
         run: |
           JACOCO_SOURCE_PATH=src/main/java ./cc-test-reporter format-coverage build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
           ./cc-test-reporter upload-coverage
+
+  code-ql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up openjdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  co-pilot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up openjdk
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Upload to CoPilot
+        run: bash <(curl -s https://copilot.blackducksoftware.com/ci/githubactions/scripts/upload)
+
