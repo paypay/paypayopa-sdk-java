@@ -662,14 +662,26 @@ public class ApiClient {
     }
 
     private String getResolveUrl(String apiName, String respBody) {
-        NotDataResponse responseBody = json.deserialize(respBody, new TypeToken<NotDataResponse>() {
-        }.getType());
-        String resolveUrl = null;
-        if(StringUtils.isNotEmpty(apiName) && responseBody.getResultInfo() != null){
-            resolveUrl = ApiUtil.buildResolveUrl(apiName, responseBody.getResultInfo().getCode(), responseBody.getResultInfo().getCodeId());
-            System.out.println("This link helps you to troubleshoot the issue: "+resolveUrl);
+        if (StringUtils.isEmpty(apiName) || StringUtils.isEmpty(respBody)) {
+            return null;
         }
-        return resolveUrl;
+
+        try {
+            NotDataResponse responseBody = json.deserialize(respBody, new TypeToken<NotDataResponse>() {
+            }.getType());
+            if (responseBody == null || responseBody.getResultInfo() == null) {
+                return null;
+            }
+
+            String resolveUrl = ApiUtil.buildResolveUrl(
+                    apiName,
+                    responseBody.getResultInfo().getCode(),
+                    responseBody.getResultInfo().getCodeId());
+            System.out.println("This link helps you to troubleshoot the issue: " + resolveUrl);
+            return resolveUrl;
+        } catch (RuntimeException e) {
+            return null;
+        }
     }
 
     /**

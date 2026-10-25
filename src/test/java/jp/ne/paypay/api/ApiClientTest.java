@@ -297,6 +297,46 @@ public class ApiClientTest {
     }
 
     @Test
+    public void handleResponseWithEmptyErrorBodyKeepsApiException() {
+        Response response = createErrorResponse(502, "application/json", "");
+
+        ApiException exception = Assert.assertThrows(
+                ApiException.class,
+                () -> apiClient.handleResponse(
+                        new ResponseParameters().setResponse(response).setApiName(ApiNameConstants.CREATE_PAYMENT)));
+
+        Assert.assertEquals(502, exception.getCode());
+        Assert.assertEquals("", exception.getResponseBody());
+        Assert.assertNull(exception.getResolveUrl());
+    }
+
+    @Test
+    public void handleResponseWithHtmlErrorBodyKeepsApiException() {
+        String errorBody = "<html><body>Service unavailable</body></html>";
+        Response response = createErrorResponse(503, "text/html", errorBody);
+
+        ApiException exception = Assert.assertThrows(
+                ApiException.class,
+                () -> apiClient.handleResponse(
+                        new ResponseParameters().setResponse(response).setApiName(ApiNameConstants.CREATE_PAYMENT)));
+
+        Assert.assertEquals(503, exception.getCode());
+        Assert.assertEquals(errorBody, exception.getResponseBody());
+        Assert.assertNull(exception.getResolveUrl());
+    }
+
+    private Response createErrorResponse(int statusCode, String contentType, String body) {
+        Request request = new Request.Builder().url("https://paypay.ne.jp/v2/payments").build();
+        return new Response.Builder()
+                .request(request)
+                .protocol(Protocol.HTTP_1_1)
+                .code(statusCode)
+                .header("Content-Type", contentType)
+                .body(ResponseBody.create(MediaType.parse(contentType), body))
+                .build();
+    }
+
+    @Test
     public void serializeTest() throws ApiException {
         ResultInfo resultInfo = new ResultInfo();
         resultInfo.setMessage("SUCCESS");
