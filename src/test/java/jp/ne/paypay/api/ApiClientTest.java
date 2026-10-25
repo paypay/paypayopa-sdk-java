@@ -31,13 +31,23 @@ import org.mockito.MockitoAnnotations;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ApiClientTest {
 
@@ -359,5 +369,104 @@ public class ApiClientTest {
         headerParams.put("content-type", "application/json");
         Call call = apiClient.buildCall("/v2/path","GET", null, null, null, headerParams, formParams, new String[]{"HmacAuth"});
         Assert.assertNotNull(call);
+    }
+
+    @Test
+    public void concurrentCallsSignEachRequestWithItsOwnBody() throws Exception {
+        ApiClient concurrentApiClient = new ApiClient();
+        BlockingHmacAuth hmacAuth = new BlockingHmacAuth();
+        Map<String, Authentication> authentications = new HashMap<>();
+        authentications.put(ApiConstants.HMAC_AUTH, hmacAuth);
+        concurrentApiClient.setAuthentications(authentications);
+        concurrentApiClient.setApiKey("api-key");
+        concurrentApiClient.setApiSecretKey("api-secret-key");
+
+        Map<String, String> firstBody = new HashMap<>();
+        firstBody.put("merchantPaymentId", "first-payment");
+        Map<String, String> secondBody = new HashMap<>();
+        secondBody.put("merchantPaymentId", "second-payment");
+        Map<String, String> firstHeaders = jsonHeaders();
+        Map<String, String> secondHeaders = jsonHeaders();
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        try {
+            Future<Call> firstCall = executor.submit(() -> buildSignedCall(
+                    concurrentApiClient, "/v2/payments/first", firstBody, firstHeaders));
+            Assert.assertTrue(hmacAuth.awaitFirstSignatureAttempt());
+
+            Future<Call> secondCall = executor.submit(() -> buildSignedCall(
+                    concurrentApiClient, "/v2/payments/second", secondBody, secondHeaders));
+            secondCall.get(5, TimeUnit.SECONDS);
+
+            hmacAuth.allowFirstSignatureAttempt();
+            firstCall.get(5, TimeUnit.SECONDS);
+
+            Assert.assertEquals(expectedRequestHash(concurrentApiClient, firstBody), authorizationHash(firstHeaders));
+            Assert.assertEquals(expectedRequestHash(concurrentApiClient, secondBody), authorizationHash(secondHeaders));
+        } finally {
+            hmacAuth.allowFirstSignatureAttempt();
+            executor.shutdownNow();
+        }
+    }
+
+    private Call buildSignedCall(
+            ApiClient apiClient, String path, Object body, Map<String, String> headerParams) throws ApiException {
+        return apiClient.buildCall(
+                path,
+                "POST",
+                new ArrayList<>(),
+                new ArrayList<>(),
+                body,
+                headerParams,
+                new HashMap<>(),
+                new String[]{ApiConstants.HMAC_AUTH});
+    }
+
+    private Map<String, String> jsonHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(ApiConstants.CONTENT_TYPE, "application/json;charset=UTF-8");
+        return headers;
+    }
+
+    private String expectedRequestHash(ApiClient apiClient, Object body) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("MD5");
+        digest.update("application/json;charset=UTF-8".getBytes(StandardCharsets.UTF_8));
+        digest.update(apiClient.getJson().serialize(body).getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(digest.digest());
+    }
+
+    private String authorizationHash(Map<String, String> headers) {
+        String authorization = headers.get("Authorization");
+        return authorization.substring(authorization.lastIndexOf(':') + 1);
+    }
+
+    private static final class BlockingHmacAuth extends HmacAuth {
+        private final CountDownLatch firstSignatureAttempt = new CountDownLatch(1);
+        private final CountDownLatch allowFirstSignatureAttempt = new CountDownLatch(1);
+        private final AtomicBoolean firstCall = new AtomicBoolean(true);
+
+        @Override
+        public void applyToParams(List<Pair> queryParams, Map<String, String> headerParams) {
+            if (firstCall.compareAndSet(true, false)) {
+                firstSignatureAttempt.countDown();
+                try {
+                    if (!allowFirstSignatureAttempt.await(5, TimeUnit.SECONDS)) {
+                        throw new AssertionError("Timed out waiting to continue the first signature attempt");
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new AssertionError(e);
+                }
+            }
+            super.applyToParams(queryParams, headerParams);
+        }
+
+        private boolean awaitFirstSignatureAttempt() throws InterruptedException {
+            return firstSignatureAttempt.await(5, TimeUnit.SECONDS);
+        }
+
+        private void allowFirstSignatureAttempt() {
+            allowFirstSignatureAttempt.countDown();
+        }
     }
 }

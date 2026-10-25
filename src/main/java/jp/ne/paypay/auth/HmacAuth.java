@@ -17,10 +17,10 @@ import java.util.Map;
 public class HmacAuth implements Authentication {
     private String apiKey;
     private String apiSecretKey;
-    private String requestUrl;
-    private String requestBody;
-    private String httpMethod;
-    private String contentType;
+    private final ThreadLocal<String> requestUrl = new ThreadLocal<>();
+    private final ThreadLocal<String> requestBody = new ThreadLocal<>();
+    private final ThreadLocal<String> httpMethod = new ThreadLocal<>();
+    private final ThreadLocal<String> contentType = new ThreadLocal<>();
     private static final String HMAC_KEY = "HmacSHA256";
     private static final String AUTH_HEADER_PREFIX = "hmac OPA-Auth:";
     private static final String AUTH_HEADER_DELIMITER = ":";
@@ -29,10 +29,10 @@ public class HmacAuth implements Authentication {
 
     private String getHashKey() throws NoSuchAlgorithmException {
         String hash = EMPTY;
-        if(requestBody != null){
+        if(getRequestBody() != null){
             MessageDigest md = MessageDigest.getInstance(HASH_METHOD);
-            md.update(this.contentType.getBytes(StandardCharsets.UTF_8));
-            md.update(requestBody.getBytes(StandardCharsets.UTF_8));
+            md.update(getContentType().getBytes(StandardCharsets.UTF_8));
+            md.update(getRequestBody().getBytes(StandardCharsets.UTF_8));
              hash = new String(
                     Base64.getEncoder().encode(md.digest()),
                     StandardCharsets.UTF_8);
@@ -65,11 +65,11 @@ public class HmacAuth implements Authentication {
     }
     private  byte[]  getHmacData(String nonce, long epoch, String hash){
         String localContentType = EMPTY;
-        if(requestBody != null){
-            localContentType = this.contentType;
+        if(getRequestBody() != null){
+            localContentType = getContentType();
         }
         String  DELIMITER = "\n";
-        return (formatRequestUrl(this.requestUrl) + DELIMITER + this.httpMethod + DELIMITER + nonce + DELIMITER + epoch + DELIMITER
+        return (formatRequestUrl(getRequestUrl()) + DELIMITER + getHttpMethod() + DELIMITER + nonce + DELIMITER + epoch + DELIMITER
                 + localContentType + DELIMITER + hash)
                 .getBytes(StandardCharsets.UTF_8);
     }
@@ -115,38 +115,38 @@ public class HmacAuth implements Authentication {
     }
 
     public String getRequestUrl() {
-        return requestUrl;
+        return requestUrl.get();
     }
 
     public HmacAuth setRequestUrl(final String requestUrl) {
-        this.requestUrl = requestUrl;
+        this.requestUrl.set(requestUrl);
         return this;
     }
 
     public String getRequestBody() {
-        return requestBody;
+        return requestBody.get();
     }
 
     public HmacAuth setRequestBody(final String requestBody) {
-        this.requestBody = requestBody;
+        this.requestBody.set(requestBody);
         return this;
     }
 
     public String getHttpMethod() {
-        return httpMethod;
+        return httpMethod.get();
     }
 
     public HmacAuth setHttpMethod(final String httpMethod) {
-        this.httpMethod = httpMethod;
+        this.httpMethod.set(httpMethod);
         return this;
     }
 
     public String getContentType() {
-        return contentType;
+        return contentType.get();
     }
 
     public HmacAuth setContentType(final String contentType) {
-        this.contentType = contentType;
+        this.contentType.set(contentType);
         return this;
     }
 }
